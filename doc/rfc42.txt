@@ -1,0 +1,251 @@
+Network Working Group                                         M. Ginters
+Request for Comments: 42                                         Epitech
+Category: Standards Track                                   October 2013
+
+
+                    RType communication protocol
+
+Abstract
+    This document describes how the RType Protocol session is mapped
+    onto a Transmission Control Protocol (TCP) connection. And another
+    User Datagram Protocol (UDP) connection to manage game operations.
+
+Status of this Memo
+
+    This document specifies an Internet standards track protocol for
+    the Internet community, and requests discussion and suggestions
+    for improvements.  Please refer to the current edition of the
+    "Internet Official Protocol Standards" (STD 1) for the
+    standardization state and status of this protocol.  Distribution
+    of this memo is unlimited.
+
+Copyright Notice
+
+    Copyright (C) 2013 Epitech.
+
+    This document is free; you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+    
+    This document is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+    General Public License for more details.
+    
+    You should have received a copy of the GNU General Public license
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+
+
+
+Ginters             Standards Track                             [Page 1]
+
+RFC 42              RType communication protocol            October 2013
+
+Table of Contents
+
+    1. Introduction ...................................................2
+        1.1. Conventions Used in This Document ........................2
+    2. TCP Session Management .........................................2
+    3. TCP Message Exchange ...........................................3
+    4. TCP Data Unit Format ...........................................5
+    5. TCP Transport Considerations ...................................5
+
+    /*
+     * Space left
+     */
+
+1.  Introduction
+
+    This document describes how the RType Protocol session is mapped
+    onto a Transmission Control Protocol (TCP) connection. And another
+    User Datagram Protocol (UDP) connection to manage game operations.
+
+1.1.    Conventions Used in This Document
+
+    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+    document are to be interpreted as described in [RFC2119].
+
+2. TCP Session Management
+    Mapping RType session management facilities onto the TCP service is
+    straightfoward. An RType session first requires creation of a TCP
+    connection between two peers, one that initiates the connection
+    request and one that responds to the connection request. The
+    initialising peer is called the "client", and the responding peer is
+    called the "server". An RType server MUST listen for a TCP
+    connection requests on a standard TCP port.
+
+    The client MUST issue an active OPEN call, specifying the TCP port
+    number on which the server is listening for RType connection
+    attempts. The RType server MUST return an RType <greeting> to the
+    client after the TCP session has been established.
+
+Ginters             Standards Track                             [Page 2]
+
+RFC 42              RType communication protocol            October 2013
+
+    An RType session is normally ended by the client issuing an RType
+    <logout> command.  A server receiving an RType <logout> command MUST
+    end the RType session and close the TCP connection with a CLOSE
+    call. A client MAY end an RType session by issuing a CLOSE call.
+    
+    A server MAY limit the life span of an established TCP connection.
+    RType sessions that are inactive for more than a server-defined
+    period MAY be ended by a server issuing a CLOSE call.  A server MAY
+    also close TCP connections that have been open and active for longer
+    than a server-defined period.
+
+3. TCP Message Exchange
+
+    An RType client streams RType commands to an RType server on an
+    established TCP connection. A client MUST NOT distribute commands
+    from a single RType session over multiple TCP connections. A client
+    MAY establish multiple TCP connections to support multiple RType
+    sessions with each session mapped to a single connection. A server
+    SHOULD limit a client to a maximum number of TCP connections based
+    on server capabilities and operational load.
+
+    RType describes client-server interaction as a command-response
+    exchange. A client might be able to realize a slight performance
+    gain by pipelining (sending more than one command before a response
+    for the first command is received) commands with TCP transport, but
+    this feature does not change the basic single command, single
+    response operating mode of the core protocol.
+
+    A server SHOULD impose a limit on the amount of time required for a
+    client to issue a well-formed RType command. A server SHOULD end an
+    RType session and close an open TCP connection if a well-formed
+    command is not received within the time limit.
+
+    Each RType data unit MUST contain a single RType message. commands
+    MUST be processed independently and in the same order as sent.
+
+
+
+
+
+Ginters             Standards Track                             [Page 3]
+
+RFC 42              RType communication protocol            October 2013
+
+
+                    Client                  Server
+                |                                     |
+                |                Connect              |
+                | >>------------------------------->> |
+                |                                     |
+                |             Send Greeting           |
+                | <<-------------------------------<< |
+                |                                     |
+                |             Send <login>            |
+                | >>------------------------------->> |
+                |                                     |
+                |             Send Response           |
+                | <<-------------------------------<< |
+                |                                     |
+                |             Send Command            |
+                | >>------------------------------->> |
+                |                                     |
+                |             Send Response           |
+                | <<-------------------------------<< |
+                |                                     |
+                |            Send Command X           |
+                | >>------------------------------->> |
+                |                                     |
+                |    Send Command Y                   |
+                | >>---------------+                  |
+                |                  |                  |
+                |                  |                  |
+                |            Send Response X          |
+                | <<---------------(---------------<< |
+                |                  |                  |
+                |                  |                  |
+                |                  +--------------->> |
+                |                                     |
+                |            Send Response Y          |
+                | <<-------------------------------<< |
+                |                                     |
+                |             Send <logout>           |
+                | >>------------------------------->> |
+                |                                     |
+                |     Send Response & Disconnect      |
+                | <<-------------------------------<< |
+                |                                     |
+            
+                Figure 1: TCP Client-Server Message Exchange
+
+
+
+
+
+Ginters             Standards Track                             [Page 4]
+
+RFC 42              RType communication protocol            October 2013
+
+4. TCP Data Unit Format
+
+    The RType data unit contains two fields: a 32-bits header that
+    describes the total length of the message field, and the message
+    field. A receiver MUST successfully read that many octets Total
+    retrieve the complete message instance before processing the RType
+    message.
+
+    RType Data Unit Format (one tick mark represents one bit position):
+
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                           Total Length                        |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                         RType Message Instance                |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+//-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+    Total Length (32 bits): The total length of the RType data unit
+    measured in octets in network (big endian) byte order.  The octets
+    contained in this field MUST NOT be included in the total length
+    calculation.
+    
+    RType Message Instance (variable length): The RType message instance
+    carried in the data unit.
+
+5.  TCP Transport Considerations
+
+    This protocol addresses each of the considerations using a
+    combination of features described in this document and features
+    provided by TCP as follows:
+    
+    -   TCP includes features to provide reliability, flow control,
+        ordered delivery, and congestion control. Section 1.5 of RFC 793
+        [RFC0793] describes these features in detail; congestion control
+        principles are described further in RFC 2581 [RFC2581] and RFC
+        2914 [RFC2914]. TCP is a connection-oriented protocol, and
+        Section 2 of this document describes how EPP sessions are mapped
+        to TCP connections.
+    
+    -   Sections 2 and 3 of this document describe how the stateful
+        nature of RType protocol is preserved through managed sessions
+        and controlled message exchanges.
+
+
+
+
+
+Ginters             Standards Track                             [Page 5]
+
+RFC 42              RType communication protocol            October 2013
+
+
+    -   Pipelining is possible with TCP, though batch-oriented
+        processing (combining multiple RType commands in a single data
+        unit) is not permitted.
+
+    -   Section 4 of this document describes features to frame data
+        units by explicitly specifying the number of octets used to
+        represent a data unit.
+
+
+
+Ginters             Standards Track                             [Page 6]
