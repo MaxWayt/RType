@@ -52,10 +52,10 @@ Table of Contents
     3. TCP Message Exchange ...........................................3
     4. TCP Data Unit Format ...........................................5
     5. TCP Transport Considerations ...................................5
-
-    /*
-     * Space left
-     */
+    6. UDP Session Management .........................................6
+    7. UDP Message Exchange ...........................................6
+    8. UDP Data Unit Format ...........................................7
+    9. UDP Transport Considerations ...................................7
 
 1.  Introduction
 
@@ -246,6 +246,155 @@ RFC 42              RType communication protocol            October 2013
         units by explicitly specifying the number of octets used to
         represent a data unit.
 
+6. UDP Session Management
+    Mapping RType session management facilities onto the UDP service is
+    straightfoward. An RType session first requires creation of a UDP
+    connection between two peers, one that initiates the connection
+    request and one that responds to the connection request. The
+    initialising peer is called the "client", and the responding peer is
+    called the "server". An RType server MUST listen for a UDP
+    connection requests on a standard UDP port.
+
+    The client MUST issue an active OPEN call, specifying the UDP port
+    number on which the server is listening for RType connection
+    attempts. The RType server MUST return an RType <greeting> to the
+    client after the UDP session has been established. The session token
+    provided by the TCP connection MUST be send after the <greeting>
+    message.
+
+    An RType session is normally ended by the client issuing an RType
+    <logout> command.  A server receiving an RType <logout> command MUST
+    end the RType session and close the UDP connection with a CLOSE
+    call. A client MAY end an RType session by issuing a CLOSE call.
+    
+    A server MAY limit the life span of an established UDP connection.
+    RType sessions that are inactive for more than a server-defined
+    period MAY be ended by a server issuing a CLOSE call.  A server MAY
+    also close UDP connections that have been open and active for longer
+    than a server-defined period.
+
+7. UDP Message Exchange
+
+    An RType client streams RType commands to an RType server on an
+    established UDP connection. A client MUST NOT distribute commands
+    from a single RType session over multiple UDP connections. A client
+    MAY establish multiple TCP connections to support multiple RType
+    sessions with each session mapped to a single connection. A server
+    SHOULD limit a client to a maximum number of UDP connections based
+    on server capabilities and operational load.
+
+    RType describes client-server interaction as a command-response
+    exchange. A client might be able to realize a slight performance
+    gain by pipelining (sending more than one command before a response
+    for the first command is received) commands with UDP transport, but
+    this feature does not change the basic single command, single
+    response operating mode of the core protocol.
+
+
+
 
 
 Ginters             Standards Track                             [Page 6]
+
+RFC 42              RType communication protocol            October 2013
+
+    A server SHOULD impose a limit on the amount of time required for a
+    client to issue a well-formed RType command. A server SHOULD end an
+    RType session and close an open UDP connection if a well-formed
+    command is not received within the time limit.
+
+    Each RType data unit MUST contain a single RType message. commands
+    MUST be processed independently and in the same order as sent.
+    Each RType message MUST have the same size, the default size is
+    256 bits.
+
+
+                    Client                  Server
+                |                                     |
+                |                Connect              |
+                | >>------------------------------->> |
+                |                                     |
+                |             Send Greeting           |
+                | <<-------------------------------<< |
+                |                                     |
+                |             Send <token>            |
+                | >>------------------------------->> |
+                |                                     |
+                |             Send Response           |
+                | <<-------------------------------<< |
+                |                                     |
+                |            Send Command X           |
+                | >>------------------------------->> |
+                |                                     |
+                |    Send Command Y                   |
+                | >>---------------+                  |
+                |                  |                  |
+                |                  |                  |
+                |            Send Response X          |
+                | <<---------------(---------------<< |
+                |                  |                  |
+                |                  |                  |
+                |                  +--------------->> |
+                |                                     |
+                |            Send Response Y          |
+                | <<-------------------------------<< |
+                |                                     |
+                |             Send <logout>           |
+                | >>------------------------------->> |
+                |                                     |
+                |     Send Response & Disconnect      |
+                | <<-------------------------------<< |
+                |                                     |
+            
+                Figure 1: UDP Client-Server Message Exchange
+
+
+
+
+
+Ginters             Standards Track                             [Page 7]
+
+RFC 42              RType communication protocol            October 2013
+
+8. UDP Data Unit Format
+
+    The RType data unit contains three fields: a 32-bits header that
+    describes the total length of the message field, the message
+    field and some 0 bits to fill the packet size (256 bits).
+    A receiver MUST successfully read the full packet bits before
+    processing the RType message.
+
+    RType Data Unit Format (one tick mark represents one bit position):
+
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                           Total Length                        |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                         RType Message Instance                |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+//-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                         Bits stuffing                         |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+    Total Length (32 bits): The total length of the RType data unit
+    measured in octets in network (big endian) byte order.  The octets
+    contained in this field MUST NOT be included in the total length
+    calculation.
+    
+    RType Message Instance (variable length): The RType message instance
+    carried in the data unit.
+
+    Bits stuffing: a bits field with a 0 value to fill the 256 bits
+    message size.
+
+
+9.  UDP Transport Considerations
+
+    Use this transport when communicating using low-level UDP datagrams.
+    UDP is designed to maximize speed and scale over reliability,
+    ordering or data integrity. UDP datagrams are not guaranteed to
+    arrive with any particular speed, or at all, and they may arrive in
+    a different order than they are sent in.
+
+    To avoid a connection desynchronization, we use a fixed packet size
+    of 256 bits.
