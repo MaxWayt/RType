@@ -9,6 +9,7 @@
 #include "Singleton.hpp"
 
 #include <map>
+#include <string>
 
 #define DEFAULT_CONFIG_FILE "rtype-server.conf"
 

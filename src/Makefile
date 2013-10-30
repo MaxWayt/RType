@@ -6,17 +6,37 @@ CXX	= g++
 
 RM	= rm -f
 
-CXXFLAGS	+= -Wall -Werror
-CXXFLAGS	+= -std=c++11
-CXXFLAGS	+= -I. -Iconfig -Iutils
-
-LDFLAGS	= -lpthread
-
 NAME	= rtype-server
 
 SRCS	= Main.cpp Server.cpp config/ConfigMgr.cpp utils/Utils.cpp utils/Runnable.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
+
+ifeq ($(OS),Windows_NT)
+	CXXFLAGS += -D WIN32
+	ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
+		CXXFLAGS += -D AMD64
+	endif
+
+	ifeq ($(PROCESSOR_ARCHITECTURE),x86)
+		CXXFLAGS += -D IA32
+	endif
+else
+	UNAME_S := $(shell uname -s)
+	ifeq ($(UNAME_S),Linux)
+		CXXFLAGS += -D LINUX
+	endif
+	ifeq ($(UNAME_S),Darwin)
+		CXXFLAGS += -D OSX -stdlib=libc++
+		LDFLAGS += -stdlib=libc++
+	endif
+endif
+
+CXXFLAGS	+= -Wall -Werror
+CXXFLAGS	+= -std=c++11
+CXXFLAGS	+= -I. -Iconfig -Iutils
+
+LDFLAGS	= -lpthread
 
 all: $(NAME)
 
