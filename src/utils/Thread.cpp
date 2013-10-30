@@ -5,8 +5,12 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon Oct 07 15:47:33 2013 vincent leroy
-** Last update Mon Oct 07 18:49:47 2013 vincent leroy
+** Last update Wed Oct 30 16:50:03 2013 vincent leroy
 */
+
+#ifdef WIN32
+# undef __STRICT_ANSI__
+#endif
 
 #include <iostream>
 
@@ -30,7 +34,7 @@ Thread::Thread() :
 
 Thread::~Thread()
 {
-    stop();
+    _stop();
 }
 
 bool Thread::_run()
