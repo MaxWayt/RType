@@ -3,6 +3,10 @@
  *
  */
 
+#ifdef WIN32
+# undef __STRICT_ANSI__
+#endif
+
 #include <algorithm>
 #include <functional>
 #include <cctype>

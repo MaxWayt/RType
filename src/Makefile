@@ -1,6 +1,6 @@
 ##
 ## Makefile
-## 
+##
 
 CXX	= g++
 
@@ -8,7 +8,7 @@ RM	= rm -f
 
 NAME	= rtype-server
 
-SRCS	= Main.cpp Server.cpp config/ConfigMgr.cpp utils/Utils.cpp utils/Thread.cpp
+SRCS	= Main.cpp Server.cpp config/ConfigMgr.cpp utils/Utils.cpp utils/Thread.cpp utils/Socket.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 
@@ -21,6 +21,7 @@ ifeq ($(OS),Windows_NT)
 	ifeq ($(PROCESSOR_ARCHITECTURE),x86)
 		CXXFLAGS += -D IA32
 	endif
+	LDFLAGS += -lWs2_32
 else
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
@@ -33,10 +34,10 @@ else
 endif
 
 CXXFLAGS	+= -Wall -Werror
-CXXFLAGS	+= -std=c++11
+CXXFLAGS	+= -std=c++0x
 CXXFLAGS	+= -I. -Iconfig -Iutils
 
-LDFLAGS	= -lpthread
+LDFLAGS	+= -lpthread
 
 all: $(NAME)
 

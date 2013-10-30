@@ -3,6 +3,10 @@
  *
  */
 
+#ifdef WIN32
+# undef __STRICT_ANSI__
+#endif
+
 #include "Server.h"
 #include "Utils.hpp"
 #include "ConfigMgr.h"
