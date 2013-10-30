@@ -14,6 +14,8 @@ int main(int ac, char** av)
     sConfig->LoadConfig();
     sConfig->DumpConfig();
 
-    Server server();
+    Server server;
+    server.Start();
+    server.Wait();
     return 0;
 }

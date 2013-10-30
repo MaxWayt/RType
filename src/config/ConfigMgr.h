@@ -3,6 +3,9 @@
  *
  */
 
+#ifndef CONFIGMGR_H_
+# define CONFIGMGR_H_
+
 #include "Singleton.hpp"
 
 #include <map>
@@ -28,3 +31,5 @@ private:
 };
 
 #define sConfig ConfigMgr::instance()
+
+#endif

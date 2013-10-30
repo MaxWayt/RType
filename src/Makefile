@@ -10,11 +10,11 @@ CXXFLAGS	+= -Wall -Werror
 CXXFLAGS	+= -std=c++11
 CXXFLAGS	+= -I. -Iconfig -Iutils
 
-LDFLAGS	=
+LDFLAGS	= -lpthread
 
 NAME	= rtype-server
 
-SRCS	= Main.cpp Server.cpp config/ConfigMgr.cpp utils/Utils.cpp
+SRCS	= Main.cpp Server.cpp config/ConfigMgr.cpp utils/Utils.cpp utils/Runnable.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 
