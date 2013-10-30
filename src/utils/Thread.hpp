@@ -24,10 +24,11 @@ public:
     Thread();
     virtual ~Thread();
 
-    bool start();
-    void stop();
+    bool _run();
+    void _stop();
+    void _join();
 
-    inline bool isStopped() const { return !_running; }
+    inline bool _isStopped() const { return !_running; }
 
     virtual void operator()() = 0;
 

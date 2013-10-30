@@ -8,7 +8,7 @@ RM	= rm -f
 
 NAME	= rtype-server
 
-SRCS	= Main.cpp Server.cpp config/ConfigMgr.cpp utils/Utils.cpp utils/Runnable.cpp
+SRCS	= Main.cpp Server.cpp config/ConfigMgr.cpp utils/Utils.cpp utils/Thread.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 

@@ -33,9 +33,9 @@ Thread::~Thread()
     stop();
 }
 
-bool Thread::start()
+bool Thread::_run()
 {
-    std::cout << "creating thread" << std::endl;
+    //std::cout << "creating thread" << std::endl;
     FOR_UNIX(if (pthread_create(&_threadId, NULL, &run, this) != 0))
     FOR_WIN(if ((_hThread = CreateThread(NULL, 0, &run, this, 0, NULL)) == NULL))
         return false;
@@ -44,20 +44,30 @@ bool Thread::start()
     return true;
 }
 
-void Thread::stop()
+void Thread::_stop()
 {
     if (!_running)
         return ;
 
-    std::cout << "stopping thread" << std::endl;
+    //std::cout << "stopping thread" << std::endl;
 #ifdef OS_UNIX
     pthread_cancel(_threadId);
-    pthread_join(_threadId, NULL);
 #else
     TerminateThread(_hThread, 0);
+#endif /* OS_UNIX */
+    _running = false;
+    //std::cout << "thread destroy" << std::endl;
+}
+
+void Thread::_join()
+{
+    if (!_running)
+        return;
+
+#ifdef OS_UNIX
+    pthread_join(_threadId, NULL);
+#else
     WaitForSingleObject(_hThread, INFINITE);
     CloseHandle(_hThread);
 #endif /* OS_UNIX */
-    _running = false;
-    std::cout << "thread destroy" << std::endl;
 }
