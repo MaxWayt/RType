@@ -8,7 +8,7 @@
 ** Last update Wed Oct 30 17:35:20 2013 vincent leroy
 */
 
-#ifdef LINUX
+#if defined(LINUX) || defined(OSX)
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/socket.h>
@@ -42,7 +42,7 @@ bool Socket::listen(const char *protoName, int type, const char *port, int *num_
     if ((proto = getprotobyname(protoName)) == NULL)
         return false;
     _sockfd = socket(AF_INET, type, proto->p_proto);
-#ifdef LINUX
+#if defined(LINUX) || defined(OSX)
     if (_sockfd == -1)
 #else
     if (_sockfd == INVALID_SOCKET)
@@ -83,7 +83,7 @@ bool Socket::open(const char *protoName, int type, const char *hostname, const c
     if ((proto = getprotobyname(protoName)) == NULL)
         return false;
     _sockfd = socket(AF_INET, type, proto->p_proto);
-#ifdef LINUX
+#if defined(LINUX) || defined(OSX)
     if (_sockfd == -1)
 #else
     if (_sockfd == INVALID_SOCKET)
@@ -113,7 +113,7 @@ bool Socket::open(const char *protoName, int type, const char *hostname, const c
 
 void Socket::close()
 {
-#ifdef LINUX
+#if defined(LINUX) || defined(OSX)
     ::close(_sockfd);
 #else
     closesocket(_sockfd);
@@ -123,7 +123,7 @@ void Socket::close()
 
 bool Socket::read(char *buff, size_t len)
 {
-#ifdef LINUX
+#if defined(LINUX) || defined(OSX)
     return ::read(_sockfd, buff, len) >= 0;
 #else
     return recv(_sockfd, buff, len, 0) >= 0;
@@ -132,7 +132,7 @@ bool Socket::read(char *buff, size_t len)
 
 bool Socket::write(const char *buff, size_t len)
 {
-#ifdef LINUX
+#if defined(LINUX) || defined(OSX)
     return ::write(_sockfd, buff, len) >= 0;
 #else
     return send(_sockfd, buff, len, 0) >= 0;

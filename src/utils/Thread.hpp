@@ -12,7 +12,7 @@
 # define THREAD_H_
 
 #include "os.hpp"
-#ifdef OS_UNIX
+#if defined(LINUX) || defined(OSX)
 #   include <pthread.h>
 #else
 #   include <windows.h>
