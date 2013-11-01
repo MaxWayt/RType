@@ -9,7 +9,11 @@
 #include "Thread.hpp"
 #include "SharedDefines.h"
 
+#include <map>
+
 #define SERVER_SLEEP_TIME 50
+
+class Game;
 
 class Server : public Thread
 {
@@ -23,6 +27,12 @@ public:
     void Wait();
 
     void Update(uint32 const diff);
+
+    Game* CreateNewGame();
+
+private:
+    uint32 _GetNewGameId() const;
+    std::map<uint32, Game*> _gameMap;
 };
 
 #endif

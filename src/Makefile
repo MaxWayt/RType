@@ -8,7 +8,8 @@ RM	= rm -f
 
 NAME	= rtype-server
 
-SRCS	= Main.cpp Server.cpp config/ConfigMgr.cpp utils/Utils.cpp utils/Thread.cpp utils/Socket.cpp
+SRCS	= Main.cpp Server.cpp config/ConfigMgr.cpp utils/Utils.cpp utils/Thread.cpp utils/Socket.cpp \
+		  game/Game.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 
@@ -33,9 +34,9 @@ else
 	endif
 endif
 
-CXXFLAGS	+= -Wall -Werror
+#CXXFLAGS	+= -Wall
 CXXFLAGS	+= -std=c++0x
-CXXFLAGS	+= -I. -Iconfig -Iutils
+CXXFLAGS	+= -I. -Iconfig -Iutils -Igame
 
 LDFLAGS	+= -lpthread
 

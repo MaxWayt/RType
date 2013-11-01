@@ -11,6 +11,7 @@
 #ifndef THREAD_H_
 # define THREAD_H_
 
+#include "SharedDefines.h"
 #include "os.hpp"
 #if defined(LINUX) || defined(OSX)
 #   include <pthread.h>
@@ -32,6 +33,7 @@ public:
 
     virtual void operator()() = 0;
 
+    static void Sleep(uint32 mstime);
 private:
     bool _running;
     FOR_UNIX(pthread_t _threadId);

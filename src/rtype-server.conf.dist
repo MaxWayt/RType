@@ -1,5 +1,13 @@
 # Fichier de config RType
 
+# Global config
 debug =     0
 motd = "Salut toi"
-tutu = "peut etre"
+
+# Server config
+Server.SleepTime = 100
+Server.Debug = 1
+
+# Games config
+Game.SleepTime = 100
+Game.Debug = 1
