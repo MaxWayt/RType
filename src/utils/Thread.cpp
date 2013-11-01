@@ -10,6 +10,8 @@
 
 #ifdef WIN32
 # undef __STRICT_ANSI__
+#elif defined(LINUX) || defined(OSX)
+# include <unistd.h>
 #endif
 
 #include <iostream>
@@ -54,7 +56,7 @@ void Thread::_stop()
         return ;
 
     //std::cout << "stopping thread" << std::endl;
-#ifdef OS_UNIX
+#if defined(LINUX) || defined(OSX)
     pthread_cancel(_threadId);
 #else
     TerminateThread(_hThread, 0);
@@ -68,10 +70,17 @@ void Thread::_join()
     if (!_running)
         return;
 
-#ifdef OS_UNIX
+#if defined(LINUX) || defined(OSX)
     pthread_join(_threadId, NULL);
 #else
     WaitForSingleObject(_hThread, INFINITE);
     CloseHandle(_hThread);
 #endif /* OS_UNIX */
+}
+
+void Thread::Sleep(uint32 mstime)
+{
+#if defined(LINUX) || defined(OSX)
+    usleep(mstime * IN_MILLISECONDS);
+#endif
 }

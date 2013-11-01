@@ -10,17 +10,21 @@
 #include "Server.h"
 #include "Utils.hpp"
 #include "ConfigMgr.h"
+#include "Game.h"
 
 #include <iostream>
 #include <unistd.h>
 
-Server::Server() { }
+Server::Server() : _gameMap()
+{
+}
 
 void Server::operator()()
 {
     uint32 prevTime = GetMSTime();
     uint32 currTime = 0;
     uint32 prevSleep = 0;
+    uint32 sleepTime = sConfig->GetIntDefault("Server.SleepTime", 50);
     while (!_isStopped())
     {
         currTime = GetMSTime();
@@ -29,10 +33,10 @@ void Server::operator()()
         Update(diff);
         prevTime = currTime;
 
-        if (diff <= SERVER_SLEEP_TIME + prevSleep)
+        if (diff <= sleepTime + prevSleep)
         {
-            prevSleep = SERVER_SLEEP_TIME + prevSleep - diff;
-            usleep(prevSleep * IN_MILLISECONDS);
+            prevSleep = sleepTime + prevSleep - diff;
+            Thread::Sleep(prevSleep);
         }
         else
             prevSleep = 0;
@@ -56,5 +60,35 @@ void Server::Wait()
 
 void Server::Update(uint32 const diff)
 {
-    std::cout << sConfig->GetStringDefault("motd", "Rtype alpha") << std::endl;
+    static uint32 temp = 5 * IN_MILLISECONDS;
+    if (temp <= diff)
+    {
+        Game* game = CreateNewGame();
+        if (sConfig->GetBoolDefault("Server.Debug", false))
+            std::cout << "Server: launching new game, id: " << game->GetId() << std::endl;
+        game->Start();
+        temp = 1 * IN_MILLISECONDS;
+    }
+    else
+        temp -= diff;
+}
+
+uint32 Server::_GetNewGameId() const
+{
+    for (uint32 id = 1; id < 0xFFFFFFFF; ++id)
+        if (_gameMap.find(id) == _gameMap.end())
+            return id;
+    return 0;
+}
+
+Game* Server::CreateNewGame()
+{
+    GameConfig config;
+    config.gameId = _GetNewGameId();
+    if (config.gameId == 0)
+        throw std::runtime_error("Fail to create new game, no space left");
+
+    Game* game = new Game(config);
+    _gameMap[config.gameId] = game;
+    return game;
 }
