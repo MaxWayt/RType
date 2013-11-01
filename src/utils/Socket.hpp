@@ -24,7 +24,7 @@ public:
     bool write(const char *buff, size_t len);
 
 private:
-#ifdef LINUX
+#if defined(LINUX) || defined(OSX)
     int _sockfd;
 #else
     SOCKET _sockfd;
