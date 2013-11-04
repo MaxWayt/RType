@@ -8,6 +8,8 @@
 
 #define MAX_PLAYERS 4
 
+namespace Game
+{
 struct GameConfig
 {
     uint32 gameId;
@@ -35,5 +37,6 @@ private:
     GameConfig _config;
     SessionSocketMgr _sockMgr;
 };
+}
 
 #endif /* !GAME_H_ */

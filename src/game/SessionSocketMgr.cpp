@@ -1,6 +1,9 @@
 #include "Game.h"
 #include "SessionSocketMgr.h"
 
+namespace Game
+{
+
 SessionSocketMgr::SessionSocketMgr(Game* game) : _acceptor(this), _game(game)
 {
 }
@@ -30,3 +33,5 @@ void SessionSocketMgr::WaitNetwork()
 {
     _acceptor.Wait();
 }
+
+} // namespace Game

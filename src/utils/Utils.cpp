@@ -17,6 +17,13 @@
 
 #include "Utils.hpp"
 
+void IntToString(int in, std::string& val)
+{
+    std::stringstream ss;
+    ss << in;
+    ss >> val;
+}
+
 void split(std::string const& s, char c, std::vector<std::string> &elems)
 {
     std::istringstream ss(s);
