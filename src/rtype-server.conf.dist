@@ -7,7 +7,9 @@ motd = "Salut toi"
 # Server config
 Server.SleepTime = 100
 Server.Debug = 1
+Server.MaxGameCount = 100
 
 # Games config
 Game.SleepTime = 100
 Game.Debug = 1
+Game.StartPort = 5000
