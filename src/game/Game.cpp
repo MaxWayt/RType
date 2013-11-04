@@ -5,7 +5,7 @@
 #include <iostream>
 #include <unistd.h>
 
-Game::Game(GameConfig const& conf) : _config(conf)
+Game::Game(GameConfig const& conf) : _config(conf), _sockMgr(this)
 {
 }
 
@@ -17,16 +17,22 @@ void Game::Start()
 {
     if (sConfig->GetBoolDefault("Game.Debug", false))
         std::cout << "Game: Start thread gameId: " << _config.gameId << std::endl;
+
+    if (!_sockMgr.Initialize("0.0.0.0", _config.gamePort, 1))
+        throw std::runtime_error("Fail to init network for game");
+    _sockMgr.StartNetwork();
     _run();
 }
 
 void Game::Stop()
 {
+    _sockMgr.StopNetwork();
     _stop();
 }
 
 void Game::Wait()
 {
+    _sockMgr.WaitNetwork();
     _join();
 }
 

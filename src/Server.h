@@ -29,9 +29,11 @@ public:
     void Update(uint32 const diff);
 
     Game* CreateNewGame();
+    void DeleteGame(Game* game);
 
 private:
     uint32 _GetNewGameId() const;
+    uint32 _GetFreeGamePort() const;
     std::map<uint32, Game*> _gameMap;
 };
 

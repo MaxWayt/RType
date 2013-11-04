@@ -11,14 +11,29 @@
 #ifndef SOCKET_H_
 # define SOCKET_H_
 
+enum Protocoles
+{
+    PROTO_TCP       = 0,
+    PROTO_UDP       = 1,
+};
+
+struct ProtoSockData
+{
+    Protocoles proto;
+    int type;
+    int p_proto;
+};
+
+extern ProtoSockData protoDatas[];
+
 class Socket
 {
 public:
     Socket();
     virtual ~Socket();
 
-    bool listen(const char *protoName, int type, const char *port, int *num_port);
-    bool open(const char *protoName, int type, const char *hostname, const char *port);
+    bool listen(Protocoles proto, const char *port, int *num_port);
+    bool open(const char *protoName, const char *hostname, const char *port);
     void close();
     bool read(char *buff, size_t len);
     bool write(const char *buff, size_t len);
