@@ -26,6 +26,8 @@ T to(std::string const& str)
     return to<T>(str.c_str());
 }
 
+void IntToString(int in, std::string& val);
+
 void split(std::string const& s, char c, std::vector<std::string> &elems);
 std::string &trim(std::string &s);
 void trim_quote(std::string& s);

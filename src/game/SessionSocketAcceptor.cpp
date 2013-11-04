@@ -3,6 +3,9 @@
 
 #include <iostream>
 
+namespace Game
+{
+
 SessionSocketAcceptor::SessionSocketAcceptor(SessionSocketMgr* mgr) : _sock(), _mgr(mgr)
 {
 }
@@ -38,3 +41,5 @@ bool SessionSocketAcceptor::Initialize(std::string const& addr, std::string cons
     std::cout << "Listen udp socket opened on port " << port << std::endl;
     return true;
 }
+
+} // namespace Game

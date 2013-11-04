@@ -5,6 +5,8 @@
 #include "SharedDefines.h"
 #include "SessionSocketAcceptor.h"
 
+namespace Game
+{
 class Game;
 
 class SessionSocketMgr
@@ -24,6 +26,7 @@ private:
     SessionSocketAcceptor _acceptor;
     Game* _game;
 };
+}
 
 
 #endif /* !SESSIONSOCKETMGR_H_ */

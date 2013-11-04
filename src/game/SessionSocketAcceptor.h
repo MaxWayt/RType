@@ -5,6 +5,8 @@
 #include "Socket.hpp"
 #include <string>
 
+namespace Game
+{
 class SessionSocketMgr;
 
 class SessionSocketAcceptor : public Thread
@@ -25,5 +27,6 @@ private:
     Socket _sock;
     SessionSocketMgr* _mgr;
 };
+}
 
 #endif /* !SESSIONSOCKETACCEPTOR_H_ */

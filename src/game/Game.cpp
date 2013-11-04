@@ -5,6 +5,9 @@
 #include <iostream>
 #include <unistd.h>
 
+namespace Game
+{
+
 Game::Game(GameConfig const& conf) : _config(conf), _sockMgr(this)
 {
 }
@@ -65,3 +68,5 @@ void Game::Update(uint32 const diff)
 {
 //    std::cout << "UPDATE GAME " << _config.gameId << std::endl;
 }
+
+} // namespace Game

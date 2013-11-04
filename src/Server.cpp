@@ -63,7 +63,7 @@ void Server::Update(uint32 const diff)
     static uint32 temp = 5 * IN_MILLISECONDS;
     if (temp <= diff)
     {
-        Game* game = NULL;
+        Game::Game* game = NULL;
         try {
             game = CreateNewGame();
             if (sConfig->GetBoolDefault("Server.Debug", false))
@@ -104,31 +104,26 @@ uint32 Server::_GetFreeGamePort() const
     return 0;
 }
 
-Game* Server::CreateNewGame()
+Game::Game* Server::CreateNewGame()
 {
     if (sConfig->GetIntDefault("Server.MaxGameCount", 100) <= _gameMap.size())
         throw std::runtime_error("Max game count exceded");
 
-    GameConfig config;
+    Game::GameConfig config;
     config.gameId = _GetNewGameId();
     if (config.gameId == 0)
         throw std::runtime_error("Fail to create new game, no space left");
     uint32 port = _GetFreeGamePort();
     if (port == 0)
         throw std::runtime_error("Fail to get a free port");
-    {
-        std::stringstream ss;
-        ss << port;
-        ss >> config.gamePort;
-    }
-    std::cout << "PORT : " << port << " config.gamePort : " << config.gamePort << std::endl;
+    IntToString(port, config.gamePort);
 
-    Game* game = new Game(config);
+    Game::Game* game = new Game::Game(config);
     _gameMap[config.gameId] = game;
     return game;
 }
 
-void Server::DeleteGame(Game* game)
+void Server::DeleteGame(Game::Game* game)
 {
     if (!game)
         return;
