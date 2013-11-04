@@ -11,6 +11,8 @@
 #ifndef SOCKET_H_
 # define SOCKET_H_
 
+#include "NetService.h"
+
 enum Protocoles
 {
     PROTO_TCP       = 0,
@@ -29,14 +31,15 @@ extern ProtoSockData protoDatas[];
 class Socket
 {
 public:
-    Socket();
+    Socket(NetService& service);
     virtual ~Socket();
 
     bool listen(Protocoles proto, const char *port, int *num_port);
     bool open(const char *protoName, const char *hostname, const char *port);
     void close();
     bool read(char *buff, size_t len);
-    bool write(const char *buff, size_t len);
+    void write(const char *buff, size_t len);
+    void async_read(std::function<void()> fct);
 
 private:
 #if defined(LINUX) || defined(OSX)
@@ -44,6 +47,7 @@ private:
 #else
     SOCKET _sockfd;
 #endif
+    NetService& _service;
 };
 
 #endif /* !SOCKET_H_ */

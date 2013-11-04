@@ -14,9 +14,11 @@
 # include <sys/socket.h>
 # include <arpa/inet.h>
 # include <netdb.h>
+# include <poll.h>
 #else
 # define _WIN32_WINNT 0x501
 # include <winsock2.h>
+# include <Mswsock.h>
 # include <ws2tcpip.h>
 #endif
 
@@ -31,8 +33,8 @@ ProtoSockData protoDatas[] = {
     {PROTO_UDP, SOCK_DGRAM, IPPROTO_UDP}
 };
 
-Socket::Socket() :
-    _sockfd()
+Socket::Socket(NetService& service) :
+    _sockfd(), _service(service)
 {
 }
 
@@ -139,11 +141,34 @@ bool Socket::read(char *buff, size_t len)
 #endif
 }
 
-bool Socket::write(const char *buff, size_t len)
+void Socket::write(const char *buff, size_t len)
 {
+    int ret = 0;
+    pollfd fdarray;
+    fdarray.fd = _sockfd;
+    fdarray.events = POLLWRNORM;
 #if defined(LINUX) || defined(OSX)
-    return ::write(_sockfd, buff, len) >= 0;
+    ret = poll(&fdarray, 1, 0);
 #else
-    return send(_sockfd, buff, len, 0) >= 0;
+    ret = WSAPoll(&fdarray, 1, 0);
 #endif
+    if (ret == 0)
+        throw std::runtime_error("Socket::write, request timedout");
+    if (ret < 0)
+        throw std::runtime_error("Socket::write, poll ret < 0");
+    if (fdarray.revents & POLLWRNORM)
+    {
+        //Send data
+#if defined(LINUX) || defined(OSX)
+        if (::write(_sockfd, buff, len) < 0)
+#else
+        if (SOCKET_ERROR == (ret = send(_sockfd, buff, len, 0)))
+#endif
+            throw std::runtime_error("Socket::write, fail to write un the socket");
+    }
+}
+
+void Socket::async_read(std::function<void()> fct)
+{
+    _service.register_read_handler(_sockfd, fct);
 }

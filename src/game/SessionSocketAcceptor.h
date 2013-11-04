@@ -9,17 +9,11 @@ namespace Game
 {
 class SessionSocketMgr;
 
-class SessionSocketAcceptor : public Thread
+class SessionSocketAcceptor
 {
 public:
     SessionSocketAcceptor(SessionSocketMgr* mgr);
     virtual ~SessionSocketAcceptor();
-
-    void Start();
-    void Stop();
-    void Wait();
-
-    void operator()();
 
     bool Initialize(std::string const& addr, std::string const& port);
 

@@ -41,3 +41,13 @@ bool Mutex::unlock()
     FOR_UNIX(return pthread_mutex_unlock(&_mutex) == 0);
     FOR_WIN(return ReleaseMutex(_handle));
 }
+
+ScopLock::ScopLock(Mutex& mutex) : _mutex(mutex)
+{
+    _mutex.lock();
+}
+
+ScopLock::~ScopLock()
+{
+    _mutex.unlock();
+}

@@ -6,32 +6,12 @@
 namespace Game
 {
 
-SessionSocketAcceptor::SessionSocketAcceptor(SessionSocketMgr* mgr) : _sock(), _mgr(mgr)
+SessionSocketAcceptor::SessionSocketAcceptor(SessionSocketMgr* mgr) : _sock(mgr->GetNetService()), _mgr(mgr)
 {
 }
 
 SessionSocketAcceptor::~SessionSocketAcceptor()
 {
-}
-
-void SessionSocketAcceptor::Start()
-{
-    _run();
-}
-
-void SessionSocketAcceptor::Stop()
-{
-    _stop();
-}
-
-void SessionSocketAcceptor::Wait()
-{
-    _join();
-}
-
-void SessionSocketAcceptor::operator()()
-{
-    Thread::Sleep(50);
 }
 
 bool SessionSocketAcceptor::Initialize(std::string const& addr, std::string const& port)
