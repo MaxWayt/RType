@@ -15,6 +15,8 @@ public:
     SessionSocketMgr(Game* game);
     virtual ~SessionSocketMgr();
 
+    NetService& GetNetService() { return _netService; }
+
     // threads unused ATM
     bool Initialize(std::string const& addr, std::string const& port, uint8 threads);
 
@@ -23,6 +25,7 @@ public:
     void WaitNetwork();
 
 private:
+    NetService _netService;
     SessionSocketAcceptor _acceptor;
     Game* _game;
 };

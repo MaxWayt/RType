@@ -33,4 +33,13 @@ private:
     FOR_WIN(HANDLE _handle);
 };
 
+class ScopLock
+{
+public:
+    ScopLock(Mutex& mutex);
+    virtual ~ScopLock();
+private:
+    Mutex& _mutex;
+};
+
 #endif /* !MUTEX_H_ */

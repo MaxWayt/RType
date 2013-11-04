@@ -4,7 +4,7 @@
 namespace Game
 {
 
-SessionSocketMgr::SessionSocketMgr(Game* game) : _acceptor(this), _game(game)
+SessionSocketMgr::SessionSocketMgr(Game* game) : _netService(), _acceptor(this), _game(game)
 {
 }
 
@@ -21,17 +21,17 @@ bool SessionSocketMgr::Initialize(std::string const& addr, std::string const& po
 
 void SessionSocketMgr::StartNetwork()
 {
-    _acceptor.Start();
+    _netService.Start();
 }
 
 void SessionSocketMgr::StopNetwork()
 {
-    _acceptor.Stop();
+    _netService.Stop();
 }
 
 void SessionSocketMgr::WaitNetwork()
 {
-    _acceptor.Wait();
+    _netService.Wait();
 }
 
 } // namespace Game
