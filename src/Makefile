@@ -9,8 +9,8 @@ RM	= rm -f
 NAME	= rtype-server
 
 SRCS	= Main.cpp Server.cpp config/ConfigMgr.cpp utils/Utils.cpp utils/Thread.cpp utils/Socket.cpp \
-		  game/Game.cpp utils/NetService.cpp game/Player.cpp \
-		  utils/Mutex.cpp game/GameSocket.cpp game/Packet.cpp
+		  game/Game.cpp utils/NetService.cpp game/Player.cpp game/PlayerHandlers.cpp \
+		  utils/Mutex.cpp game/GameSocket.cpp game/Packet.cpp game/Opcodes.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 

@@ -93,7 +93,7 @@ void GameSocket::_HandlePlayerKey(Packet& pkt, Socket::SocketInfo const& sockInf
 
     uint8 number = _game->GetPlayerNumberByKey(key);
 
-    Player* player = new Player(_game, sockInfo, number);
+    Player* player = new Player(_game, sockInfo, number, key);
     _game->AddPlayer(player);
 }
 

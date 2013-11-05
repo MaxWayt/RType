@@ -40,14 +40,17 @@ public:
     bool IsValidePlayerKey(uint32 key) const;
     uint8 GetPlayerNumberByKey(uint32 key) const;
 
-    void AddPlayer(Player* player) { _playerAddedMap[player->GetHostIdentifier()] = player; }
+    void AddPlayer(Player* player); // Called from _service thread /!\
 
 private:
+    void _ProcessAddedPlayer();
+
     GameConfig _config;
     NetService _service;
     GameSocket _sock;
     std::map<std::string, Player*> _playerMap;
     std::map<std::string, Player*> _playerAddedMap;
+    Mutex _playerAddedMutex;
 };
 }
 
