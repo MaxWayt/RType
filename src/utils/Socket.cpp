@@ -25,16 +25,62 @@
 #include <stdlib.h>
 
 #include "Socket.hpp"
+#include "Utils.hpp"
 
 #include <iostream>
+#include <utility>
 
 ProtoSockData protoDatas[] = {
     {PROTO_TCP, SOCK_STREAM, IPPROTO_TCP},
     {PROTO_UDP, SOCK_DGRAM, IPPROTO_UDP}
 };
 
+Socket::SocketInfo::SocketInfo() :
+    _sockInfo()
+{
+}
+
+Socket::SocketInfo::SocketInfo(struct sockaddr_in const& sockInfo) :
+    _sockInfo(sockInfo)
+{
+}
+
+Socket::SocketInfo::operator struct sockaddr*()
+{
+    return (struct sockaddr*)&_sockInfo;
+}
+
+std::string const& Socket::SocketInfo::GetRemoteHost() const
+{
+    static std::string str;
+    str = inet_ntoa(_sockInfo.sin_addr);
+    return str;
+}
+
+std::string const& Socket::SocketInfo::GetRemotePort() const
+{
+    static std::string str;
+    IntToString((int)ntohs(_sockInfo.sin_port), str);
+    return str;
+}
+
+std::string const& Socket::SocketInfo::GetHostIdentifier() const
+{
+    static std::string str;
+    str = GetRemoteHost();
+    str += ":";
+    str += GetRemotePort();
+    return str;
+}
+
+
 Socket::Socket(NetService& service) :
-    _sockfd(), _service(service)
+    _sockfd(), _service(service), _sockIn()
+{
+}
+
+Socket::Socket(NetService& service, int fd, struct sockaddr_in const& sock) :
+    _sockfd(fd), _service(service), _sockIn(sock)
 {
 }
 
@@ -42,46 +88,38 @@ Socket::~Socket()
 {
 }
 
-bool Socket::listen(Protocoles proto, const char *port, int *num_port)
+bool Socket::listen(Protocoles proto, const char *port)
 {
-    struct addrinfo *addr;
-    struct addrinfo hints = {};
-
-    _sockfd = socket(AF_INET, protoDatas[proto].type, protoDatas[proto].p_proto);
+    _sockfd = ::socket(AF_INET, protoDatas[proto].type, protoDatas[proto].p_proto);
 #if defined(LINUX) || defined(OSX)
     if (_sockfd == -1)
 #else
     if (_sockfd == INVALID_SOCKET)
 #endif // LINUX
     {
-        std::cerr << "Error: fail to create socket : " << strerror(errno) << std::endl;
+        std::cerr << "Socket::listen 1, Error: " << strerror(errno) << std::endl;
         return false;
     }
 
-    hints.ai_family = AF_INET;
-    hints.ai_socktype = protoDatas[proto].type;
-    hints.ai_protocol = protoDatas[proto].p_proto;
-    hints.ai_flags = AI_PASSIVE;
+    ::memset(&_sockIn, 0, sizeof(struct sockaddr_in));
+    _sockIn.sin_family = AF_INET;
+    _sockIn.sin_port = htons(to<int>(port));
+    _sockIn.sin_addr.s_addr = htonl(INADDR_ANY);
 
-    if (getaddrinfo(NULL, port, &hints, &addr) != 0)
+    if (::bind(_sockfd, (const struct sockaddr*)&_sockIn, sizeof(struct sockaddr_in)) < 0)
     {
         close();
-        std::cerr << "Error: fail to get addrinfo port " << port << std::endl;
+        std::cerr << "Socket::listen 2, Error: " << strerror(errno) << std::endl;
         return false;
     }
 
-    if (bind(_sockfd, addr->ai_addr, sizeof(struct sockaddr_in)) != 0)
+    if (proto == PROTO_TCP && ::listen(_sockfd, 0) < 0)
     {
         close();
-        freeaddrinfo(addr);
-        std::cerr << "Error: fail to bind socket" << std::endl;
+        std::cerr << "Socket::listen 3, Error: " << strerror(errno) << std::endl;
         return false;
     }
 
-    if (num_port)
-        *num_port = ntohs(((struct sockaddr_in*)addr->ai_addr)->sin_port);
-
-    freeaddrinfo(addr);
     return true;
 }
 
@@ -141,7 +179,7 @@ bool Socket::read(char *buff, size_t len)
 #endif
 }
 
-void Socket::write(const char *buff, size_t len)
+void Socket::write(const char *buff, size_t len) const
 {
     int ret = 0;
     pollfd fdarray;
@@ -171,4 +209,40 @@ void Socket::write(const char *buff, size_t len)
 void Socket::async_read(std::function<void()> fct)
 {
     _service.register_read_handler(_sockfd, fct);
+}
+
+Socket* Socket::accept() const
+{
+    int newFd;
+    unsigned int t;
+    struct sockaddr_in remote;
+
+    t = sizeof(remote);
+
+    if ((newFd = ::accept(_sockfd, (struct sockaddr *)&remote, &t)) == -1)
+    {
+        std::cerr << "Error: " << strerror(errno) << std::endl;
+        return NULL;
+    }
+
+    std::cout << "NewFD : " << newFd << std::endl;
+    Socket* sock = new Socket(_service, newFd, remote);
+    return sock;
+}
+
+void Socket::recvfrom(char buff[], size_t size, Socket::SocketInfo& from) const
+{
+    socklen_t fromlen;
+
+    fromlen = sizeof (struct sockaddr_in);
+    if (::recvfrom(_sockfd, buff, size, 0, (struct sockaddr *)&from, &fromlen) <= 0)
+        throw std::runtime_error(strerror(errno));
+}
+
+void Socket::sendto(char const buff[], size_t size, Socket::SocketInfo& dest)
+{
+    socklen_t destlen;
+
+    destlen = sizeof (struct sockaddr_in);
+    ::sendto(_sockfd, buff, size, 0, (struct sockaddr const*)&dest, destlen);
 }

@@ -3,8 +3,9 @@
 
 #include <SharedDefines.h>
 #include <Thread.hpp>
-#include "SessionSocketMgr.h"
+#include "GameSocket.h"
 #include "Utils.hpp"
+#include "Player.h"
 
 #define MAX_PLAYERS 4
 
@@ -33,9 +34,20 @@ public:
     void operator()();
     void Update(uint32 const diff);
 
+    Player* GetPlayer(std::string const& hostIdent);
+    Player const* GetPlayer(std::string const& hostIdent) const;
+
+    bool IsValidePlayerKey(uint32 key) const;
+    uint8 GetPlayerNumberByKey(uint32 key) const;
+
+    void AddPlayer(Player* player) { _playerAddedMap[player->GetHostIdentifier()] = player; }
+
 private:
     GameConfig _config;
-    SessionSocketMgr _sockMgr;
+    NetService _service;
+    GameSocket _sock;
+    std::map<std::string, Player*> _playerMap;
+    std::map<std::string, Player*> _playerAddedMap;
 };
 }
 
