@@ -10,7 +10,7 @@ namespace Game
 
 Game::Game(GameConfig const& conf) :
     _config(conf), _service(), _sock(this, _service), _playerMap(),
-    _playerAddedMap()
+    _playerAddedMap(), _playerAddedMutex()
 {
 }
 
@@ -68,6 +68,7 @@ void Game::operator()()
 
 void Game::Update(uint32 const diff)
 {
+    _ProcessAddedPlayer();
 //    std::cout << "UPDATE GAME " << _config.gameId << std::endl;
 }
 
@@ -89,6 +90,14 @@ Player const* Game::GetPlayer(std::string const& hostIdent) const
 
 bool Game::IsValidePlayerKey(uint32 key) const
 {
+    for (auto itr = _playerMap.begin(); itr != _playerMap.end(); ++itr)
+        if (itr->second->GetKey() == key)
+            return false;
+
+    for (auto itr = _playerAddedMap.begin(); itr != _playerAddedMap.end(); ++itr)
+        if (itr->second->GetKey() == key)
+            return false;
+
     for (uint8 i = 0; i < MAX_PLAYERS; ++i)
         if (_config.playersToken[i] == key)
             return true;
@@ -101,6 +110,20 @@ uint8 Game::GetPlayerNumberByKey(uint32 key) const
         if (_config.playersToken[i] == key)
             return i + 1;
     return 0;
+}
+
+void Game::AddPlayer(Player* player)
+{
+    ScopLock lock(_playerAddedMutex);
+    _playerAddedMap[player->GetHostIdentifier()] = player;
+}
+
+void Game::_ProcessAddedPlayer()
+{
+    ScopLock lock(_playerAddedMutex);
+    for (auto itr = _playerAddedMap.begin(); itr != _playerAddedMap.end(); ++itr)
+        _playerMap[itr->first] = itr->second;
+    _playerAddedMap.clear();
 }
 
 } // namespace Game
