@@ -60,19 +60,22 @@ void Server::Wait()
 
 void Server::Update(uint32 const diff)
 {
-    static uint32 temp = 5 * IN_MILLISECONDS;
+    static uint32 temp = 1 * IN_MILLISECONDS;
     if (temp <= diff)
     {
-        Game::Game* game = NULL;
-        try {
-            game = CreateNewGame();
-            if (sConfig->GetBoolDefault("Server.Debug", false))
-                std::cout << "Server: launching new game, id: " << game->GetId() << std::endl;
-            game->Start();
-        }
-        catch (std::exception const& e) {
-            std::cerr << e.what() << std::endl;
-            DeleteGame(game);
+        if (_gameMap.size() == 0)
+        {
+            Game::Game* game = NULL;
+            try {
+                game = CreateNewGame();
+                if (sConfig->GetBoolDefault("Server.Debug", false))
+                    std::cout << "Server: launching new game, id: " << game->GetId() << std::endl;
+                game->Start();
+            }
+            catch (std::exception const& e) {
+                std::cerr << e.what() << std::endl;
+                DeleteGame(game);
+            }
         }
         temp = 1 * IN_MILLISECONDS;
     }

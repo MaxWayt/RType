@@ -13,3 +13,4 @@ Server.MaxGameCount = 100
 Game.SleepTime = 100
 Game.Debug = 1
 Game.StartPort = 5000
+Game.Socket.Timeout = 10
