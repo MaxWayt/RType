@@ -12,13 +12,13 @@
 # define SOCKET_H_
 
 #include "NetService.h"
-#include <netinet/in.h>
 #include <string>
 #include <cstring>
 #include <stdexcept>
 
-#ifdef LINUX
+#if defined(LINUX) || defined(OSX)
 # include <errno.h>
+# include <netinet/in.h>
 #endif
 enum Protocoles
 {
