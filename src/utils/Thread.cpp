@@ -82,5 +82,7 @@ void Thread::Sleep(uint32 mstime)
 {
 #if defined(LINUX) || defined(OSX)
     usleep(mstime * IN_MILLISECONDS);
+#else
+    ::Sleep(mstime);
 #endif
 }
