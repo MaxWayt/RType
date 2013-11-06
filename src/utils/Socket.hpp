@@ -13,7 +13,13 @@
 
 #include "NetService.h"
 #include <netinet/in.h>
+#include <string>
+#include <cstring>
+#include <stdexcept>
 
+#ifdef LINUX
+# include <errno.h>
+#endif
 enum Protocoles
 {
     PROTO_TCP       = 0,
