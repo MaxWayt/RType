@@ -1,5 +1,7 @@
 #include "NetService.h"
 #include <iostream>
+#include <cstring>
+#include <stdexcept>
 
 NetService::NetService() : _handlerMap(), _mutex(), _masterfd(), _maxfd(0)
 {

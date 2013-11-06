@@ -1,4 +1,5 @@
 #include "Packet.hpp"
+#include <cstring>
 
 namespace Game
 {
