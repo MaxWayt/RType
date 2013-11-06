@@ -4,3 +4,4 @@ src/rtype-server
 src/rtype-server.conf
 build
 rtype
+.DS_store
