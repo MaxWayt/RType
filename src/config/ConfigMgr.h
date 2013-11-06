@@ -11,7 +11,7 @@
 #include <map>
 #include <string>
 
-#define DEFAULT_CONFIG_FILE "rtype-server.conf"
+#define DEFAULT_CONFIG_FILE "../etc/rtype-server.conf"
 
 class ConfigMgr : public Singleton<ConfigMgr>
 {
