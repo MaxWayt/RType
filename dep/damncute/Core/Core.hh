@@ -52,7 +52,6 @@ namespace DamnCute {
             sf::Music& getMusic();
             void musicPath(std::string);
             void musicPlay(int);
-            int getMusicListSize();
 
             inline bool getGameStatus() const {
                 return _gameStatus;
@@ -91,12 +90,6 @@ namespace DamnCute {
 
             sf::Clock _gameClock;
             sf::Event event;
-            sf::Music _music;
-            std::string _musicPath;
-            std::vector<std::string> _musicList;
-
-            void saveFolderMusic(std::string);
-            bool supportedFileFormat(std::string);
     };
 }
 

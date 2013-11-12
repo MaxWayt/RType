@@ -42,9 +42,10 @@ void DisplayManager::menuMode() {
 void DisplayManager::run() {
     _engine = DamnCute::Core::getInstance();
 
-    _engine->musicPath("../resources/music");
-    _engine->getMusic().setLoop(true);
-    _engine->musicPlay(0);
+    sf::Music music;
+    music.setLoop(true);
+    if (music.openFromFile("../resources/music/01-sound_of_science.flac"))
+        music.play();
 
     menuMode();
     while (_alive) {
@@ -69,8 +70,6 @@ bool update() {
 
 void gameMode(DamnCute::Core* engine) {
 
-    engine->getMusic().stop();
-
     engine->setFPSDisplay(true);
     ConfigFile *config = new ConfigFile(DEFAULT_CONFIG_FILE);
     DamnCute::Background* bg = new DamnCute::Background("../resources/decor009.jpg");
@@ -79,19 +78,10 @@ void gameMode(DamnCute::Core* engine) {
     //pat1 *p1 = new pat1();
     //CrossingDeath *cd = new CrossingDeath();
 
-    DamnCute::APlayer* player_one = new DamnCute::Player<0>("../resources/player_focus.tga");
+    DamnCute::APlayer* player_one = new DamnCute::Player<0>("../resources/player_focus.tga", 100, 550);
     DamnCute::APlayer* player_two = new DamnCute::Player<1>("../resources/player_focus.tga", 800, 400);
 
     config->parseConfigFile(player_one, player_two);
-    if (config->hasMusicPath()) {
-        engine->musicPath(config->getMusicPath());
-        std::random_device rd;
-        std::uniform_int_distribution<int> generator(0, engine->getMusicListSize() - 1);
-        int random = generator(rd);
-        engine->musicPlay(random);
-    } else {
-        engine->musicPlay(1);
-    }
 
     engine->addOnBg(bg);
     //engine->addObject(test);
