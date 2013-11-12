@@ -12,7 +12,7 @@
 #include "ActMenu.hh"
 #include "Menu.hh"
 
-void runGame();
+void runGame() {}
 
 DamnCute::Menu::SubMenu::SubMenu(sf::Text &text, const std::string &optionName, std::vector<sf::Text *> optionChoice) : _text(text), _options(optionChoice) {
     _it = _options.begin();

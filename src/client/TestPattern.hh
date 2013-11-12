@@ -9,8 +9,6 @@ class TestPattern : public DamnCute::APattern {
         explicit TestPattern();
         virtual ~TestPattern() = default;
         virtual void initialize();
-    private:
-        std::string _bundlePath;
 };
 
 class pat1 : public DamnCute::APattern {
