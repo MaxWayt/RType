@@ -54,7 +54,7 @@ void DamnCute::Core::flushScene() {
         ss << " fps for ";
         ss << _numberOfBullets;
         ss << " bullets";
-        font.loadFromFile("resources/font.ttf");
+        //font.loadFromFile("resources/font.ttf");
         t = sf::Text(ss.str(), font);
         t.setCharacterSize(24);
         t.setColor(sf::Color::Green);
@@ -103,59 +103,7 @@ int  DamnCute::Core::getWindowSizeY() {
     return _win->getSize().y;
 }
 
-sf::Music& DamnCute::Core::getMusic() {
-    return _music;
-}
-
-bool DamnCute::Core::supportedFileFormat(std::string file) {
-    if ( (file.find(".ogg") != std::string::npos) || (file.find(".wav") != std::string::npos) ||
-            (file.find(".flac") != std::string::npos) || (file.find(".aiff") != std::string::npos) )
-        return true;
-    return false;
-}
-
-void DamnCute::Core::saveFolderMusic(std::string path) {
-
-    DIR *dp;
-    struct stat statbuf;
-
-    if ((dp = opendir(path.c_str())) == NULL)
-        std::cerr << "cannot open directory" << std::endl;
-    dirent *de;
-    if (dp) {
-        while ((de = readdir(dp))) {
-            std::string file = std::string(de->d_name);
-            if (file != "." && file != "..") {
-                stat((path + "/" + file).c_str(), &statbuf);
-                if (S_ISDIR(statbuf.st_mode))
-                    saveFolderMusic((path + "/" + file));
-                else if (supportedFileFormat(file)) {
-                    std::cout << path + "/" + file << std::endl;
-                    _musicList.push_back(path + "/" + file);
-                }
-            }
-        }
-        closedir(dp);
-    }
-}
-
-void DamnCute::Core::musicPath(std::string path) {
-
-    _musicList.clear();
-    saveFolderMusic(path);
-    _musicPath = path + "/";
-}
-
-int DamnCute::Core::getMusicListSize() {
-    return _musicList.size();
-}
-
-void DamnCute::Core::musicPlay(int index) {
-    if (_music.openFromFile(_musicList[index]))
-        _music.play();
-}
-
-DamnCute::Core::Core() : _physicTree(), _gameStatus(false), _displayFPS(false), _musicPath("./") {
+DamnCute::Core::Core() : _physicTree(), _gameStatus(false), _displayFPS(false) {
 }
 
 DamnCute::Core::~Core() {
