@@ -39,7 +39,7 @@ include_directories(
 )
 
 set(ALL_LIBS
-    ${SFML_LIBRARIES}
+    ${SFML_LIBRARY}
 )
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
@@ -51,5 +51,6 @@ add_library(
     SHARED
     ${damncute_SRCS}
 )
+target_link_libraries(${DAMNCUTE_LIBRARY_NAME} ${ALL_LIBS})
 
 install(TARGETS ${DAMNCUTE_LIBRARY_NAME} DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
