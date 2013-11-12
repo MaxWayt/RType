@@ -54,7 +54,7 @@ void DamnCute::Core::flushScene() {
         ss << " fps for ";
         ss << _numberOfBullets;
         ss << " bullets";
-        //font.loadFromFile("resources/font.ttf");
+        font.loadFromFile("../resources/font.ttf");
         t = sf::Text(ss.str(), font);
         t.setCharacterSize(24);
         t.setColor(sf::Color::Green);
