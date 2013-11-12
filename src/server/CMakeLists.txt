@@ -26,8 +26,8 @@ file(GLOB_RECURSE source_game game/*.cpp game/*.h game/*.hpp)
 file(GLOB_RECURSE source_utils utils/*.cpp utils/*.h utils/*.hpp)
 file(GLOB_RECURSE source_config config/*.cpp config/*.h config/*.hpp)
 
-set(rtype_SRCS
-    ${rtype_SRCS}
+set(rtype_server_SRCS
+    ${rtype_server_SRCS}
     ${source_files}
     ${source_utils}
     ${source_game}
@@ -42,7 +42,7 @@ include_directories(
 )
 
 add_executable(rtype-server
-    ${rtype_SRCS}
+    ${rtype_server_SRCS}
 )
 
 install(TARGETS rtype-server DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
