@@ -21,7 +21,6 @@ class DisplayManager {
         void update();
         DamnCute::Core* _engine;
         bool _alive;
-        std::string _bundlePath;
         void gameMode(DamnCute::Core*);
         void runGame();
 };

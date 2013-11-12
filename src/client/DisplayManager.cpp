@@ -1,3 +1,4 @@
+#include <random>
 #include <Background.hh>
 #include <Menu.hh>
 #include <Core/Core.hh>
@@ -8,8 +9,6 @@
 
 DisplayManager::DisplayManager(int width, int height, bool fullscreen) : _alive(true) {
     DamnCute::Core::getInstance()->createWin(width, height, fullscreen);
-    macBundlePath g;
-    _bundlePath = g.getPath();
 }
 
 DisplayManager::~DisplayManager() {
@@ -25,23 +24,23 @@ void DisplayManager::menuMode() {
     listOption.push_back("Option 1");
     listOption.push_back("Option 2");
     listOption.push_back("Option 3");
-    DamnCute::Menu* m = new DamnCute::Menu(_bundlePath + "resources/menu.jpg"); // Instanciation
-    m->setFontPath(_bundlePath + "resources/font.ttf");
+    DamnCute::Menu* m = new DamnCute::Menu("../resources/menu.jpg"); // Instanciation
+    m->setFontPath("../resources/font.ttf");
     _engine->addObject(m);
-    m->setTextureButton(_bundlePath + "resources/button1.png");//Set texture
+    m->setTextureButton("../resources/button1.png");//Set texture
     m->addButton(50, 100, "start"); //Pose la texture sur le screen
     m->addButton(50, 400, "Test2"); //Pose la texture sur le screen
     m->addButton(500, 100, "Test3"); //Pose la texture sur le screen
     m->addButton(500, 400, "Test4"); //Pose la texture sur le screen
     m->addSubMenu("Test2", "Sous Menu:", listOption, 50, 50);
     m->addSubMenu("Test2", "Sous Menu2:", listOption, 50, 150);
-    m->setTextureCursor(_bundlePath + "resources/cursor.png", -50, 100);
+    m->setTextureCursor("../resources/cursor.png", -50, 100);
 }
 
 void DisplayManager::run() {
     _engine = DamnCute::Core::getInstance();
 
-    _engine->musicPath("resources/music");
+    _engine->musicPath("../resources/music");
     _engine->getMusic().setLoop(true);
     _engine->musicPlay(0);
 
@@ -68,22 +67,19 @@ bool update() {
 
 void gameMode(DamnCute::Core* engine) {
 
-    macBundlePath g;
-    std::string bundlePath = g.getPath();
-    
     engine->getMusic().stop();
 
     engine->setFPSDisplay(true);
     ConfigFile *config = new ConfigFile(DEFAULT_CONFIG_FILE);
-    DamnCute::Background* bg = new DamnCute::Background(bundlePath + "resources/decor009.jpg");
+    DamnCute::Background* bg = new DamnCute::Background("../resources/decor009.jpg");
     bg->setPosition(150, -150);
     //TestPattern* test = new TestPattern();
     //pat1 *p1 = new pat1();
     //CrossingDeath *cd = new CrossingDeath();
 
-    DamnCute::APlayer* player_one = new DamnCute::Player<0>(bundlePath + "resources/player_focus.tga");
-    DamnCute::APlayer* player_two = new DamnCute::Player<1>(bundlePath + "resources/player_focus.tga", 800, 400);
-    
+    DamnCute::APlayer* player_one = new DamnCute::Player<0>("../resources/player_focus.tga");
+    DamnCute::APlayer* player_two = new DamnCute::Player<1>("../resources/player_focus.tga", 800, 400);
+
     config->parseConfigFile(player_one, player_two);
     if (config->hasMusicPath()) {
         engine->musicPath(config->getMusicPath());

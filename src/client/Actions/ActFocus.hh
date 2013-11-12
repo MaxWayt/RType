@@ -2,7 +2,6 @@
 # define _ACTFOCUS_H_
 
 #include <SFML/Graphics.hpp>
-#include "../macBundle.hh"
 
 class ActFocus : public DamnCute::AAction<DamnCute::APlayer>
 {
@@ -11,8 +10,6 @@ class ActFocus : public DamnCute::AAction<DamnCute::APlayer>
         explicit ActFocus(DamnCute::APlayer *p, sf::Keyboard::Key k1, int button)
             : AAction(p, k1, button), _focusTex() {
                 _name = "ActFocus";
-                macBundlePath g;
-                _bundlePath = g.getPath();
             }
 
         bool hasInput(int nbPlayer) {
@@ -28,11 +25,11 @@ class ActFocus : public DamnCute::AAction<DamnCute::APlayer>
                     sf::Joystick::isButtonPressed(_nbPlayer, _stickButton) == true) {
                 _entity->getSpeed() = 2;
                 if (_nbPlayer == 0) {
-                    _focusTex.loadFromFile(_bundlePath + "resources/player_focus1.tga");
+                    _focusTex.loadFromFile("../resources/player_focus1.tga");
                     _entity->getPlayer().setTexture(_focusTex);
                 }
                 if (_nbPlayer == 1) {
-                    _focusTex.loadFromFile(_bundlePath + "resources/player_focus2.tga");
+                    _focusTex.loadFromFile("../resources/player_focus2.tga");
                     _entity->getPlayer().setTexture(_focusTex);
                 }
             }
