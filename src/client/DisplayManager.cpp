@@ -7,6 +7,8 @@
 #include "Player.hh"
 #include "ConfigFile.hh"
 
+void runGame();
+
 DisplayManager::DisplayManager(int width, int height, bool fullscreen) : _alive(true) {
     DamnCute::Core::getInstance()->createWin(width, height, fullscreen);
 }
@@ -28,10 +30,10 @@ void DisplayManager::menuMode() {
     m->setFontPath("../resources/font.ttf");
     _engine->addObject(m);
     m->setTextureButton("../resources/button1.png");//Set texture
-    m->addButton(50, 100, "start"); //Pose la texture sur le screen
-    m->addButton(50, 400, "Test2"); //Pose la texture sur le screen
-    m->addButton(500, 100, "Test3"); //Pose la texture sur le screen
-    m->addButton(500, 400, "Test4"); //Pose la texture sur le screen
+    m->addButton(50, 100, "start", &runGame); //Pose la texture sur le screen
+    m->addButton(50, 400, "Test2", []() {}); //Pose la texture sur le screen
+    m->addButton(500, 100, "Test3", []() {}); //Pose la texture sur le screen
+    m->addButton(500, 400, "Test4", []() {}); //Pose la texture sur le screen
     m->addSubMenu("Test2", "Sous Menu:", listOption, 50, 50);
     m->addSubMenu("Test2", "Sous Menu2:", listOption, 50, 150);
     m->setTextureCursor("../resources/cursor.png", -50, 100);
