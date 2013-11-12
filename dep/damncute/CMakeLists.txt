@@ -51,3 +51,5 @@ add_library(
     SHARED
     ${damncute_SRCS}
 )
+
+install(TARGETS ${DAMNCUTE_LIBRARY_NAME} DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
