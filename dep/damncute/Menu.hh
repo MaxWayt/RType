@@ -44,7 +44,7 @@ namespace DamnCute {
             };
             class Button : public IRenderable {
                 public:
-                    explicit Button(const std::string &, sf::Text &, int, int, sf::Texture&);
+                    explicit Button(const std::string &, sf::Text &, int, int, sf::Texture&, std::function<void()> const& func);
                     inline void operator=(const Button& b) {
                         _tex = b._tex;
                         _s = b._s;
@@ -81,6 +81,9 @@ namespace DamnCute {
                         return (_name);
                     }
                     virtual ~Button();
+
+                    bool hasReturnFunction() const { return !!_returnFunction; }
+                    void callReturnFunction() { _returnFunction(); }
                 private:
                     std::vector<SubMenu*>::iterator _itSub;
                     std::vector<SubMenu*> _Sub;
@@ -91,6 +94,7 @@ namespace DamnCute {
                     sf::Sprite _s;
                     sf::Texture& _tex;
                     sf::Text _text;
+                    std::function<void()> _returnFunction;
             };
         private:
             unsigned int _characterSize=20;
@@ -121,7 +125,7 @@ namespace DamnCute {
             bool	getAlive(){
                 return (_alive);
             }
-            void addButton(int x, int y, const std::string&);
+            void addButton(int x, int y, const std::string&, std::function<void()> const& func);
             void addSubMenu(const std::string &Button, const std::string &Option /*Nom de l'option*/, std::vector<std::string> listOption, int x, int y);
             void update() {
                 _alive  = DamnCute::Core::getInstance()->getWindowStatus();

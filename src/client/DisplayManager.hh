@@ -22,7 +22,6 @@ class DisplayManager {
         DamnCute::Core* _engine;
         bool _alive;
         void gameMode(DamnCute::Core*);
-        void runGame();
 };
 
 #endif /* !DISPLAYMANAGER_H_ */

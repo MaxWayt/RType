@@ -12,8 +12,6 @@
 #include "ActMenu.hh"
 #include "Menu.hh"
 
-void runGame() {}
-
 DamnCute::Menu::SubMenu::SubMenu(sf::Text &text, const std::string &optionName, std::vector<sf::Text *> optionChoice) : _text(text), _options(optionChoice) {
     _it = _options.begin();
     _alive = false;
@@ -35,7 +33,7 @@ DamnCute::Menu::SubMenu::~SubMenu()
 
 }
 
-DamnCute::Menu::Button::Button(const std::string &Name, sf::Text &text, int x, int y, sf::Texture& t) : _name(Name), _tex(t), _text(text) {
+DamnCute::Menu::Button::Button(const std::string &Name, sf::Text &text, int x, int y, sf::Texture& t, std::function<void()> const& func) : _name(Name), _tex(t), _text(text), _returnFunction(func) {
     _alive = true;
     _x = x;
     _y = y;
@@ -116,11 +114,11 @@ void	DamnCute::Menu::setTextureCursor(const std::string& filename, int x, int y)
     /*_cursor->setTexture(*_tex2);*/
 }
 
-void	DamnCute::Menu::addButton(int x, int y, const std::string& text) {
+void	DamnCute::Menu::addButton(int x, int y, const std::string& text, std::function<void()> const& func) {
     sf::Text test(text, _font, _characterSize);
 
     test.setColor(sf::Color::Black);
-    Button* b = new Button(text, test, x, y, _tex);
+    Button* b = new Button(text, test, x, y, _tex, func);
     _buttons.push_back(b);
     Core::getInstance()->addObject(b);
     _itButtons = _buttons.begin();
@@ -189,7 +187,8 @@ void	DamnCute::Menu::MoveReturn()
     {
         if( (*_itButtons)->getName() == "start")
         {
-            runGame();
+            if ((*_itButtons)->hasReturnFunction())
+                (*_itButtons)->callReturnFunction();
             //delete(this);
         }
         _alive = false;
