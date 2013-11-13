@@ -56,8 +56,8 @@ add_executable(${CLIENT_EXECUTABLE_NAME}
 )
 target_link_libraries(${CLIENT_EXECUTABLE_NAME} ${ALL_LIBS})
 
-install_targets(bin ${CLIENT_EXECUTABLE_NAME})
-install_programs(bin ${CLIENT_NAME})
-install_files(etc ${CLIENT_NAME}.conf.dist)
+install_targets(/bin ${CLIENT_EXECUTABLE_NAME})
+install_programs(/bin ${CLIENT_NAME})
+install_files(/etc ${CLIENT_NAME}.conf.dist)
 install (DIRECTORY ${CMAKE_SOURCE_DIR}/resources DESTINATION "${CMAKE_INSTALL_PREFIX}")
 
