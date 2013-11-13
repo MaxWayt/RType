@@ -3,15 +3,17 @@
 
 #include <list>
 #include <SFML/Audio.hpp>
-#include <dirent.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 
 #include "QuadTree.hh"
 #include "../IRenderable.hh"
 
+# ifndef __DWIDTH
+#  define __DWIDTH 1920
+#  define __DHEIGHT 1080
+# endif
+
 #ifndef __DQUADTREE_COMPLEXITY__
-#define __DQUADTREE_COMPLEXITY__ 5
+#define __DQUADTREE_COMPLEXITY__ 7
 #endif
 
 namespace DamnCute {
@@ -31,16 +33,23 @@ namespace DamnCute {
             void addOnBg(IRenderable*);
             void flushScene();
             void flushEvent();
-            template <unsigned int SIZEX = 1920, unsigned int SIZEY = 1080>
+            template <unsigned int SIZEX = __DWIDTH, unsigned int SIZEY = __DHEIGHT>
                 void createWin(unsigned int width = 0, unsigned int height = 0, bool full = false) {
                     unsigned int style = full << 3;
+		    sf::VideoMode v;
 
-                    if (width == 0 && height == 0) {
-                        _win = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Death Curtain", style);
+		    if (full) {
+			v = sf::VideoMode::getFullscreenModes()[0];
+                        //_win = new sf::RenderWindow(sf::VideoMode::getFullscreenModes()[0], "Death Curtain", style);
+		    } else if (width == 0 && height == 0) {
+			 v = sf::VideoMode::getDesktopMode();
+                        //_win = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Death Curtain", style);
                     } else {
-                        //_win = new sf::RenderWindow(sf::VideoMode(SIZEX, SIZEY), "Death Curtain", style);
-                        _win = new sf::RenderWindow(sf::VideoMode::getFullscreenModes()[0], "Death Curtain", style);
+			v = sf::VideoMode(width, height);
+                        //_win = new sf::RenderWindow(sf::VideoMode(width, height), "Death Curtain", style);
                     }
+
+		    _win = new sf::RenderWindow(v, "Death Curtain", style);
                     _Rtex.create(SIZEX, SIZEY);
                     _Rtex.setSmooth(true);
                     _win->setVerticalSyncEnabled(true);
@@ -49,9 +58,6 @@ namespace DamnCute {
             int  getWindowStatus();
             int  getWindowSizeX();
             int  getWindowSizeY();
-            sf::Music& getMusic();
-            void musicPath(std::string);
-            void musicPlay(int);
 
             inline bool getGameStatus() const {
                 return _gameStatus;
