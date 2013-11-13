@@ -17,11 +17,21 @@ class ShootPattern : public DamnCute::APattern {
 
             glm::mat4 m;
             m = glm::translate(glm::mat4(), glm::vec3(-15, 0, 0));
-            _z = new DamnCute::Path(m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f) , 0, 120), "../resources/pink-bullet.tga");
+            _x = new DamnCute::Path(m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
+            addPath(_x);
+
+            m = glm::translate(glm::mat4(), glm::vec3(-15, 4, 0));
+            _y = new DamnCute::Path(m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
+            addPath(_y);
+
+            m = glm::translate(glm::mat4(), glm::vec3(-15, -4, 0));
+            _z = new DamnCute::Path(m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
             addPath(_z);
         }
 
     private:
+        DamnCute::Path *_x;
+        DamnCute::Path *_y;
         DamnCute::Path *_z;
         glm::vec2 _v;
         std::string _bundlePath;
