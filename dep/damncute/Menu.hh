@@ -99,7 +99,7 @@ namespace DamnCute {
         private:
             unsigned int _characterSize=20;
             sf::Font _font;
-            std::string _font_path = "resources/font.ttf";
+            std::string _font_path = "../resources/font.ttf";
             bool _alive;
             bool _clicked;
             bool _clicked2;
