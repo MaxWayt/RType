@@ -2,7 +2,6 @@
 # define TESTPATTERN_H_
 
 #include "APattern.hh"
-#include "macBundle.hh"
 
 class TestPattern : public DamnCute::APattern {
     public:
