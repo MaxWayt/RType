@@ -52,6 +52,10 @@ namespace DamnCute {
 		    _win = new sf::RenderWindow(v, "Death Curtain", style);
                     _Rtex.create(SIZEX, SIZEY);
                     _Rtex.setSmooth(true);
+
+		     _rsp.setTexture(_Rtex.getTexture());
+		      _rsp.setScale((float)getWindowSizeX() / (float)__DWIDTH , (float)getWindowSizeY() / (float)__DHEIGHT);
+
                     _win->setVerticalSyncEnabled(true);
                     _win->setFramerateLimit(60);
                 }
@@ -94,6 +98,7 @@ namespace DamnCute {
             unsigned int _Pframmes;
             unsigned int _tmpFrammes;
 
+	    sf::Sprite _rsp;
             sf::Clock _gameClock;
             sf::Event event;
     };

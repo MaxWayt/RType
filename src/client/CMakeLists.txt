@@ -48,14 +48,16 @@ set(ALL_LIBS
     -ldamncute
 )
 
-set(CLIENT_EXECUTABLE_NAME "rtype-client")
+set(CLIENT_NAME "rtype-client")
+set(CLIENT_EXECUTABLE_NAME "${CLIENT_NAME}-bin")
 
 add_executable(${CLIENT_EXECUTABLE_NAME}
     ${rtype_client_SRCS}
 )
 target_link_libraries(${CLIENT_EXECUTABLE_NAME} ${ALL_LIBS})
 
-install(TARGETS ${CLIENT_EXECUTABLE_NAME} DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
-install(FILES ${CLIENT_EXECUTABLE_NAME}.conf.dist DESTINATION "${CMAKE_INSTALL_PREFIX}/etc")
+install_targets(/bin ${CLIENT_EXECUTABLE_NAME})
+install_programs(/bin ${CLIENT_NAME})
+install_files(/etc ${CLIENT_NAME}.conf.dist)
 install (DIRECTORY ${CMAKE_SOURCE_DIR}/resources DESTINATION "${CMAKE_INSTALL_PREFIX}")
 
