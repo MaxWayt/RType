@@ -31,5 +31,5 @@ void MonsterLoader::load() {
 
 void MonsterLoader::close() {
 
-    dlclose(handle);
+    dlclose(_handle);
 }
