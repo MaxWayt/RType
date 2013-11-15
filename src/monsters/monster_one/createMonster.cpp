@@ -1,7 +1,7 @@
 #include "IMonster.hh"
 #include "MonsterEngine.hh"
 
-extern "C" IMonster* createMonster(int row, int col, glm::mat4 mov)
+extern "C" DamnCute::IMonster* createMonster(int row, int col, glm::mat4 mov)
 {
     MonsterEngine *lib;
 

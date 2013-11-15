@@ -84,13 +84,14 @@ void gameMode(DamnCute::Core* engine) {
 
     config->parseConfigFile(player_one, player_two);
 
-    //MonsterLoader *monster1 = new MonsterLoader(std::string("./zizi.so"));
+    MonsterLoader *monster1 = new MonsterLoader(std::string("./zizi.so"));
 
     engine->addOnBg(bg);
     //engine->addObject(test);
     //engine->addObject(p1);
     //engine->addObject(cd);
     engine->addObject(player_one);
+    engine->addObject(monster1->load());
     //engine->addObject(player_two);
     engine->switchGameStatus();
 }
