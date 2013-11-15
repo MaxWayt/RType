@@ -6,6 +6,7 @@
 #include "DisplayManager.hh"
 #include "Player.hh"
 #include "ConfigFile.hh"
+#include "MonsterLoader.hh"
 
 void runGame();
 
@@ -82,6 +83,8 @@ void gameMode(DamnCute::Core* engine) {
     DamnCute::APlayer* player_two = new DamnCute::Player<1>("../resources/player_focus.tga", 800, 400);
 
     config->parseConfigFile(player_one, player_two);
+
+    //MonsterLoader *monster1 = new MonsterLoader(std::string("./zizi.so"));
 
     engine->addOnBg(bg);
     //engine->addObject(test);
