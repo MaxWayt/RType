@@ -10,16 +10,17 @@
 class MonsterLoader {
 
     private:
-        IMonster *_monster;
+        DamnCute::IMonster *_monster;
         void *_handle;
 
         void save(std::string);
-        void load();
         void close();
 
     public:
         MonsterLoader(std::string);
         ~MonsterLoader();
+
+        DamnCute::IMonster* load();
 
 };
 
