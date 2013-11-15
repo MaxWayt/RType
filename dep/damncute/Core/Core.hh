@@ -78,7 +78,7 @@ namespace DamnCute {
             inline void addBulletsCounter() {
                 ++_numberOfBullets;
             }
-            inline QuadTree<APhysics, __DQUADTREE_COMPLEXITY__>* getQuadTree() {
+            inline QuadTree<std::list<APhysics*>, __DQUADTREE_COMPLEXITY__>* getQuadTree() {
                 return &_physicTree;
             }
         private:
@@ -88,7 +88,7 @@ namespace DamnCute {
             void refresh();
 
             static Core* __coreInstance;
-            QuadTree<APhysics, __DQUADTREE_COMPLEXITY__> _physicTree;
+            QuadTree<std::list<APhysics*>, __DQUADTREE_COMPLEXITY__> _physicTree;
             sf::RenderWindow* _win;
             sf::RenderTexture _Rtex;
             std::list<IRenderable*> _objects;
