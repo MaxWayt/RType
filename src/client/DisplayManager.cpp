@@ -74,12 +74,12 @@ void gameMode(DamnCute::Core* engine) {
     engine->setFPSDisplay(true);
     ConfigFile *config = new ConfigFile(DEFAULT_CONFIG_FILE);
     DamnCute::Background* bg = new DamnCute::Background("../resources/decor009.jpg");
-    bg->setPosition(150, -150);
+    bg->setScrollSpeed(-0.4, 0);
     //TestPattern* test = new TestPattern();
     //pat1 *p1 = new pat1();
     //CrossingDeath *cd = new CrossingDeath();
 
-    DamnCute::APlayer* player_one = new DamnCute::Player<0>("../resources/player_focus.tga", 100, 550);
+    DamnCute::APlayer* player_one = new DamnCute::Player<0>("../resources/ship_blue.png", 100, 550);
     DamnCute::APlayer* player_two = new DamnCute::Player<1>("../resources/player_focus.tga", 800, 400);
 
     config->parseConfigFile(player_one, player_two);
