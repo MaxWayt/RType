@@ -24,9 +24,8 @@ namespace DamnCute
             Player& operator=(const Player&) = delete;
 	    virtual void collisionHandler(APhysics* other)
 	    {
-		((Bullet*)other)->setLife(0);
-		std::cout << "player " << I << " is in same quadTree" << std::endl;
-
+		if (!other->isDestructible())
+		    ((Bullet*)other)->setLife(0);
 	    }
         private:
             enum e {
