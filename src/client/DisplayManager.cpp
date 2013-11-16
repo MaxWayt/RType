@@ -85,13 +85,27 @@ void gameMode(DamnCute::Core* engine) {
     config->parseConfigFile(player_one, player_two);
 
     MonsterLoader *monster1 = new MonsterLoader(std::string("./zizi.so"));
+    MonsterLoader *monster2 = new MonsterLoader(std::string("./zizi.so"));
+    MonsterLoader *monster3 = new MonsterLoader(std::string("./zizi.so"));
+    MonsterLoader *monster4 = new MonsterLoader(std::string("./zizi.so"));
+    MonsterLoader *monster5 = new MonsterLoader(std::string("./zizi.so"));
+    MonsterLoader *monster6 = new MonsterLoader(std::string("./zizi.so"));
+    MonsterLoader *monster7 = new MonsterLoader(std::string("./zizi.so"));
+    MonsterLoader *monster8 = new MonsterLoader(std::string("./zizi.so"));
 
     engine->addOnBg(bg);
     //engine->addObject(test);
     //engine->addObject(p1);
     //engine->addObject(cd);
     engine->addObject(player_one);
-    engine->addObject(monster1->load());
+    engine->addObject(monster1->load(1900, 400, glm::mat4()));
+    engine->addObject(monster2->load(1950, 500, glm::mat4()));
+    engine->addObject(monster3->load(1499, 700, glm::mat4()));
+    engine->addObject(monster4->load(1666, 666, glm::mat4()));
+    engine->addObject(monster5->load(1777, 777, glm::mat4()));
+    engine->addObject(monster6->load(1888, 888, glm::mat4()));
+    engine->addObject(monster7->load(1900, 100, glm::mat4()));
+    engine->addObject(monster8->load(1600, 900, glm::mat4()));
     //engine->addObject(player_two);
     engine->switchGameStatus();
 }

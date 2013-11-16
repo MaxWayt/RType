@@ -15,27 +15,27 @@ namespace DamnCute
 {
 
     template <int I>
-    class Player : public APlayer {
+        class Player : public APlayer {
 
-        public:
-            explicit Player(const std::string& texfile = "../resources/player.tga", float x = 980, float y = 950, int speed = 5) :
-                APlayer(texfile, x, y, I, speed) {}
-	    virtual ~Player() = default;
-            Player& operator=(const Player&) = delete;
-	    virtual void collisionHandler(APhysics* other)
-	    {
-		((Bullet*)other)->setLife(0);
-		std::cout << "player " << I << " is in same quadTree" << std::endl;
+            public:
+                explicit Player(const std::string& texfile = "../resources/player.tga", float x = 980, float y = 950, int speed = 5) :
+                    APlayer(texfile, x, y, I, speed) {}
+                virtual ~Player() = default;
+                Player& operator=(const Player&) = delete;
+                virtual void collisionHandler(APhysics* other)
+                {
+                    ((Bullet*)other)->setLife(0);
+                    std::cout << "player " << I << " is in same quadTree" << std::endl;
 
-	    }
-        private:
-            enum e {
-                value = I
-            };
-    };
+                }
+            private:
+                enum e {
+                    value = I
+                };
+        };
 
     template <>
-    Player<0>::Player(const std::string& texfile, float x, float y, int speed) : APlayer(texfile, x, y, value, speed)
+        Player<0>::Player(const std::string& texfile, float x, float y, int speed) : APlayer(texfile, x, y, value, speed)
     {
         addAction(new ActMoveX(this, sf::Keyboard::Key::Left,
                     sf::Keyboard::Key::Right, sf::Joystick::X));
@@ -46,7 +46,7 @@ namespace DamnCute
     }
 
     template <>
-    Player<1>::Player(const std::string& texfile, float x, float y, int speed) : APlayer(texfile, x, y, value, speed)
+        Player<1>::Player(const std::string& texfile, float x, float y, int speed) : APlayer(texfile, x, y, value, speed)
     {
         addAction(new ActMoveX(this, sf::Keyboard::Key::Q,
                     sf::Keyboard::Key::D, sf::Joystick::X));
