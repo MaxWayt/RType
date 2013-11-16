@@ -16,6 +16,10 @@
 #define __DQUADTREE_COMPLEXITY__ 12
 #endif
 
+#if __DQUADTREE_COMPLEXITY__ > 10
+#warning "you will use more than 300 Mb =O"
+#endif
+
 namespace DamnCute {
     class APhysics;
     class Core {
@@ -36,22 +40,22 @@ namespace DamnCute {
             template <unsigned int SIZEX = __DWIDTH, unsigned int SIZEY = __DHEIGHT>
                 void createWin(unsigned int width = 0, unsigned int height = 0, bool full = false) {
                     unsigned int style = full << 3;
-		    sf::VideoMode v;
+                    sf::VideoMode v;
 
-		    if (full) {
-			v = sf::VideoMode::getFullscreenModes()[0];
-		    } else if (width == 0 && height == 0) {
-			 v = sf::VideoMode::getDesktopMode();
+                    if (full) {
+                        v = sf::VideoMode::getFullscreenModes()[0];
+                    } else if (width == 0 && height == 0) {
+                        v = sf::VideoMode::getDesktopMode();
                     } else {
-			v = sf::VideoMode(width, height);
+                        v = sf::VideoMode(width, height);
                     }
 
-		    _win = new sf::RenderWindow(v, "Death Curtain", style);
+                    _win = new sf::RenderWindow(v, "Death Curtain", style);
                     _Rtex.create(SIZEX, SIZEY);
                     _Rtex.setSmooth(true);
 
-		     _rsp.setTexture(_Rtex.getTexture());
-		      _rsp.setScale((float)getWindowSizeX() / (float)__DWIDTH , (float)getWindowSizeY() / (float)__DHEIGHT);
+                    _rsp.setTexture(_Rtex.getTexture());
+                    _rsp.setScale((float)getWindowSizeX() / (float)__DWIDTH , (float)getWindowSizeY() / (float)__DHEIGHT);
 
                     _win->setVerticalSyncEnabled(true);
                     _win->setFramerateLimit(60);
@@ -95,7 +99,7 @@ namespace DamnCute {
             unsigned int _Pframmes;
             unsigned int _tmpFrammes;
 
-	    sf::Sprite _rsp;
+            sf::Sprite _rsp;
             sf::Clock _gameClock;
             sf::Event event;
     };
