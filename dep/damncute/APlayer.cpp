@@ -29,6 +29,13 @@ void DamnCute::APlayer::addAction(AAction<APlayer>* act)
     _actions.push_back(act);
 }
 
+DamnCute::AAction<DamnCute::APlayer>* DamnCute::APlayer::getAction(std::string name) {
+    for (size_t i = 0; i < _actions.size(); ++i) {
+        if (_actions[i]->getName() == name)
+            return _actions[i];
+    }
+}
+
 namespace DamnCute {
     template <>
         void APlayer::setActionInput<sf::Keyboard::Key>(int i, sf::Keyboard::Key key, int inputNumber) {

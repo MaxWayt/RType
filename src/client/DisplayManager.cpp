@@ -82,33 +82,31 @@ void gameMode(DamnCute::Core* engine) {
     //CrossingDeath *cd = new CrossingDeath();
 
     DamnCute::APlayer* player_one = new Player<0>("../resources/ship_blue.png", 100, 550);
-    DamnCute::APlayer* player_two = new Player<1>("../resources/player_focus.tga", 800, 400);
+    DamnCute::APlayer* player_two = new Player<1>("../resources/player_focus.tga", 100, 650);
 
     config->parseConfigFile(player_one, player_two);
 
-    MonsterLoader *monster1 = new MonsterLoader(std::string("./zizi.so"));
-    MonsterLoader *monster2 = new MonsterLoader(std::string("./zizi.so"));
-    MonsterLoader *monster3 = new MonsterLoader(std::string("./zizi.so"));
-    MonsterLoader *monster4 = new MonsterLoader(std::string("./zizi.so"));
-    MonsterLoader *monster5 = new MonsterLoader(std::string("./zizi.so"));
-    MonsterLoader *monster6 = new MonsterLoader(std::string("./zizi.so"));
-    MonsterLoader *monster7 = new MonsterLoader(std::string("./zizi.so"));
-    MonsterLoader *monster8 = new MonsterLoader(std::string("./zizi.so"));
+    std::vector<MonsterLoader*> monster;
+    for (size_t i = 0; i < 11; ++i) {
+        monster.push_back(new MonsterLoader(std::string("./zizi.so")));
+    }
 
     engine->addOnBg(bg);
-    //engine->addObject(test);
-    //engine->addObject(p1);
-    //engine->addObject(cd);
     engine->addObject(player_one);
-    engine->addObject(monster1->load(1900, 400, glm::mat4()));
-    engine->addObject(monster2->load(1950, 500, glm::mat4()));
-    engine->addObject(monster3->load(1499, 700, glm::mat4()));
-    engine->addObject(monster4->load(1666, 666, glm::mat4()));
-    engine->addObject(monster5->load(1777, 777, glm::mat4()));
-    engine->addObject(monster6->load(1888, 888, glm::mat4()));
-    engine->addObject(monster7->load(1900, 100, glm::mat4()));
-    engine->addObject(monster8->load(1600, 900, glm::mat4()));
-    //engine->addObject(player_two);
+    engine->addObject(player_two);
+
+    engine->addObject(monster[0]->load(2000, 20));
+    engine->addObject(monster[1]->load(2300, 100));
+    engine->addObject(monster[2]->load(2150, 200));
+    engine->addObject(monster[3]->load(2300, 300));
+    engine->addObject(monster[4]->load(2200, 400));
+    engine->addObject(monster[5]->load(2000, 513));
+    engine->addObject(monster[6]->load(2500, 600));
+    engine->addObject(monster[7]->load(2250, 666));
+    engine->addObject(monster[8]->load(2377, 777));
+    engine->addObject(monster[9]->load(2400, 888));
+    engine->addObject(monster[10]->load(2000, 950));
+
     engine->switchGameStatus();
 }
 

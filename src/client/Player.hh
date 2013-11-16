@@ -5,7 +5,6 @@
 #include <vector>
 #include "Bullet.hh"
 #include "APlayer.hh"
-
 #include "Actions/ActMoveX.hh"
 #include "Actions/ActMoveY.hh"
 #include "Actions/ActFocus.hh"
@@ -24,13 +23,16 @@ class Player : public DamnCute::APlayer {
             if (!other->isDestructible())
                 ((DamnCute::Bullet*)other)->setLife(0);
         }
+        void levelUp() {
+            getAction("ActWeapon")->levelUp();
+        }
     private:
         enum e {
             value = I
         };
 };
 
-    template <>
+template <>
 Player<0>::Player(const std::string& texfile, float x, float y, int speed) : DamnCute::APlayer(texfile, x, y, value, speed)
 {
     addAction(new ActMoveX(this, sf::Keyboard::Key::Left,
@@ -41,7 +43,7 @@ Player<0>::Player(const std::string& texfile, float x, float y, int speed) : Dam
     addAction(new ActWeapon(this, sf::Keyboard::Key::W, 0));
 }
 
-    template <>
+template <>
 Player<1>::Player(const std::string& texfile, float x, float y, int speed) : DamnCute::APlayer(texfile, x, y, value, speed)
 {
     addAction(new ActMoveX(this, sf::Keyboard::Key::Q,

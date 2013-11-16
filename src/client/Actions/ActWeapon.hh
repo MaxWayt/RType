@@ -6,26 +6,71 @@
 #include "Core/Core.hh"
 #include "APattern.hh"
 
-class ShootPattern : public DamnCute::APattern {
+class ShootPatternDefault : public DamnCute::APattern {
     public:
-        explicit ShootPattern(glm::vec2 v) : _v(v) {
+        explicit ShootPatternDefault(glm::vec2 v) : _v(v) {
             initialize();
         }
 
-        virtual ~ShootPattern() = default;
+        virtual ~ShootPatternDefault() = default;
         virtual void initialize() {
 
-            glm::mat4 m;
-            m = glm::translate(glm::mat4(), glm::vec3(-15, 0, 0));
-            _x = new DamnCute::Path(m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
+            _m = glm::translate(glm::mat4(), glm::vec3(-15, 0, 0));
+            _x = new DamnCute::Path(_m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
             addPath(_x);
 
-            m = glm::translate(glm::mat4(), glm::vec3(-15, 4, 0));
-            _y = new DamnCute::Path(m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
+        }
+
+    private:
+        DamnCute::Path *_x;
+        glm::vec2 _v;
+        glm::mat4 _m;
+};
+
+class ShootPatternLevel1 : public DamnCute::APattern {
+    public:
+        explicit ShootPatternLevel1(glm::vec2 v) : _v(v) {
+            initialize();
+        }
+
+        virtual ~ShootPatternLevel1() = default;
+        virtual void initialize() {
+
+            _m = glm::translate(glm::mat4(), glm::vec3(-15, 2, 0));
+            _y = new DamnCute::Path(_m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
             addPath(_y);
 
-            m = glm::translate(glm::mat4(), glm::vec3(-15, -4, 0));
-            _z = new DamnCute::Path(m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
+            _m = glm::translate(glm::mat4(), glm::vec3(-15, -2, 0));
+            _z = new DamnCute::Path(_m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
+            addPath(_z);
+        }
+
+    private:
+        DamnCute::Path *_y;
+        DamnCute::Path *_z;
+        glm::vec2 _v;
+        glm::mat4 _m;
+};
+
+class ShootPatternLevel2 : public DamnCute::APattern {
+    public:
+        explicit ShootPatternLevel2(glm::vec2 v) : _v(v) {
+            initialize();
+        }
+
+        virtual ~ShootPatternLevel2() = default;
+        virtual void initialize() {
+
+            _m = glm::translate(glm::mat4(), glm::vec3(-15, 0, 0));
+            _x = new DamnCute::Path(_m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
+            addPath(_x);
+
+            _m = glm::translate(glm::mat4(), glm::vec3(-15, 4, 0));
+            _y = new DamnCute::Path(_m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
+            addPath(_y);
+
+            _m = glm::translate(glm::mat4(), glm::vec3(-15, -4, 0));
+            _z = new DamnCute::Path(_m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
             addPath(_z);
         }
 
@@ -34,7 +79,7 @@ class ShootPattern : public DamnCute::APattern {
         DamnCute::Path *_y;
         DamnCute::Path *_z;
         glm::vec2 _v;
-        std::string _bundlePath;
+        glm::mat4 _m;
 };
 
 class ActWeapon : public DamnCute::AAction<DamnCute::APlayer>
@@ -42,12 +87,18 @@ class ActWeapon : public DamnCute::AAction<DamnCute::APlayer>
 
     public:
         explicit ActWeapon(DamnCute::APlayer *p, sf::Keyboard::Key k1, int button)
-            : AAction(p, k1, button) {
+            : AAction(p, k1, button), _level(2) {
                 _engine = DamnCute::Core::getInstance();
-                _sp = new ShootPattern(convertVec(_entity->getPlayer().getPosition()));
-                _sp->setStatusGen(false);
+                _sp1 = new ShootPatternDefault(convertVec(_entity->getPlayer().getPosition()));
+                _sp2 = new ShootPatternLevel1(convertVec(_entity->getPlayer().getPosition()));
+                _sp3 = new ShootPatternLevel2(convertVec(_entity->getPlayer().getPosition()));
+                _sp1->setStatusGen(false);
+                _sp2->setStatusGen(false);
+                _sp3->setStatusGen(false);
+                _engine->addObject(_sp1);
+                _engine->addObject(_sp2);
+                _engine->addObject(_sp3);
                 _name = "ActWeapon";
-                _engine->addObject(_sp);
             }
 
         bool hasInput(int nbPlayer) {
@@ -57,7 +108,9 @@ class ActWeapon : public DamnCute::AAction<DamnCute::APlayer>
             else if (sf::Joystick::isButtonPressed(_nbPlayer, _stickButton) == true)
                 return true;
             else {
-                _sp->setStatusGen(false);
+                _sp1->setStatusGen(false);
+                _sp2->setStatusGen(false);
+                _sp3->setStatusGen(false);
                 return false;
             }
         }
@@ -67,18 +120,35 @@ class ActWeapon : public DamnCute::AAction<DamnCute::APlayer>
         }
 
         void execute() {
-            _sp->moveOrigin(convertVec(_entity->getPlayer().getPosition()));
-            _sp->setStatusGen(true);
+            if (_level == 0) {
+                _sp1->moveOrigin(convertVec(_entity->getPlayer().getPosition()));
+                _sp1->setStatusGen(true);
+            }
+            else if (_level == 1) {
+                _sp2->moveOrigin(convertVec(_entity->getPlayer().getPosition()));
+                _sp2->setStatusGen(true);
+            }
+            else if (_level >= 2) {
+                _sp3->moveOrigin(convertVec(_entity->getPlayer().getPosition()));
+                _sp3->setStatusGen(true);
+            } 
         }
 
         virtual inline const std::string& getName() const { return _name; }
+
+        void levelUp() {
+            ++_level;
+        }
 
         virtual ~ActWeapon() = default;
 
     private:
         int _nbPlayer;
+        int _level;
         std::string _name;
-        ShootPattern *_sp;
+        ShootPatternDefault *_sp1;
+        ShootPatternLevel1 *_sp2;
+        ShootPatternLevel2 *_sp3;
         DamnCute::Core *_engine;
 
 };

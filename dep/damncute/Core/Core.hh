@@ -13,7 +13,7 @@
 # endif
 
 #ifndef __DQUADTREE_COMPLEXITY__
-#define __DQUADTREE_COMPLEXITY__ 6
+#define __DQUADTREE_COMPLEXITY__ 12
 #endif
 
 namespace DamnCute {
