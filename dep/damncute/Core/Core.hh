@@ -13,7 +13,7 @@
 # endif
 
 #ifndef __DQUADTREE_COMPLEXITY__
-#define __DQUADTREE_COMPLEXITY__ 7
+#define __DQUADTREE_COMPLEXITY__ 6
 #endif
 
 namespace DamnCute {
@@ -40,13 +40,10 @@ namespace DamnCute {
 
 		    if (full) {
 			v = sf::VideoMode::getFullscreenModes()[0];
-                        //_win = new sf::RenderWindow(sf::VideoMode::getFullscreenModes()[0], "Death Curtain", style);
 		    } else if (width == 0 && height == 0) {
 			 v = sf::VideoMode::getDesktopMode();
-                        //_win = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Death Curtain", style);
                     } else {
 			v = sf::VideoMode(width, height);
-                        //_win = new sf::RenderWindow(sf::VideoMode(width, height), "Death Curtain", style);
                     }
 
 		    _win = new sf::RenderWindow(v, "Death Curtain", style);
@@ -78,7 +75,7 @@ namespace DamnCute {
             inline void addBulletsCounter() {
                 ++_numberOfBullets;
             }
-            inline QuadTree<APhysics, __DQUADTREE_COMPLEXITY__>* getQuadTree() {
+            inline QuadTree<std::list<APhysics*>, __DQUADTREE_COMPLEXITY__>* getQuadTree() {
                 return &_physicTree;
             }
         private:
@@ -88,7 +85,7 @@ namespace DamnCute {
             void refresh();
 
             static Core* __coreInstance;
-            QuadTree<APhysics, __DQUADTREE_COMPLEXITY__> _physicTree;
+            QuadTree<std::list<APhysics*>, __DQUADTREE_COMPLEXITY__> _physicTree;
             sf::RenderWindow* _win;
             sf::RenderTexture _Rtex;
             std::list<IRenderable*> _objects;

@@ -18,11 +18,15 @@ namespace DamnCute {
 	private:
 	    bool _physicallyActive;
 	    bool _destructible;
-	    QuadTree<APhysics, __DQUADTREE_COMPLEXITY__>* _quadTree;
-	    QuadTree<APhysics, __DQUADTREE_COMPLEXITY__>::Array_Type_ _path;
+	    bool _isInList;
+
+	    QuadTree<std::list<APhysics*>, __DQUADTREE_COMPLEXITY__>* _quadTree;
+	    QuadTree<std::list<APhysics*>, __DQUADTREE_COMPLEXITY__>::Array_Type_ _path;
+	    std::list<APhysics*>* _listSection;
+	    std::list<APhysics*>::iterator _whereInList;
 
 	    template <unsigned int sizeX, unsigned int sizeY, unsigned short iter>
-		inline QuadTree<APhysics, __DQUADTREE_COMPLEXITY__>::Array_Type_&& generateQuadTreePos(unsigned int x, unsigned int y) noexcept {
+		inline QuadTree<std::list<APhysics*>, __DQUADTREE_COMPLEXITY__>::Array_Type_&& generateQuadTreePos(unsigned int x, unsigned int y) noexcept {
 		    unsigned int nodeX = sizeX / 2;
 		    unsigned int nodeY = sizeY / 2;
 
@@ -30,25 +34,25 @@ namespace DamnCute {
 		    {
 			if (x < nodeX && y > nodeY)
 			{
-			    _path[i] = QuadTree<APhysics, __DQUADTREE_COMPLEXITY__>::AZone;
+			    _path[i] = QuadTree<std::list<APhysics*>, __DQUADTREE_COMPLEXITY__>::AZone;
 			    nodeX -= nodeX / 2;
 			    nodeY += nodeY / 2;
 			}
 			else if (x > nodeX && y > nodeY)
 			{
-			    _path[i] = QuadTree<APhysics, __DQUADTREE_COMPLEXITY__>::BZone;
+			    _path[i] = QuadTree<std::list<APhysics*>, __DQUADTREE_COMPLEXITY__>::BZone;
 			    nodeX += nodeX / 2;
 			    nodeY += nodeY / 2;
 			}
 			else if (x < nodeX && y < nodeY)
 			{
-			    _path[i] = QuadTree<APhysics, __DQUADTREE_COMPLEXITY__>::CZone;
+			    _path[i] = QuadTree<std::list<APhysics*>, __DQUADTREE_COMPLEXITY__>::CZone;
 			    nodeX -= nodeX / 2;
 			    nodeY -= nodeY / 2;
 			}
 			else
 			{
-			    _path[i] = QuadTree<APhysics, __DQUADTREE_COMPLEXITY__>::DZone;
+			    _path[i] = QuadTree<std::list<APhysics*>, __DQUADTREE_COMPLEXITY__>::DZone;
 			    nodeX += nodeX / 2;
 			    nodeY -= nodeY / 2;
 			}
@@ -57,9 +61,17 @@ namespace DamnCute {
 		}
 
 	public:
-	    APhysics(unsigned int x, unsigned int y, bool destructibility = true) : _physicallyActive(true), _destructible(destructibility), _quadTree(sCore->getQuadTree()) {
+	    APhysics(unsigned int x, unsigned int y, bool destructibility) : _physicallyActive(true), _destructible(destructibility), _isInList(false), _quadTree(sCore->getQuadTree()) {
 		generateQuadTreePos<1920, 1080, __DQUADTREE_COMPLEXITY__>(x, y);
+		_listSection = _quadTree->getDataTreeNode(_path);
 	    }
+
+	    virtual ~APhysics() {
+		if (_listSection) {
+		    _listSection->erase(_whereInList);
+		}
+	    }
+
 	    inline bool isDestructible() {
 		return _destructible;
 	    }
@@ -68,14 +80,28 @@ namespace DamnCute {
 	    virtual void collisionHandler(APhysics*) = 0;
 
 	    void updateQuadTreePos(unsigned int x, unsigned int y) {
-		_quadTree->setTreeNode(NULL, _path);
-		generateQuadTreePos<1920, 1080, __DQUADTREE_COMPLEXITY__>(x, y);
-
-		if (_quadTree->thereIsObject(_path) && _physicallyActive) {
-		    collisionHandler(_quadTree->getDataTreeNode(_path));
-		    //_quadTree->getDataTreeNode(_path)->collision();
+		if (_listSection && _isInList) {
+		    _listSection->erase(_whereInList);
+		    _isInList = false;
+		    if (_listSection->empty()) {
+			delete _listSection;
+			_quadTree->setTreeNode(NULL, _path);
+		    }
 		}
-		_quadTree->setTreeNode(this, _path);
+		generateQuadTreePos<1920, 1080, __DQUADTREE_COMPLEXITY__>(x, y);
+		_listSection = _quadTree->getDataTreeNode(_path);
+		if (_physicallyActive && _listSection) {
+		    for (std::list<APhysics*>::iterator it = _listSection->begin(); it != _listSection->end(); ++it) {
+			collisionHandler(*it);
+		    }
+		}
+		if (!_listSection) {
+		    _listSection = new std::list<APhysics*>();
+		    _quadTree->setTreeNode(_listSection, _path);
+		}
+		_listSection->push_front(this);
+		_whereInList = _listSection->begin();
+		_isInList = true;
 	    }
     };
 }
