@@ -27,6 +27,7 @@ namespace DamnCute
             inline sf::Sprite& getPlayer() { return _entity; }
             inline sf::Texture& getTexture() { return _tex; }
             inline int& getSpeed() { return _speed; }
+            inline AAction<APlayer>* getAction(std::string);
             inline int getNumPlayer() const { return _nbPlayer; }
 
             template <int inputNumber, typename T>

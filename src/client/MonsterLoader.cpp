@@ -16,16 +16,14 @@ void MonsterLoader::save(std::string pat) {
         std::cerr << dlerror() << std::endl;
 }
 
-DamnCute::IMonster* MonsterLoader::load(int row, int col, glm::mat4 m) {
+DamnCute::IMonster* MonsterLoader::load(int row, int col) {
 
-    void *(*fct)(int, int, glm::mat4);
+    void *(*fct)(int, int);
       
-    (void)m;
     *(void**)(&fct) = dlsym(_handle, "createMonster");
     if (fct == NULL)
         std::cerr << dlerror() << std::endl;
-    _monster = (DamnCute::IMonster*)((*fct)(row, col,
-                glm::translate(glm::mat4(), glm::vec3(0, 15, 0))));
+    _monster = (DamnCute::IMonster*)((*fct)(row, col));
     return _monster;
 }
 

@@ -1,13 +1,12 @@
 #include "MonsterEngine.hh"
 
-MonsterEngine::MonsterEngine(int row, int col, glm::mat4 mov) :
-    DamnCute::APhysics(row, col, true), _row(row), _col(col), _mov(mov), _tex(), _life(4) {
+MonsterEngine::MonsterEngine(int row, int col) :
+    DamnCute::APhysics(row, col, true), _row(row), _col(col), _tex(), _life(4) {
 
     _tex.loadFromFile("../resources/dango_monster.png");
     _sprite.setPosition(row, col);
     _sprite.setTexture(_tex);
     _sprite.setScale(0.3, 0.3);
-
     shoot();
 }
 
