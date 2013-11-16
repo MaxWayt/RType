@@ -16,6 +16,10 @@
 #define __DQUADTREE_COMPLEXITY__ 7
 #endif
 
+#if __DQUADTREE_COMPLEXITY__ > 10
+#warning "you will use more than 300 Mb =O"
+#endif
+
 namespace DamnCute {
     class APhysics;
     class Core {
