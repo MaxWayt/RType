@@ -4,6 +4,28 @@
 #include "IMonster.hh"
 #include "APhysics.hh"
 
+class Pattern : public DamnCute::APattern {
+
+    public:
+        explicit Pattern(glm::vec2 v) : _v(v) {
+            initialize();
+        }
+
+        virtual ~Pattern() = default;
+        virtual void initialize() {
+
+            glm::mat4 m;
+            m = glm::translate(glm::mat4(), glm::vec3(8, 0, 0));
+            _x = new DamnCute::Path(m, 20, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 300), "../resources/mid_bullet_red.png");
+            addPath(_x);
+        }
+
+    private:
+        DamnCute::Path *_x;
+        glm::vec2 _v;
+        std::string _bundlePath;
+};
+
 class MonsterEngine : public DamnCute::IMonster, public DamnCute::APhysics {
 
     private:
@@ -13,14 +35,20 @@ class MonsterEngine : public DamnCute::IMonster, public DamnCute::APhysics {
         sf::Texture _tex;
         sf::Sprite _sprite;
         int _life;
+        Pattern *_pattern;
+        DamnCute::Core *_engine;
 
         virtual void collisionHandler(DamnCute::APhysics*);
+        void shoot();
+
+        glm::vec2 convertVec(sf::Vector2f v) {
+            return glm::vec2(float(v.x + 20), float(v.y + 20));
+        }
 
     public:
         MonsterEngine(int, int, glm::mat4);
         ~MonsterEngine() = default;
 
-        void shoot() {}
         void update(sf::RenderTarget* w_ptr);
 
 };

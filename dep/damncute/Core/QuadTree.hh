@@ -4,7 +4,7 @@
 #ifndef QUADTREE_H_
 # define QUADTREE_H_
 
-namespace {
+namespace DamnCute {
     template <typename T, unsigned int LEVEL>
 	class QuadTree {
 	    public:
