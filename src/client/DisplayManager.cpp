@@ -79,8 +79,8 @@ void gameMode(DamnCute::Core* engine) {
     //pat1 *p1 = new pat1();
     //CrossingDeath *cd = new CrossingDeath();
 
-    DamnCute::APlayer* player_one = new DamnCute::Player<0>("../resources/ship_blue.png", 100, 550);
-    DamnCute::APlayer* player_two = new DamnCute::Player<1>("../resources/player_focus.tga", 800, 400);
+    DamnCute::APlayer* player_one = new Player<0>("../resources/ship_blue.png", 100, 550);
+    DamnCute::APlayer* player_two = new Player<1>("../resources/player_focus.tga", 800, 400);
 
     config->parseConfigFile(player_one, player_two);
 
