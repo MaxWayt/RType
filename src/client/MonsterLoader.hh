@@ -20,7 +20,7 @@ class MonsterLoader {
         MonsterLoader(std::string);
         ~MonsterLoader();
 
-        DamnCute::IMonster* load();
+        DamnCute::IMonster* load(int, int, glm::mat4);
 
 };
 

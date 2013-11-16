@@ -63,7 +63,7 @@ class ActWeapon : public DamnCute::AAction<DamnCute::APlayer>
         }
 
         glm::vec2 convertVec(sf::Vector2f v) {
-            return glm::vec2(float(v.x), float(v.y));
+            return glm::vec2(float(v.x + 90), float(v.y + 11));
         }
 
         void execute() {
