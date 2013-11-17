@@ -82,6 +82,16 @@ namespace DamnCute {
             inline QuadTree<std::list<APhysics*>, __DQUADTREE_COMPLEXITY__>* getQuadTree() {
                 return &_physicTree;
             }
+            void menuMusic() {
+                _music.setLoop(true);
+                if (_music.openFromFile("../resources/music/menu.flac"))
+                    _music.play();
+            }
+            void gameMusic() {
+                _music.stop();
+                if (_music.openFromFile("../resources/music/game.flac"))
+                    _music.play();
+            }
         private:
 
             Core();
@@ -102,6 +112,7 @@ namespace DamnCute {
             sf::Sprite _rsp;
             sf::Clock _gameClock;
             sf::Event event;
+            sf::Music _music;
     };
 }
 
