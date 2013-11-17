@@ -87,7 +87,7 @@ class ActWeapon : public DamnCute::AAction<DamnCute::APlayer>
 
     public:
         explicit ActWeapon(DamnCute::APlayer *p, sf::Keyboard::Key k1, int button)
-            : AAction(p, k1, button), _level(2) {
+            : AAction(p, k1, button), _level(0) {
                 _engine = DamnCute::Core::getInstance();
                 _sp1 = new ShootPatternDefault(convertVec(_entity->getPlayer().getPosition()));
                 _sp2 = new ShootPatternLevel1(convertVec(_entity->getPlayer().getPosition()));
