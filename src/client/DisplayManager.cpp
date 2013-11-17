@@ -2,11 +2,10 @@
 #include <Background.hh>
 #include <Menu.hh>
 #include <Core/Core.hh>
-//#include "TestPattern.hh"
 #include "DisplayManager.hh"
 #include "Player.hh"
 #include "ConfigFile.hh"
-#include "MonsterLoader.hh"
+#include "MonsterHandler.hh"
 
 void runGame();
 
@@ -77,36 +76,17 @@ void gameMode(DamnCute::Core* engine) {
     ConfigFile *config = new ConfigFile(DEFAULT_CONFIG_FILE);
     DamnCute::Background* bg = new DamnCute::Background("../resources/decor009.jpg");
     bg->setScrollSpeed(-0.4, 0);
-    //TestPattern* test = new TestPattern();
-    //pat1 *p1 = new pat1();
-    //CrossingDeath *cd = new CrossingDeath();
 
     DamnCute::APlayer* player_one = new Player<0>("../resources/ship_blue.png", 100, 550);
     DamnCute::APlayer* player_two = new Player<1>("../resources/player_focus.tga", 100, 650);
 
+    MonsterHandler* mh = new MonsterHandler("zizi", 1, 1000, std::make_pair(2000, 2500), std::make_pair(10, 1000));
+
     config->parseConfigFile(player_one, player_two);
-
-    std::vector<MonsterLoader*> monster;
-    for (size_t i = 0; i < 11; ++i) {
-        monster.push_back(new MonsterLoader(std::string("./zizi.so")));
-    }
-
+    
     engine->addOnBg(bg);
     engine->addObject(player_one);
     engine->addObject(player_two);
-
-    engine->addObject(monster[0]->load(2000, 20));
-    engine->addObject(monster[1]->load(2300, 100));
-    engine->addObject(monster[2]->load(2150, 200));
-    engine->addObject(monster[3]->load(2300, 300));
-    engine->addObject(monster[4]->load(2200, 400));
-    engine->addObject(monster[5]->load(2000, 513));
-    engine->addObject(monster[6]->load(2500, 600));
-    engine->addObject(monster[7]->load(2250, 666));
-    engine->addObject(monster[8]->load(2377, 777));
-    engine->addObject(monster[9]->load(2400, 888));
-    engine->addObject(monster[10]->load(2000, 950));
-
     engine->switchGameStatus();
 }
 
