@@ -22,7 +22,7 @@ DamnCute::Menu::SubMenu::SubMenu(sf::Text &text, const std::string &optionName, 
 void	DamnCute::Menu::SubMenu::update(sf::RenderTarget* w_ptr) {
     if (_alive == true)
     {
-        w_ptr->draw(_text); //Rajouter le txt au bouton
+        w_ptr->draw(_text);
         w_ptr->draw(*(*_it));
     }
 }
@@ -133,7 +133,7 @@ void	DamnCute::Menu::addSubMenu(const std::string &Button, const std::string &Op
     test.setColor(sf::Color::White);
     for (std::vector<std::string>::iterator it = listOption.begin() ; it != listOption.end(); ++it) {
         tmp = new sf::Text(*it, _font, _characterSize);
-        tmp->setPosition(x + 15, y + 25);
+        tmp->setPosition(x+15, y + 25);
         listoption2.push_back(tmp);
     }
     SubMenu *b = new SubMenu(test, Option, listoption2);
@@ -145,7 +145,6 @@ void	DamnCute::Menu::addSubMenu(const std::string &Button, const std::string &Op
 
 void	DamnCute::Menu::MoveDown()
 {
-    std::cout << "MoveDown " << std::endl;
     if (_alive)
     {
         if (_itButtons + 1 != _buttons.end())
@@ -159,7 +158,6 @@ void	DamnCute::Menu::MoveDown()
 
 void	DamnCute::Menu::MoveUp()
 {
-    std::cout << "Moveup" << std::endl;
     if (_alive)
     {
         if (_itButtons != _buttons.begin())
@@ -186,7 +184,7 @@ void	DamnCute::Menu::MoveReturn()
 {
     if (_alive)
     {
-        if( (*_itButtons)->getName() == "start")
+        if( (*_itButtons)->getName() == "Start game")
         {
             if ((*_itButtons)->hasReturnFunction())
                 (*_itButtons)->callReturnFunction();
