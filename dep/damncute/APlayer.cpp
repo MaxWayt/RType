@@ -6,6 +6,8 @@ DamnCute::APlayer::APlayer(const std::string& texfile, float x, float y, int nb,
 {
     _tex.loadFromFile(texfile);
     _entity.setTexture(_tex);
+    const sf::Vector2f& s = _entity.getScale();
+    _entity.setOrigin(s.x / 2, s.y / 2);
     _entity.setPosition(x, y);
 }
 

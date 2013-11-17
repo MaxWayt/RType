@@ -80,7 +80,7 @@ void gameMode(DamnCute::Core* engine) {
     DamnCute::APlayer* player_one = new Player<0>("../resources/ship_blue.png", 100, 550);
     DamnCute::APlayer* player_two = new Player<1>("../resources/player_focus.tga", 100, 650);
 
-    MonsterHandler* mh = new MonsterHandler("zizi", 1, 1000, std::make_pair(2000, 2500), std::make_pair(10, 1000));
+    MonsterHandler* mh = new MonsterHandler("zizi", 20, 1000, std::make_pair(2000, 2500), std::make_pair(10, 1000));
 
     config->parseConfigFile(player_one, player_two);
     
