@@ -1,4 +1,5 @@
 #include <iostream>
+#include <typeinfo>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "IMonster.hh"

@@ -23,6 +23,7 @@ void MonsterEngine::update(sf::RenderTarget* w_ptr) {
 void MonsterEngine::collisionHandler(DamnCute::APhysics* other) {
 
     _life--;
+    ((DamnCute::Bullet*)other)->setLife(0);
     std::cout << "collision avec un monstre" << std::endl;
 }
 
@@ -30,6 +31,6 @@ void MonsterEngine::shoot() {
 
     _engine = DamnCute::Core::getInstance();
     _pattern = new Pattern(convertVec(_sprite.getPosition()));
-    _pattern->setStatusGen(false);
+    _pattern->setStatusGen(true);
     _engine->addObject(_pattern);
 }
