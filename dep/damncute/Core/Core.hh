@@ -13,7 +13,7 @@
 # endif
 
 #ifndef __DQUADTREE_COMPLEXITY__
-#define __DQUADTREE_COMPLEXITY__ 12
+#define __DQUADTREE_COMPLEXITY__ 8
 #endif
 
 #if __DQUADTREE_COMPLEXITY__ > 10

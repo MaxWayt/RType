@@ -34,6 +34,7 @@ DamnCute::AAction<DamnCute::APlayer>* DamnCute::APlayer::getAction(std::string n
         if (_actions[i]->getName() == name)
             return _actions[i];
     }
+    return nullptr;
 }
 
 namespace DamnCute {
