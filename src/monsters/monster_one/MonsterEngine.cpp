@@ -12,6 +12,7 @@ MonsterEngine::MonsterEngine(int row, int col) :
 
 void MonsterEngine::update(sf::RenderTarget* w_ptr) {
 
+    updateQuadTreePos(_sprite.getPosition().x, _sprite.getPosition().y);
     if (_life == 0)
         std::cout << "apu vie" << std::endl;
     _sprite.move(-1, 0);
@@ -29,6 +30,6 @@ void MonsterEngine::shoot() {
 
     _engine = DamnCute::Core::getInstance();
     _pattern = new Pattern(convertVec(_sprite.getPosition()));
-    _pattern->setStatusGen(true);
+    _pattern->setStatusGen(false);
     _engine->addObject(_pattern);
 }
