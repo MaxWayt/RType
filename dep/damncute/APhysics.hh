@@ -19,6 +19,7 @@ namespace DamnCute {
 	    bool _physicallyActive;
 	    bool _destructible;
 	    bool _isInList;
+	    unsigned int _type;
 
 	    QuadTree<std::list<APhysics*>, __DQUADTREE_COMPLEXITY__>* _quadTree;
 	    QuadTree<std::list<APhysics*>, __DQUADTREE_COMPLEXITY__>::Array_Type_ _path;
@@ -61,7 +62,7 @@ namespace DamnCute {
 		}
 
 	public:
-	    APhysics(unsigned int x, unsigned int y, bool destructibility) : _physicallyActive(true), _destructible(destructibility), _isInList(false), _quadTree(sCore->getQuadTree()) {
+	    APhysics(unsigned int x, unsigned int y, bool destructibility, unsigned int type = 0) : _physicallyActive(true), _destructible(destructibility), _isInList(false), _type(type), _quadTree(sCore->getQuadTree()) {
 		generateQuadTreePos<1920, 1080, __DQUADTREE_COMPLEXITY__>(x, y);
 		_listSection = _quadTree->getDataTreeNode(_path);
 	    }
@@ -72,12 +73,24 @@ namespace DamnCute {
 		}
 	    }
 
+	    inline unsigned int getType() {
+		return _type;
+	    }
+
 	    inline bool isDestructible() {
 		return _destructible;
 	    }
 
 	protected:
 	    virtual void collisionHandler(APhysics*) = 0;
+
+	    bool preciseDetection(const sf::Sprite& s1, const sf::Sprite& s2) {
+		if (s1.getGlobalBounds().intersects(s2.getGlobalBounds())) {
+		    return true;
+		}
+		return false;
+	    }
+
 
 	    void updateQuadTreePos(unsigned int x, unsigned int y) {
 		if (_listSection && _isInList) {

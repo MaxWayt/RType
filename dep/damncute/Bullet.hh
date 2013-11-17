@@ -15,9 +15,12 @@ namespace DamnCute {
             Bullet& operator=(const Bullet&) = delete;
             Bullet& operator=(Bullet&&);
             void update(const glm::mat4&, sf::RenderTarget*);
-            unsigned int decreaseLifeTime();
-            inline const glm::vec2& getOrigin() const noexcept {
-                return _origin;
+	    unsigned int decreaseLifeTime();
+	    inline const sf::Sprite& getSprite() const noexcept {
+		return _s;
+	    }
+	    inline const glm::vec2& getOrigin() const noexcept {
+		return _origin;
             }
             inline float getRot() const noexcept {
                 return _rot;
