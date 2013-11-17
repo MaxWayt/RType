@@ -21,21 +21,27 @@ void DisplayManager::update() {
 }
 
 void DisplayManager::menuMode() {
-    std::vector<std::string> listOption;
 
-    listOption.push_back("Option 1");
-    listOption.push_back("Option 2");
-    listOption.push_back("Option 3");
-    DamnCute::Menu* m = new DamnCute::Menu("../resources/menu.png"); // Instanciation
+    std::vector<std::string> listOption;
+    listOption.push_back("les juifs");
+    listOption.push_back("les arabes");
+    listOption.push_back("les homosexuels");
+
+    std::vector<std::string> listOption2;
+    listOption2.push_back("au McDo");
+    listOption2.push_back("au MIF");
+    listOption2.push_back("au Subway");
+
+    DamnCute::Menu* m = new DamnCute::Menu("../resources/menu.png");
     m->setFontPath("../resources/font.ttf");
     _engine->addObject(m);
-    m->setTextureButton("../resources/button.jpg");//Set texture
-    m->addButton(1500, 500, "Start game", &runGame); //Pose la texture sur le screen
-    m->addButton(1500, 600, "Ziz' in the sky!", []() {}); //Pose la texture sur le screen
-    m->addButton(1500, 700, "thouropd", []() {}); //Pose la texture sur le screen
-    m->addButton(1500, 800, "Staline we love you!", []() {}); //Pose la texture sur le screen
-    m->addSubMenu("Test2", "Sous Menu:", listOption, 1500, 700);
-    m->addSubMenu("Test2", "Sous Menu2:", listOption, 1500, 800);
+    m->setTextureButton("../resources/button.jpg");
+    m->addButton(1500, 500, "Start game", &runGame);
+    m->addButton(1500, 600, "Ziz' in the sky!", []() {});
+    m->addButton(1500, 700, "thouropd", []() {});
+    m->addButton(1500, 800, "Staline we love you!", []() {});
+    m->addSubMenu("Ziz' in the sky!", "Exterminer :", listOption, 1500, 700);
+    m->addSubMenu("Ziz' in the sky!", "Manger :", listOption2, 1500, 800);
     m->setTextureCursor("../resources/cursor.png", -80, 0);
 }
 
