@@ -24,7 +24,7 @@ void MonsterEngine::collisionHandler(DamnCute::APhysics* other) {
 
     _life--;
     ((DamnCute::Bullet*)other)->setLife(0);
-    std::cout << "collision avec un monstre" << std::endl;
+    //std::cout << "collision avec un monstre" << std::endl;
 }
 
 void MonsterEngine::shoot() {

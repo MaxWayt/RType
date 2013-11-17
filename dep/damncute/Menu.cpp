@@ -39,7 +39,7 @@ DamnCute::Menu::Button::Button(const std::string &Name, sf::Text &text, int x, i
     _y = y;
     _s.setTexture(_tex);
     _s.setPosition(x, y);
-    _text.setPosition(x+40, y+90);
+    _text.setPosition(x + 10, y + 14);
 }
 
 void	DamnCute::Menu::Button::update(sf::RenderTarget* w_ptr) {
@@ -115,9 +115,9 @@ void	DamnCute::Menu::setTextureCursor(const std::string& filename, int x, int y)
 }
 
 void	DamnCute::Menu::addButton(int x, int y, const std::string& text, std::function<void()> const& func) {
-    sf::Text test(text, _font, _characterSize);
 
-    test.setColor(sf::Color::Black);
+    sf::Text test(text, _font, _characterSize);
+    test.setColor(sf::Color::White);
     Button* b = new Button(text, test, x, y, _tex, func);
     _buttons.push_back(b);
     Core::getInstance()->addObject(b);
@@ -130,9 +130,10 @@ void	DamnCute::Menu::addSubMenu(const std::string &Button, const std::string &Op
     std::vector<sf::Text *> listoption2;
     sf::Text *tmp;
     test.setPosition(x, y);
+    test.setColor(sf::Color::White);
     for (std::vector<std::string>::iterator it = listOption.begin() ; it != listOption.end(); ++it) {
         tmp = new sf::Text(*it, _font, _characterSize);
-        tmp->setPosition(x+15, y + 25);
+        tmp->setPosition(x + 15, y + 25);
         listoption2.push_back(tmp);
     }
     SubMenu *b = new SubMenu(test, Option, listoption2);
