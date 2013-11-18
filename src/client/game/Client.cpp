@@ -4,9 +4,14 @@
 
 #include <iostream>
 
-Client::Client() : _service(), _udpSocket(this, _service), _clientKey(0),
-    _recvQueue()
-{}
+Client::Client(int32 width, int32 height, bool fullscreen) : _service(), _udpSocket(this, _service), _clientKey(0),
+    _recvQueue(), _display(this, width, height, fullscreen)
+{
+}
+
+Client::~Client()
+{
+}
 
 void Client::operator()()
 {
@@ -36,6 +41,7 @@ void Client::Start()
 {
     _service.Start();
     _run();
+    _display.Start(MODE_GAME);
 }
 
 void Client::Stop()
@@ -52,6 +58,7 @@ void Client::Wait()
 
 void Client::Update(uint32 const diff)
 {
+    //client.InitializeGame(1, "127.0.0.1", "5000");
     UpdateIncomingPackets();
 
 }

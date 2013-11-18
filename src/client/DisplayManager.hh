@@ -9,19 +9,37 @@
 # include <iostream>
 # include <SFML/Graphics.hpp>
 # include <Core/Core.hh>
+#include "Thread.hpp"
 
-class DisplayManager {
+enum DisplayMode
+{
+    MODE_MENU       = 0,
+    MODE_GAME       = 1,
+};
+
+class Client;
+
+class DisplayManager
+{
     public:
-        DisplayManager(int width = __DWIDTH, int height = __DHEIGHT, bool type = false);
+        DisplayManager(Client* client, int width = __DWIDTH, int height = __DHEIGHT, bool type = false);
         ~DisplayManager();
-        void run();
         void gameMode();
         void menuMode();
+
+        void Start(DisplayMode mode = MODE_MENU);
+        void SwitchMode(DisplayMode mode);
+        void run();
     private:
-        void update();
+        void init();
         DamnCute::Core* _engine;
         bool _alive;
-        void gameMode(DamnCute::Core*);
+        DisplayMode _mode;
+        bool _init;
+        int32 _width;
+        int32 _height;
+        bool _fullscreen;
+        Client* _client;
 };
 
 #endif /* !DISPLAYMANAGER_H_ */
