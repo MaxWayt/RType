@@ -4,3 +4,4 @@ build
 rtype
 .DS_store
 lib
+Session.vim
