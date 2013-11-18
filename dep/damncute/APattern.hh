@@ -9,6 +9,10 @@
 #include "IRenderable.hh"
 
 namespace DamnCute {
+#ifdef __BULLER_PHYSIC_ID__
+#undef __BULLER_PHYSIC_ID__
+#endif
+#define __BULLER_PHYSIC_ID__ 0
     class APattern : public IRenderable {
 	public:
 	    APattern() = default;

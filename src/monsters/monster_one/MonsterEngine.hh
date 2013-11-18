@@ -36,6 +36,7 @@ class MonsterEngine : public DamnCute::IMonster, public DamnCute::APhysics {
         sf::Texture _tex;
         sf::Sprite _sprite;
         int _life;
+        bool _isDead;
         Pattern *_pattern;
         DamnCute::Core *_engine;
 
@@ -51,5 +52,6 @@ class MonsterEngine : public DamnCute::IMonster, public DamnCute::APhysics {
         ~MonsterEngine();
 
         void update(sf::RenderTarget* w_ptr);
+        inline bool isDead() const;
 
 };
