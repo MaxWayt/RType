@@ -10,8 +10,6 @@
 namespace DamnCute
 {
 
-  //    class APlayer;
-
     template <typename T>
     class AAction
     {

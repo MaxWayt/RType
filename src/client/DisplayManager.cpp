@@ -2,10 +2,10 @@
 #include <Background.hh>
 #include <Menu.hh>
 #include <Core/Core.hh>
-//#include "TestPattern.hh"
 #include "DisplayManager.hh"
 #include "Player.hh"
 #include "ConfigFile.hh"
+#include "MonsterHandler.hh"
 
 void runGame();
 
@@ -21,32 +21,35 @@ void DisplayManager::update() {
 }
 
 void DisplayManager::menuMode() {
-    std::vector<std::string> listOption;
 
-    listOption.push_back("Option 1");
-    listOption.push_back("Option 2");
-    listOption.push_back("Option 3");
-    DamnCute::Menu* m = new DamnCute::Menu("../resources/menu.jpg"); // Instanciation
+    std::vector<std::string> listOption;
+    listOption.push_back("les juifs");
+    listOption.push_back("les arabes");
+    listOption.push_back("les homosexuels");
+
+    std::vector<std::string> listOption2;
+    listOption2.push_back("au McDo");
+    listOption2.push_back("au MIF");
+    listOption2.push_back("au Subway");
+
+    DamnCute::Menu* m = new DamnCute::Menu("../resources/menu.png");
     m->setFontPath("../resources/font.ttf");
     _engine->addObject(m);
-    m->setTextureButton("../resources/button1.png");//Set texture
-    m->addButton(50, 100, "start", &runGame); //Pose la texture sur le screen
-    m->addButton(50, 400, "Test2", []() {}); //Pose la texture sur le screen
-    m->addButton(500, 100, "Test3", []() {}); //Pose la texture sur le screen
-    m->addButton(500, 400, "Test4", []() {}); //Pose la texture sur le screen
-    m->addSubMenu("Test2", "Sous Menu:", listOption, 50, 50);
-    m->addSubMenu("Test2", "Sous Menu2:", listOption, 50, 150);
-    m->setTextureCursor("../resources/cursor.png", -50, 100);
+    m->setTextureButton("../resources/button.jpg");
+    m->addButton(1500, 500, "Start game", &runGame);
+    m->addButton(1500, 600, "Ziz' in the sky!", []() {});
+    m->addButton(1500, 700, "thouropd", []() {});
+    m->addButton(1500, 800, "Staline we love you!", []() {});
+    m->addSubMenu("Ziz' in the sky!", "Exterminer :", listOption, 1500, 700);
+    m->addSubMenu("Ziz' in the sky!", "Manger :", listOption2, 1500, 800);
+    m->setTextureCursor("../resources/cursor.png", -80, 0);
 }
 
 void DisplayManager::run() {
     _engine = DamnCute::Core::getInstance();
 
-    sf::Music music;
-    music.setLoop(true);
-    if (music.openFromFile("../resources/music/01-sound_of_science.flac"))
-        music.play();
-
+    _engine->menuMusic();
+    
     menuMode();
     while (_alive) {
         update();
@@ -70,25 +73,22 @@ bool update() {
 
 void gameMode(DamnCute::Core* engine) {
 
+    engine->gameMusic();
     engine->setFPSDisplay(true);
     ConfigFile *config = new ConfigFile(DEFAULT_CONFIG_FILE);
     DamnCute::Background* bg = new DamnCute::Background("../resources/decor009.jpg");
-    bg->setPosition(150, -150);
-    //TestPattern* test = new TestPattern();
-    //pat1 *p1 = new pat1();
-    //CrossingDeath *cd = new CrossingDeath();
+    bg->setScrollSpeed(-0.4, 0);
 
-    DamnCute::APlayer* player_one = new DamnCute::Player<0>("../resources/player_focus.tga", 100, 550);
-    DamnCute::APlayer* player_two = new DamnCute::Player<1>("../resources/player_focus.tga", 800, 400);
+    DamnCute::APlayer* player_one = new Player<0>("../resources/ship_red.png", 100, 550);
+    DamnCute::APlayer* player_two = new Player<1>("../resources/ship_blue.png", 100, 750);
+
+    MonsterHandler* mh = new MonsterHandler("zizi", 20, 1000, std::make_pair(2000, 2500), std::make_pair(10, 1000));
 
     config->parseConfigFile(player_one, player_two);
 
     engine->addOnBg(bg);
-    //engine->addObject(test);
-    //engine->addObject(p1);
-    //engine->addObject(cd);
     engine->addObject(player_one);
-    //engine->addObject(player_two);
+    engine->addObject(player_two);
     engine->switchGameStatus();
 }
 

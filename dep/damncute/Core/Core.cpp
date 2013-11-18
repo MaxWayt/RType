@@ -69,8 +69,7 @@ void DamnCute::Core::flushScene() {
     ++_Pframmes;
 
     _Rtex.display();
-    sf::Sprite Rsp(_Rtex.getTexture());
-    _win->draw(Rsp);
+    _win->draw(_rsp);
     _win->display();
 }
 
