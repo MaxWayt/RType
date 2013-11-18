@@ -6,7 +6,7 @@
 #include "APhysics.hh"
 
 namespace DamnCute {
-    class Bullet : APhysics {
+    class Bullet : public APhysics {
         public:
             explicit Bullet(const glm::vec2&, const float = 0.0f, unsigned int = 60);
             explicit Bullet(const Bullet&) = delete;

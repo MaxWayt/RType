@@ -18,6 +18,8 @@ namespace DamnCute {
             virtual ~Path() = default;
             virtual void update(sf::RenderTarget*);
             void countdownPushMoveModifier(unsigned int, const glm::mat4&);
+	    void setPhysicBulletModelId(unsigned int);
+	    void setAllPhysicBulletId(unsigned int);
             inline void moveOrigin(glm::vec2&& n) noexcept {
                 _bulletModel.moveOrigin(std::move(n));
             }
