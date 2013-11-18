@@ -7,17 +7,16 @@
 #include "ConfigFile.hh"
 #include "MonsterHandler.hh"
 
+#include "Client.h"
+
 void runGame();
 
-DisplayManager::DisplayManager(int width, int height, bool fullscreen) : _alive(true) {
-    DamnCute::Core::getInstance()->createWin(width, height, fullscreen);
+DisplayManager::DisplayManager(Client* client, int width, int height, bool fullscreen) : _alive(true), _mode(MODE_MENU), _init(false),
+    _width(width), _height(height), _fullscreen(fullscreen), _client(client)
+{
 }
 
 DisplayManager::~DisplayManager() {
-}
-
-void DisplayManager::update() {
-    _alive = DamnCute::Core::getInstance()->getWindowStatus();
 }
 
 void DisplayManager::menuMode() {
@@ -34,47 +33,21 @@ void DisplayManager::menuMode() {
 
     DamnCute::Menu* m = new DamnCute::Menu("../resources/menu.png");
     m->setFontPath("../resources/font.ttf");
-    _engine->addObject(m);
     m->setTextureButton("../resources/button.jpg");
-    m->addButton(1500, 500, "Start game", &runGame);
+    m->addButton(1500, 500, "Start game", std::bind(&DisplayManager::SwitchMode, this, MODE_GAME));
     m->addButton(1500, 600, "Ziz' in the sky!", []() {});
     m->addButton(1500, 700, "thouropd", []() {});
     m->addButton(1500, 800, "Staline we love you!", []() {});
     m->addSubMenu("Ziz' in the sky!", "Exterminer :", listOption, 1500, 700);
     m->addSubMenu("Ziz' in the sky!", "Manger :", listOption2, 1500, 800);
     m->setTextureCursor("../resources/cursor.png", -80, 0);
+    _engine->addObject(m);
 }
 
-void DisplayManager::run() {
-    _engine = DamnCute::Core::getInstance();
+void DisplayManager::gameMode() {
 
-    _engine->menuMusic();
-    
-    menuMode();
-    while (_alive) {
-        update();
-        _engine->flushScene();
-        _engine->flushEvent();
-    }
-    /*_engine->freeAll();
-      _engine->createWin(1920, 1080, false);
-      GameMode();
-      update();
-      while (_alive) {
-      update();
-      _engine->flushScene();
-      _engine->flushEvent();
-      }*/
-}
-
-bool update() {
-    return (DamnCute::Core::getInstance()->getWindowStatus());
-}
-
-void gameMode(DamnCute::Core* engine) {
-
-    engine->gameMusic();
-    engine->setFPSDisplay(true);
+    _engine->gameMusic();
+    _engine->setFPSDisplay(true);
     ConfigFile *config = new ConfigFile(DEFAULT_CONFIG_FILE);
     DamnCute::Background* bg = new DamnCute::Background("../resources/decor009.jpg");
     bg->setScrollSpeed(-0.4, 0);
@@ -86,24 +59,63 @@ void gameMode(DamnCute::Core* engine) {
 
     config->parseConfigFile(player_one, player_two);
 
-    engine->addOnBg(bg);
-    engine->addObject(player_one);
-    engine->addObject(player_two);
-    engine->switchGameStatus();
+    _engine->addOnBg(bg);
+    _engine->addObject(player_one);
+    _engine->addObject(player_two);
+    _engine->switchGameStatus();
 }
 
 
-void runGame()
+void DisplayManager::Start(DisplayMode mode)
 {
-    DamnCute::Core* engine;
+    _mode = mode;
+    run();
+}
 
-    engine = DamnCute::Core::getInstance();
-    engine->freeAll();
-    //engine->createWin(1440, 900, false);
-    gameMode(engine);
-    while (update()) {
-        engine->flushScene();
-        engine->flushEvent();
+void DisplayManager::SwitchMode(DisplayMode mode)
+{
+    _mode = mode;
+    _init = false;
+}
+
+
+void DisplayManager::run()
+{
+    //_engine->menuMusic();
+    DamnCute::Core::getInstance()->createWin(_width, _height, _fullscreen);
+    _engine = DamnCute::Core::getInstance();
+    
+    init();
+    while (_alive) {
+        if (!_init)
+            init();
+        _engine->flushScene();
+        if (!_init)
+            continue;
+        _engine->flushEvent();
+        _alive = DamnCute::Core::getInstance()->getWindowStatus();
     }
-    //  exit(1);
+}
+
+void DisplayManager::init()
+{
+    if (_init)
+        return;
+
+    _engine->freeAll();
+
+    switch (_mode)
+    {
+        case MODE_MENU:
+            {
+                menuMode();
+                break;
+            }
+        case MODE_GAME:
+            {
+                gameMode();
+                break;
+            }
+    }
+    _init = true;
 }

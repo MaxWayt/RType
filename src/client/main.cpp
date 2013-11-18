@@ -14,9 +14,8 @@ int main(int ac, char** av) {
     d->run();
     */
 
-    Client client;
+    Client client(1920, 1080);
     client.Start();
-    client.InitializeGame(1, "127.0.0.1", "5000");
     client.Wait();
     return EXIT_SUCCESS;
 }
