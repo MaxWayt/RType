@@ -13,5 +13,5 @@ else()
     message("-- Debug: no")
 endif()
 
-add_subdirectory(dep/damncute)
+add_subdirectory(dep)
 add_subdirectory(src)
