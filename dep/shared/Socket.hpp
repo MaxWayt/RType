@@ -58,7 +58,7 @@ public:
     virtual ~Socket();
 
     bool listen(Protocoles proto, const char *port);
-    bool open(const char *protoName, const char *hostname, const char *port);
+    bool open(Protocoles proto, const char *hostname, const char *port);
     void close();
     bool read(char *buff, size_t len);
     void write(const char *buff, size_t len) const;
@@ -67,7 +67,7 @@ public:
     void recvfrom(char buff[], size_t size, SocketInfo& from) const;
     void sendto(char const buff[], size_t size, SocketInfo& dest);
 
-private:
+protected:
 #if defined(LINUX) || defined(OSX)
     int _sockfd;
 #else

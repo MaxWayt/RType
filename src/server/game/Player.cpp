@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Game.h"
+#include "Opcodes.h"
 
 #include <iostream>
 
@@ -11,9 +12,9 @@ Player::Player(Game* game, Socket::SocketInfo const& sockInfo, uint8 number, uin
 {
 }
 
-void Player::HandleReceive(Packet const* pkt)
+void Player::HandleReceive(::Packet const* pkt)
 {
-    Packet* recv = new Packet(*pkt);
+    ::Packet* recv = new ::Packet(*pkt);
     _recvQueue.add(recv);
 }
 
@@ -22,7 +23,7 @@ void Player::Update(uint32 const diff)
     uint32 size = _recvQueue.size();
     for (uint32 i = 0; i < size && !_recvQueue.empty(); ++i)
     {
-        Packet* pkt = _recvQueue.get();
+        ::Packet* pkt = _recvQueue.get();
         if (!pkt)
             continue;
 

@@ -113,6 +113,8 @@ Game::Game* Server::CreateNewGame()
         throw std::runtime_error("Max game count exceded");
 
     Game::GameConfig config;
+    for (uint32 i = 1; i <= MAX_PLAYERS; ++i)
+        config.playersToken[i - 1] = i;
     config.gameId = _GetNewGameId();
     if (config.gameId == 0)
         throw std::runtime_error("Fail to create new game, no space left");

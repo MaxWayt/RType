@@ -123,40 +123,31 @@ bool Socket::listen(Protocoles proto, const char *port)
     return true;
 }
 
-bool Socket::open(const char *protoName, const char *hostname, const char *port)
+bool Socket::open(Protocoles proto, const char *hostname, const char *port)
 {
-    struct protoent *proto;
-    struct addrinfo *addr;
-    struct addrinfo hints = {};
-
-    if ((proto = getprotobyname(protoName)) == NULL)
-        return false;
-    _sockfd = socket(AF_INET, SOCK_STREAM, proto->p_proto);
+    _sockfd = socket(AF_INET, protoDatas[proto].type, protoDatas[proto].p_proto);
 #if defined(LINUX) || defined(OSX)
     if (_sockfd == -1)
 #else
     if (_sockfd == INVALID_SOCKET)
 #endif // LINUX
-        return false;
-
-    hints.ai_family = AF_INET;
-    hints.ai_socktype = SOCK_STREAM;
-    hints.ai_protocol = proto->p_proto;
-
-    if (getaddrinfo(hostname, port, &hints, &addr) != 0)
     {
+        std::cerr << "Error while create socket: " << strerror(errno) << std::endl;
+        return false;
+    }
+
+    ::memset(&_sockIn, 0, sizeof(_sockIn));  
+    _sockIn.sin_family = AF_INET;  
+    _sockIn.sin_addr.s_addr = inet_addr(hostname);  
+    _sockIn.sin_port = htons(to<int>(port));  
+    
+    if (proto == PROTO_TCP && connect(_sockfd, (const struct sockaddr*)&_sockIn, sizeof(struct sockaddr_in)) != 0)
+    {
+        std::cerr << "Error while connect socket: " << strerror(errno) << std::endl;
         close();
         return false;
     }
 
-    if (connect(_sockfd, addr->ai_addr, sizeof(struct sockaddr)) != 0)
-    {
-        close();
-        freeaddrinfo(addr);
-        return false;
-    }
-
-    freeaddrinfo(addr);
     return true;
 }
 
@@ -244,5 +235,6 @@ void Socket::sendto(char const buff[], size_t size, Socket::SocketInfo& dest)
     socklen_t destlen;
 
     destlen = sizeof (struct sockaddr_in);
-    ::sendto(_sockfd, buff, size, 0, (struct sockaddr const*)&dest, destlen);
+    if (::sendto(_sockfd, buff, size, 0, (struct sockaddr const*)&dest, destlen) < 0)
+        std::cerr << "Socket::sendto : " << strerror(errno) << std::endl;
 }
