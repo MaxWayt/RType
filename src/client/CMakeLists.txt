@@ -24,18 +24,22 @@ set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${DEBUG_FLAGS} -std=
 
 file(GLOB_RECURSE source_files *.cpp *.h *.hpp *.hh)
 file(GLOB_RECURSE source_actions Actions/*.cpp Actions/*.h Actions/*.hpp Actions/*.hh)
+file(GLOB_RECURSE source_game game/*.cpp game/*.h game/*.hpp game/*.hh)
 
 set(rtype_client_SRCS
     ${rtype_client_SRCS}
     ${source_files}
     ${source_actions}
+    ${source_game}
 )
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/Actions
+    ${CMAKE_CURRENT_SOURCE_DIR}/game
     ${CMAKE_SOURCE_DIR}/dep
     ${CMAKE_SOURCE_DIR}/dep/damncute
+    ${CMAKE_SOURCE_DIR}/dep/shared
     ${SFML_INCLUDE_DIR}
 )
 
@@ -46,6 +50,7 @@ link_directories(
 set(ALL_LIBS
     ${SFML_LIBRARY}
     -ldamncute
+    -lshared
 )
 
 set(CLIENT_NAME "rtype-client")

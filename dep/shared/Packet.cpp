@@ -1,8 +1,6 @@
 #include "Packet.hpp"
 #include <cstring>
-
-namespace Game
-{
+#include <iostream>
 
 Packet::Packet(char buff[]) :
     _buff(), _wpos(2), _rpos(2)
@@ -10,7 +8,7 @@ Packet::Packet(char buff[]) :
     ::memcpy(_buff, buff, PACKET_SIZE);
 }
 
-Packet::Packet(Opcodes op) :
+Packet::Packet(uint16 op) :
     _buff(), _wpos(0), _rpos(2)
 {
     ::memset(_buff, 0, PACKET_SIZE);
@@ -86,7 +84,7 @@ Packet& Packet::operator<<(double value)
 
 Packet& Packet::operator<<(std::string const& value)
 {
-    append((char const*)value.c_str(), value.length());
+    append((uint8 const*)value.c_str(), value.length());
     append((char)0);
     return *this;
 }
@@ -173,11 +171,11 @@ Packet& Packet::operator>>(double& value)
 
 uint16 Packet::GetOpcode() const
 {
-    return read<uint16>(2);
+    return read<uint16>(0);
 }
 
 
-void Packet::append(const char* data, uint32 size)
+void Packet::append(const uint8* data, uint32 size)
 {
     if (PACKET_SIZE < _wpos + size)
         return;
@@ -185,4 +183,15 @@ void Packet::append(const char* data, uint32 size)
     _wpos += size;
 }
 
+void Packet::dumpHex() const
+{
+    for (uint32 i = 1; i <= 32; ++i)
+    {
+        std::cout << uint32(_buff[i - 1]);
+        if (i % 4 == 0)
+            std::cout << std::endl;
+        else
+            std::cout << " - ";
+    }
+    std::cout << std::endl;
 }

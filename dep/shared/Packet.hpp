@@ -2,14 +2,10 @@
 # define PACKET_H_
 
 #include "SharedDefines.h"
-#include "Opcodes.h"
 #include <cstddef>
 #include <string>
 
 #define PACKET_SIZE 256
-
-namespace Game
-{
 
 inline bool my_is_big_endian()
 {
@@ -42,7 +38,7 @@ class Packet
 {
 public:
     Packet(char buff[]);
-    Packet(Opcodes op);
+    Packet(uint16 op);
 
     char const* data() const { return _buff; }
     size_t size() const { return PACKET_SIZE; }
@@ -75,11 +71,13 @@ public:
     Packet& operator>>(float& value);
     Packet& operator>>(double& value);
 
+    void dumpHex() const;
+
 private:
     template<class T>
     void append(T value)
     {
-        append((char*)&value, sizeof(value));
+        append((uint8*)&value, sizeof(value));
     }
 
     template<class T>
@@ -97,13 +95,11 @@ private:
         return swap_endian(val);
     }
 
-    void append(const char* data, uint32 size);
+    void append(const uint8* data, uint32 size);
 
     char _buff[PACKET_SIZE];
     uint16 _wpos;
     uint16 _rpos;
 };
-
-}
 
 #endif /* !PACKET_H_ */

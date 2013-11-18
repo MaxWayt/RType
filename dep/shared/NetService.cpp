@@ -27,13 +27,14 @@ void NetService::operator()()
 {
     fd_set readfds;
     FD_ZERO(&readfds);
+    struct timeval tv = {0, 1000};
 
     while (!_isStopped())
     {
         int nready = 0;
         ::memcpy(&readfds, &_masterfd, sizeof(_masterfd));
 
-        if(-1 == (nready = select(_maxfd + 1, &readfds, NULL, NULL, NULL)))
+        if(-1 == (nready = select(_maxfd + 1, &readfds, NULL, NULL, &tv)))
         {
             std::cerr << "select fail, return -1" << std::endl;
             continue;
