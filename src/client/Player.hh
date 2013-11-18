@@ -19,11 +19,15 @@ class Player : public DamnCute::APlayer {
         virtual ~Player() = default;
         Player& operator=(const Player&) = delete;
         virtual void collisionHandler(DamnCute::APhysics* other) {
-            DamnCute::Bullet* b = (DamnCute::Bullet*)other;
 
-            if (!other->isDestructible() && preciseDetection(getPlayer(), b->getSprite())) {
+            DamnCute::Bullet* b = (DamnCute::Bullet*)other;
+            if (other->getType() == 4) {
+                std::cout << "argh player is dead!" << std::endl;
                 b->setLife(0);
             }
+            /*if (!other->isDestructible() && preciseDetection(getPlayer(), b->getSprite())) {
+                b->setLife(0);
+            }*/
         }
 
         void levelUp() {

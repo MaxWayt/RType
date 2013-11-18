@@ -27,9 +27,11 @@ void MonsterEngine::update(sf::RenderTarget* w_ptr) {
 
 void MonsterEngine::collisionHandler(DamnCute::APhysics* other) {
 
-    //death condition
-    _life--;
-    ((DamnCute::Bullet*)other)->setLife(0);
+    // 5 == player bullets
+    if (other->getType() == 5) {
+        _life--;
+        ((DamnCute::Bullet*)other)->setLife(0);
+    }
 }
 
 void MonsterEngine::shoot() {
