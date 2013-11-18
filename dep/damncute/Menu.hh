@@ -97,7 +97,7 @@ namespace DamnCute {
                     std::function<void()> _returnFunction;
             };
         private:
-            unsigned int _characterSize=20;
+            unsigned int _characterSize=30;
             sf::Font _font;
             std::string _font_path = "../resources/font.ttf";
             bool _alive;

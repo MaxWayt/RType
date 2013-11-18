@@ -22,7 +22,7 @@ DamnCute::Menu::SubMenu::SubMenu(sf::Text &text, const std::string &optionName, 
 void	DamnCute::Menu::SubMenu::update(sf::RenderTarget* w_ptr) {
     if (_alive == true)
     {
-        w_ptr->draw(_text); //Rajouter le txt au bouton
+        w_ptr->draw(_text);
         w_ptr->draw(*(*_it));
     }
 }
@@ -39,7 +39,7 @@ DamnCute::Menu::Button::Button(const std::string &Name, sf::Text &text, int x, i
     _y = y;
     _s.setTexture(_tex);
     _s.setPosition(x, y);
-    _text.setPosition(x+40, y+90);
+    _text.setPosition(x + 10, y + 14);
 }
 
 void	DamnCute::Menu::Button::update(sf::RenderTarget* w_ptr) {
@@ -115,9 +115,9 @@ void	DamnCute::Menu::setTextureCursor(const std::string& filename, int x, int y)
 }
 
 void	DamnCute::Menu::addButton(int x, int y, const std::string& text, std::function<void()> const& func) {
-    sf::Text test(text, _font, _characterSize);
 
-    test.setColor(sf::Color::Black);
+    sf::Text test(text, _font, _characterSize);
+    test.setColor(sf::Color::White);
     Button* b = new Button(text, test, x, y, _tex, func);
     _buttons.push_back(b);
     Core::getInstance()->addObject(b);
@@ -130,6 +130,7 @@ void	DamnCute::Menu::addSubMenu(const std::string &Button, const std::string &Op
     std::vector<sf::Text *> listoption2;
     sf::Text *tmp;
     test.setPosition(x, y);
+    test.setColor(sf::Color::White);
     for (std::vector<std::string>::iterator it = listOption.begin() ; it != listOption.end(); ++it) {
         tmp = new sf::Text(*it, _font, _characterSize);
         tmp->setPosition(x+15, y + 25);
@@ -144,7 +145,6 @@ void	DamnCute::Menu::addSubMenu(const std::string &Button, const std::string &Op
 
 void	DamnCute::Menu::MoveDown()
 {
-    std::cout << "MoveDown " << std::endl;
     if (_alive)
     {
         if (_itButtons + 1 != _buttons.end())
@@ -158,7 +158,6 @@ void	DamnCute::Menu::MoveDown()
 
 void	DamnCute::Menu::MoveUp()
 {
-    std::cout << "Moveup" << std::endl;
     if (_alive)
     {
         if (_itButtons != _buttons.begin())
@@ -185,7 +184,7 @@ void	DamnCute::Menu::MoveReturn()
 {
     if (_alive)
     {
-        if( (*_itButtons)->getName() == "start")
+        if( (*_itButtons)->getName() == "Start game")
         {
             if ((*_itButtons)->hasReturnFunction())
                 (*_itButtons)->callReturnFunction();
