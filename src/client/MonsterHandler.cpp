@@ -4,7 +4,13 @@ MonsterHandler::MonsterHandler(std::string soName, int nbrMonster, int lifetime,
 
     std::vector<MonsterLoader*> monster;
     for (size_t i = 0; i < nbrMonster; ++i) {
-        monster.push_back(new MonsterLoader(std::string("./" + soName + ".so")));
+#ifdef OSX
+        monster.push_back(new MonsterLoader(std::string("../lib/lib" + soName + ".dylib")));
+#elif defined(LINUX)
+        monster.push_back(new MonsterLoader(std::string("../lib/lib" + soName + ".so")));
+#else
+        monster.push_back(new MonsterLoader(std::string("../lib/lib" + soName + ".dll")));
+#endif
         DamnCute::sCore->addObject(monster[i]->load(randomize(limitX), randomize(limitY)));
     }
 }
