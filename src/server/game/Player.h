@@ -24,7 +24,7 @@ public:
 
 
     // Handlers
-    void HandlePosition(Packet* pkt);
+    void HandlePosition(::Packet* pkt);
 
 private:
     Socket::SocketInfo _sockInfo;

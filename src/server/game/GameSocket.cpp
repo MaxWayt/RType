@@ -1,6 +1,7 @@
 #include "GameSocket.h"
 #include "Game.h"
 #include "Packet.hpp"
+#include "Opcodes.h"
 #include "ConfigMgr.h"
 
 #include <iostream>
@@ -29,7 +30,7 @@ void GameSocket::HandleReceive()
         Socket::SocketInfo remote;
         char buff[PACKET_SIZE];
         recvfrom(buff, PACKET_SIZE, remote);
-        Packet recvPkt(buff);
+        ::Packet recvPkt(buff);
 
 
         std::string const& hostIdent = remote.GetHostIdentifier();
@@ -41,9 +42,10 @@ void GameSocket::HandleReceive()
             auto itr = _waitingHost.find(hostIdent);
             if (itr == _waitingHost.end())
             {
+                std::cout << "New connection from " << hostIdent << std::endl;
                 _waitingHost[hostIdent] = time(NULL) + sConfig->GetIntDefault("Game.Socket.Timeout", 10);
                 // send to
-                Packet pkt(SMSG_GREETING);
+                ::Packet pkt(SMSG_GREETING);
                 sendto(pkt.data(), pkt.size(), remote);
             }
             else
@@ -68,17 +70,20 @@ void GameSocket::_CleanWaitingHost()
     for(; itr != _waitingHost.end(); )
     {
         if (currTime > itr->second)
+        {
+            std::cout << "Drop client " << itr->first << std::endl;
             _waitingHost.erase(itr++);
+        }
         else
             ++itr;
     }
 }
 
-void GameSocket::_HandlePlayerKey(Packet& pkt, Socket::SocketInfo const& sockInfo)
+void GameSocket::_HandlePlayerKey(::Packet& pkt, Socket::SocketInfo const& sockInfo)
 {
     if (pkt.GetOpcode() != CMSG_PLAYER_KEY)
     {
-        std::cerr << "Error: invalid key packet" << std::endl;
+        std::cerr << "Error: invalid key packet (" << pkt.GetOpcode() << ")" << std::endl;
         return;
     }
 
@@ -87,7 +92,7 @@ void GameSocket::_HandlePlayerKey(Packet& pkt, Socket::SocketInfo const& sockInf
 
     if (!_game->IsValidePlayerKey(key))
     {
-        std::cerr << "Error: player try to connect with an invalid key" << std::endl;
+        std::cerr << "Error: player try to connect with an invalid key (" << key << ")" << std::endl;
         return;
     }
 
@@ -95,6 +100,8 @@ void GameSocket::_HandlePlayerKey(Packet& pkt, Socket::SocketInfo const& sockInf
 
     Player* player = new Player(_game, sockInfo, number, key);
     _game->AddPlayer(player);
+
+    std::cout << "New registered player " << player->GetHostIdentifier() << std::endl;
 }
 
 }

@@ -1,11 +1,6 @@
 #ifndef OPCODES_H_
 # define OPCODES_H_
 
-#include "Packet.hpp"
-
-namespace Game
-{
-
 enum Opcodes
 {
     SMSG_GREETING               = 0,
@@ -15,7 +10,8 @@ enum Opcodes
 
 };
 
-class Player;
+class Client;
+class Packet;
 
 class Opcode
 {
@@ -23,11 +19,9 @@ public:
     struct OpcodeHandler
     {
         Opcodes op;
-        void (Player::*handler)(Packet*);
+        void (Client::*handler)(Packet*);
     };
     static OpcodeHandler const* GetHandler(Opcodes op);
 };
-
-}
 
 #endif /* !OPCODES_H_ */
