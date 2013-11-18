@@ -1,3 +1,4 @@
+Find_Package(SFML REQUIRED)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${DEBUG_FLAGS} -std=c++0x")
 
@@ -21,25 +22,18 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${DEBUG_FLAGS} -std=c++0x"
 set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${DEBUG_FLAGS} -std=c++0x")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${DEBUG_FLAGS} -std=c++0x")
 
-file(GLOB_RECURSE source_files *.cpp *.h *.hpp)
-file(GLOB_RECURSE source_game game/*.cpp game/*.h game/*.hpp)
-file(GLOB_RECURSE source_utils utils/*.cpp utils/*.h utils/*.hpp)
-file(GLOB_RECURSE source_config config/*.cpp config/*.h config/*.hpp)
+file(GLOB_RECURSE source_file *.cpp *.h *.hpp *.hh)
 
-set(rtype_server_SRCS
-    ${rtype_server_SRCS}
-    ${source_files}
-    ${source_utils}
-    ${source_game}
-    ${source_config}
+set(monsters_SRCS
+    ${monsters_SRCS}
+    ${source_file}
 )
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/utils
-    ${CMAKE_CURRENT_SOURCE_DIR}/game
-    ${CMAKE_CURRENT_SOURCE_DIR}/config
-    ${CMAKE_SOURCE_DIR}/dep/shared
+    ${CMAKE_SOURCE_DIR}/dep/damncute
+    ${CMAKE_SOURCE_DIR}/dep
+    ${SFML_INCLUDE_DIR}
 )
 
 link_directories(
@@ -47,18 +41,19 @@ link_directories(
 )
 
 set(ALL_LIBS
-    -lshared
+    ${SFML_LIBRARY}
+    -ldamncute
 )
 
-set(SERVER_NAME "rtype-server")
-set(SERVER_EXECUTABLE_NAME ${SERVER_NAME}-bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
 
-add_executable(${SERVER_EXECUTABLE_NAME}
-    ${rtype_server_SRCS}
+set(ZIZI_LIBRARY_NAME "zizi")
+
+add_library(
+    ${ZIZI_LIBRARY_NAME}
+    SHARED
+    ${monsters_SRCS}
 )
+target_link_libraries(${ZIZI_LIBRARY_NAME} ${ALL_LIBS})
 
-target_link_libraries(${SERVER_EXECUTABLE_NAME} ${ALL_LIBS})
-
-install_targets(/bin ${SERVER_EXECUTABLE_NAME})
-install_programs(/bin ${SERVER_NAME})
-install_files(/etc ${SERVER_NAME}.conf.dist)
+install(TARGETS ${ZIZI_LIBRARY_NAME} DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")

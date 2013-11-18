@@ -4,7 +4,13 @@ MonsterHandler::MonsterHandler(std::string soName, int nbrMonster, int lifetime,
     : _lifetime(lifetime) {
 
         for (size_t i = 0; i < nbrMonster; ++i) {
-            _monster.push_back(new MonsterLoader(std::string("./" + soName + ".so")));
+#ifdef OSX
+            _monster.push_back(new MonsterLoader(std::string("../lib/lib" + soName + ".dylib")));
+#elif defined(LINUX)
+            _monster.push_back(new MonsterLoader(std::string("../lib/lib" + soName + ".so")));
+#else
+            _monster.push_back(new MonsterLoader(std::string("../lib/lib" + soName + ".dll")));
+#endif
             DamnCute::sCore->addObject(_monster[i]->load(randomize(limitX), randomize(limitY)));
         }
     }
@@ -19,10 +25,17 @@ int MonsterHandler::randomize(std::pair<int, int> pair) {
 
 void MonsterHandler::deleteMonstersAtTime() {
 
+    for (size_t i = 0; i < _monster.size(); ++i) {
+        if (_monster[i]->getMonster()->isDead() == true) {
+            DamnCute::sCore->delObject(_monster[i]->getMonster());
+            _monster.erase(_monster.begin() + i);
+        }
+    }
+
     if (_lifetime > 0)
         _lifetime--;
 
-    if (_lifetime == 0) {
+    if (_lifetime == 0 && _monster.size() > 0) {
 
         for (size_t i = 0; i < _monster.size(); ++i) {
             DamnCute::sCore->delObject(_monster[i]->getMonster());

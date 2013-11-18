@@ -2,7 +2,7 @@
 #include "APlayer.hh"
 
 DamnCute::APlayer::APlayer(const std::string& texfile, float x, float y, int nb, int speed) :
-    APhysics((int)x, (int)y, true), _tex(), _speed(speed), _nbPlayer(nb)
+    APhysics((int)x, (int)y, true, 1), _tex(), _speed(speed), _nbPlayer(nb)
 {
     _tex.loadFromFile(texfile);
     _entity.setTexture(_tex);

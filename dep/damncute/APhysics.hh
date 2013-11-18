@@ -77,6 +77,10 @@ namespace DamnCute {
 		return _type;
 	    }
 
+	    inline void setType(unsigned int id) {
+		_type = id;
+	    }
+
 	    inline bool isDestructible() {
 		return _destructible;
 	    }

@@ -1,4 +1,3 @@
-
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${DEBUG_FLAGS} -std=c++0x")
 
 if ( APPLE )
@@ -21,44 +20,30 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${DEBUG_FLAGS} -std=c++0x"
 set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${DEBUG_FLAGS} -std=c++0x")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${DEBUG_FLAGS} -std=c++0x")
 
-file(GLOB_RECURSE source_files *.cpp *.h *.hpp)
-file(GLOB_RECURSE source_game game/*.cpp game/*.h game/*.hpp)
-file(GLOB_RECURSE source_utils utils/*.cpp utils/*.h utils/*.hpp)
-file(GLOB_RECURSE source_config config/*.cpp config/*.h config/*.hpp)
+file(GLOB_RECURSE source_files *.cpp *.h *.hpp *.hh)
 
-set(rtype_server_SRCS
-    ${rtype_server_SRCS}
+set(shared_SRCS
+    ${shared_SRCS}
     ${source_files}
-    ${source_utils}
-    ${source_game}
-    ${source_config}
 )
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/utils
-    ${CMAKE_CURRENT_SOURCE_DIR}/game
-    ${CMAKE_CURRENT_SOURCE_DIR}/config
-    ${CMAKE_SOURCE_DIR}/dep/shared
-)
-
-link_directories(
-    ${CMAKE_SOURCE_DIR}/lib
 )
 
 set(ALL_LIBS
-    -lshared
+    -lpthread
 )
 
-set(SERVER_NAME "rtype-server")
-set(SERVER_EXECUTABLE_NAME ${SERVER_NAME}-bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
 
-add_executable(${SERVER_EXECUTABLE_NAME}
-    ${rtype_server_SRCS}
+set(SHARED_LIBRARY_NAME "shared")
+
+add_library(
+    ${SHARED_LIBRARY_NAME}
+    SHARED
+    ${shared_SRCS}
 )
+target_link_libraries(${SHARED_LIBRARY_NAME} ${ALL_LIBS})
 
-target_link_libraries(${SERVER_EXECUTABLE_NAME} ${ALL_LIBS})
-
-install_targets(/bin ${SERVER_EXECUTABLE_NAME})
-install_programs(/bin ${SERVER_NAME})
-install_files(/etc ${SERVER_NAME}.conf.dist)
+install(TARGETS ${SHARED_LIBRARY_NAME} DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
