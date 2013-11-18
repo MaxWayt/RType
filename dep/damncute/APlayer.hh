@@ -11,7 +11,10 @@
 
 namespace DamnCute
 {
-
+#ifdef __PLAYER_PHYSIC_ID__
+#undef __PLAYER_PHYSIC_ID__
+#endif
+#define __PLAYER_PHYSIC_ID__ 1
     class APlayer : public IRenderable, public APhysics
     {
 
