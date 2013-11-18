@@ -4,13 +4,15 @@
 #include "Thread.hpp"
 #include "UDPSocket.h"
 #include "LockedQueue.hpp"
+#include "DisplayManager.hh"
 
 #define DEFAULT_SLEEP_TIME 50
 
 class Client : public Thread
 {
 public:
-    Client();
+    Client(int32 width, int32 height, bool fullscreen = false);
+    virtual ~Client();
 
     void operator()();
 
@@ -27,7 +29,6 @@ public:
 
     void UDPSend(Packet const& pkt);
 
-
     // Handlers
 
     void HandleGreeting(Packet* recvPkt);
@@ -36,6 +37,7 @@ private:
     UDPSocket _udpSocket;
     uint32 _clientKey;
     LockedQueue<Packet> _recvQueue;
+    DisplayManager _display;
 
 };
 
