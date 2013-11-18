@@ -21,6 +21,7 @@ class MonsterLoader {
         ~MonsterLoader();
 
         DamnCute::IMonster* load(int, int);
+        DamnCute::IMonster* getMonster();
 
 };
 

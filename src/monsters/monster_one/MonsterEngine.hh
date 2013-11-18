@@ -48,7 +48,7 @@ class MonsterEngine : public DamnCute::IMonster, public DamnCute::APhysics {
 
     public:
         MonsterEngine(int, int);
-        ~MonsterEngine() = default;
+        ~MonsterEngine();
 
         void update(sf::RenderTarget* w_ptr);
 

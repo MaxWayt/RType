@@ -10,6 +10,11 @@ MonsterEngine::MonsterEngine(int row, int col) :
     shoot();
 }
 
+MonsterEngine::~MonsterEngine() {
+
+    _engine->delObject(_pattern);
+}
+
 void MonsterEngine::update(sf::RenderTarget* w_ptr) {
 
     updateQuadTreePos(_sprite.getPosition().x, _sprite.getPosition().y);
@@ -24,7 +29,6 @@ void MonsterEngine::collisionHandler(DamnCute::APhysics* other) {
 
     _life--;
     ((DamnCute::Bullet*)other)->setLife(0);
-    //std::cout << "collision avec un monstre" << std::endl;
 }
 
 void MonsterEngine::shoot() {
