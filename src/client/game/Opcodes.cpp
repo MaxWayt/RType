@@ -9,6 +9,7 @@ Opcode::OpcodeHandler const* Opcode::GetHandler(Opcodes op)
         { SMSG_CONNECT_RESULT, &Client::HandleConnectResult },
         { SMSG_PLAYER_POSITION, &Client::HandlePlayerPosition },
         { SMSG_ADD_PLAYER, &Client::HandleAddPlayer         },
+        { SMSG_REMOVE_PLAYER, &Client::HandleRemovePlayer },
         { OPCODE_COUNT, NULL                                }
 
     };

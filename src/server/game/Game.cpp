@@ -109,7 +109,7 @@ bool Game::IsValidePlayerKey(uint32 key) const
     return false;
 }
 
-uint8 Game::GetPlayerNumberByKey(uint32 key) const
+uint32 Game::GetPlayerNumberByKey(uint32 key) const
 {
     for (uint8 i = 0; i < MAX_PLAYERS; ++i)
         if (_config.playersToken[i] == key)
@@ -135,14 +135,14 @@ void Game::_ProcessAddedPlayer()
     for (auto itr = _playerAddedMap.begin(); itr != _playerAddedMap.end(); ++itr)
     {
         Packet currPkt(SMSG_ADD_PLAYER);
-        currPkt << itr->second->GetKey();
+        currPkt << itr->second->GetId();
         currPkt << itr->second->GetPositionX();
         currPkt << itr->second->GetPositionY();
         for (auto itr2 = _playerMap.begin(); itr2 != _playerMap.end(); ++itr2)
         {
             itr2->second->Send(currPkt);
             Packet newPkt(SMSG_ADD_PLAYER);
-            newPkt << itr2->second->GetKey();
+            newPkt << itr2->second->GetId();
             newPkt << itr2->second->GetPositionX();
             newPkt << itr2->second->GetPositionY();
             itr->second->Send(newPkt);
@@ -158,7 +158,7 @@ void Game::_ProcessRemovedPlayer()
     for (auto itr = _playerRemovedMap.begin(); itr != _playerRemovedMap.end(); ++itr)
     {
         Packet currPkt(SMSG_REMOVE_PLAYER);
-        currPkt << itr->second->GetKey();
+        currPkt << itr->second->GetId();
         _playerMap.erase(itr->first);
         for (auto itr2 = _playerMap.begin(); itr2 != _playerMap.end(); ++itr2)
             itr2->second->Send(currPkt);

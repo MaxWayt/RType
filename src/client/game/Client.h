@@ -5,16 +5,18 @@
 #include "UDPSocket.h"
 #include "LockedQueue.hpp"
 #include "DisplayManager.hh"
+#include "Singleton.hpp"
 
 #define DEFAULT_SLEEP_TIME 50
 
-class Client : public Thread
+class Client : public Thread, public Singleton<Client>
 {
 public:
-    Client(int32 width, int32 height, bool fullscreen = false);
+    Client();
     virtual ~Client();
 
     void operator()();
+    void Initialize(int32 width, int32 height, bool fullscreen);
 
     void Start(uint32 clientId);
     void Stop();
@@ -39,13 +41,16 @@ public:
     void HandleConnectResult(Packet* recvPkt);
     void HandlePlayerPosition(Packet* recvPkt);
     void HandleAddPlayer(Packet* recvPkt);
+    void HandleRemovePlayer(Packet* recvPkt);
 private:
     NetService _service;
     UDPSocket _udpSocket;
     uint32 _clientKey;
     LockedQueue<Packet> _recvQueue;
-    DisplayManager _display;
+    DisplayManager* _display;
 
 };
+
+#define sClient Client::instance()
 
 #endif /* !CLIENT_H_ */

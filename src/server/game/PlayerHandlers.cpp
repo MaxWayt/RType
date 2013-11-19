@@ -12,7 +12,7 @@ void Player::HandlePosition(Packet* pkt)
 
     std::cout << "RECV POS : " << _x << " - " << _y << std::endl;
 
-    _game->BroadcastPlayerPositionChange(_key, _x, _y);
+    _game->BroadcastPlayerPositionChange(GetId(), _x, _y);
 }
 
 }

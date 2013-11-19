@@ -57,12 +57,12 @@ void DisplayManager::gameMode() {
     DamnCute::APlayer* player_two = new Player<1>("../resources/ship_blue.png", 100, 750);
 
     */
-    MonsterHandler* mh = new MonsterHandler("zizi", 1000, 3000, std::make_pair(2000, 2400), std::make_pair(0, 1000));
+    //MonsterHandler* mh = new MonsterHandler("zizi", 100, 3000, std::make_pair(2000, 2400), std::make_pair(0, 1000));
 
     //config->parseConfigFile(player_one, player_two);
 
     _engine->addOnBg(bg);
-    _engine->addObject(mh);
+    //_engine->addObject(mh);
     //_engine->addObject(player_one);
     //_engine->addObject(player_two);
     _engine->switchGameStatus();

@@ -38,7 +38,7 @@ public:
     Player const* GetPlayer(std::string const& hostIdent) const;
 
     bool IsValidePlayerKey(uint32 key) const;
-    uint8 GetPlayerNumberByKey(uint32 key) const;
+    uint32 GetPlayerNumberByKey(uint32 key) const;
 
     void AddPlayer(Player* player); // Called from _service thread !!!!
     void RemovePlayer(Player* player); // Can be call from _service thread
