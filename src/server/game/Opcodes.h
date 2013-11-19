@@ -14,6 +14,9 @@ enum Opcodes
     CMSG_PLAYER_POSITION        = 3,
     SMSG_PLAYER_POSITION        = 4,
     SMSG_ADD_PLAYER             = 5,
+    SMSG_PING                   = 6,
+    CMSG_PONG                   = 7,
+    SMSG_REMOVE_PLAYER          = 8,
     OPCODE_COUNT
 
 };

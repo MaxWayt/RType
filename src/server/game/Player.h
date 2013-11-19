@@ -26,6 +26,8 @@ public:
     float GetPositionX() const { return _x; }
     float GetPositionY() const { return _y; }
 
+    bool IsLoginOut() const { return _loginOut; }
+
 
     // Handlers
     void HandlePosition(::Packet* pkt);
@@ -39,6 +41,11 @@ private:
 
     float _x;
     float _y;
+
+    uint32 _pingTimer;
+    uint32 _lastPing;
+
+    bool _loginOut;
 };
 
 }

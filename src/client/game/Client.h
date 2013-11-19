@@ -26,7 +26,7 @@ public:
 
     void Update(uint32 const diff);
 
-    void UDPHandleReceive(Packet* recvPkt);
+    void UDPHandleReceive(Packet const* recvPkt);
     void UpdateIncomingPackets();
 
     void UDPSend(Packet const& pkt);

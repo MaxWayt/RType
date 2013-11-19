@@ -11,7 +11,7 @@ namespace Game
 
 Game::Game(GameConfig const& conf) :
     _config(conf), _service(), _sock(this, _service), _playerMap(),
-    _playerAddedMap(), _playerAddedMutex()
+    _playerAddedMap(), _playerRemovedMap(), _playerAddedMutex(), _playerRemovedMutex()
 {
 }
 
@@ -72,7 +72,9 @@ void Game::Update(uint32 const diff)
     _ProcessAddedPlayer();
 //    std::cout << "UPDATE GAME " << _config.gameId << std::endl;
     for (auto itr = _playerMap.begin(); itr != _playerMap.end(); ++itr)
-        itr->second->Update(diff);
+        if (!itr->second->IsLoginOut())
+            itr->second->Update(diff);
+    _ProcessRemovedPlayer();
 }
 
 Player* Game::GetPlayer(std::string const& hostIdent)
@@ -121,6 +123,12 @@ void Game::AddPlayer(Player* player)
     _playerAddedMap[player->GetHostIdentifier()] = player;
 }
 
+void Game::RemovePlayer(Player* player)
+{
+    ScopLock lock(_playerRemovedMutex);
+    _playerRemovedMap[player->GetHostIdentifier()] = player;
+}
+
 void Game::_ProcessAddedPlayer()
 {
     ScopLock lock(_playerAddedMutex);
@@ -142,6 +150,20 @@ void Game::_ProcessAddedPlayer()
         _playerMap[itr->first] = itr->second;
     }
     _playerAddedMap.clear();
+}
+
+void Game::_ProcessRemovedPlayer()
+{
+    ScopLock lock(_playerRemovedMutex);
+    for (auto itr = _playerRemovedMap.begin(); itr != _playerRemovedMap.end(); ++itr)
+    {
+        Packet currPkt(SMSG_REMOVE_PLAYER);
+        currPkt << itr->second->GetKey();
+        _playerMap.erase(itr->first);
+        for (auto itr2 = _playerMap.begin(); itr2 != _playerMap.end(); ++itr2)
+            itr2->second->Send(currPkt);
+    }
+    _playerRemovedMap.clear();
 }
 
 
