@@ -19,8 +19,12 @@ public:
     uint32 GetKey() const { return _key; }
 
     void HandleReceive(Packet const* pkt);
+    void Send(Packet const& pkt);
 
     void Update(uint32 const diff);
+
+    float GetPositionX() const { return _x; }
+    float GetPositionY() const { return _y; }
 
 
     // Handlers
@@ -32,6 +36,9 @@ private:
     uint8 _number;
     LockedQueue<Packet> _recvQueue;
     uint32 _key;
+
+    float _x;
+    float _y;
 };
 
 }

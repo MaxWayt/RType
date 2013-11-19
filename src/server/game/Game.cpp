@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "ConfigMgr.h"
+#include "Opcodes.h"
 
 #include <Utils.hpp>
 #include <iostream>
@@ -70,6 +71,8 @@ void Game::Update(uint32 const diff)
 {
     _ProcessAddedPlayer();
 //    std::cout << "UPDATE GAME " << _config.gameId << std::endl;
+    for (auto itr = _playerMap.begin(); itr != _playerMap.end(); ++itr)
+        itr->second->Update(diff);
 }
 
 Player* Game::GetPlayer(std::string const& hostIdent)
@@ -122,8 +125,43 @@ void Game::_ProcessAddedPlayer()
 {
     ScopLock lock(_playerAddedMutex);
     for (auto itr = _playerAddedMap.begin(); itr != _playerAddedMap.end(); ++itr)
+    {
+        Packet currPkt(SMSG_ADD_PLAYER);
+        currPkt << itr->second->GetKey();
+        currPkt << itr->second->GetPositionX();
+        currPkt << itr->second->GetPositionY();
+        for (auto itr2 = _playerMap.begin(); itr2 != _playerMap.end(); ++itr2)
+        {
+            itr2->second->Send(currPkt);
+            Packet newPkt(SMSG_ADD_PLAYER);
+            newPkt << itr2->second->GetKey();
+            newPkt << itr2->second->GetPositionX();
+            newPkt << itr2->second->GetPositionY();
+            itr->second->Send(newPkt);
+        }
         _playerMap[itr->first] = itr->second;
+    }
     _playerAddedMap.clear();
 }
 
+
+void Game::BroadcastPlayerPositionChange(uint32 playerId, float x, float y) const
+{
+    Packet pkt(SMSG_PLAYER_POSITION);
+    pkt << uint32(playerId);
+    pkt << x;
+    pkt << y;
+
+    for (auto itr = _playerMap.begin(); itr != _playerMap.end(); ++itr)
+        if (itr->second->GetKey() != playerId)
+            itr->second->Send(pkt);
+}
+
+void Game::SendTo(Packet const& pkt, Socket::SocketInfo const& remote)
+{
+    _sock.sendto(pkt.data(), pkt.size(), remote);
+}
+
 } // namespace Game
+
+

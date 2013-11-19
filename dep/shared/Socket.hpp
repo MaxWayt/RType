@@ -65,7 +65,7 @@ public:
     void async_read(std::function<void()> fct);
     Socket* accept() const;
     void recvfrom(char buff[], size_t size, SocketInfo& from) const;
-    void sendto(char const buff[], size_t size, SocketInfo& dest);
+    void sendto(char const buff[], size_t size, SocketInfo const& dest);
 
 protected:
 #if defined(LINUX) || defined(OSX)

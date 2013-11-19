@@ -230,7 +230,7 @@ void Socket::recvfrom(char buff[], size_t size, Socket::SocketInfo& from) const
         throw std::runtime_error(strerror(errno));
 }
 
-void Socket::sendto(char const buff[], size_t size, Socket::SocketInfo& dest)
+void Socket::sendto(char const buff[], size_t size, Socket::SocketInfo const& dest)
 {
     socklen_t destlen;
 

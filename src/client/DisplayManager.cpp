@@ -3,7 +3,6 @@
 #include <Menu.hh>
 #include <Core/Core.hh>
 #include "DisplayManager.hh"
-#include "Player.hh"
 #include "ConfigFile.hh"
 #include "MonsterHandler.hh"
 
@@ -12,7 +11,8 @@
 void runGame();
 
 DisplayManager::DisplayManager(Client* client, int width, int height, bool fullscreen) : _alive(true), _mode(MODE_MENU), _init(false),
-    _width(width), _height(height), _fullscreen(fullscreen), _client(client)
+    _width(width), _height(height), _fullscreen(fullscreen), _client(client),
+    _players()
 {
 }
 
@@ -52,16 +52,18 @@ void DisplayManager::gameMode() {
     DamnCute::Background* bg = new DamnCute::Background("../resources/decor009.jpg");
     bg->setScrollSpeed(-0.4, 0);
 
+    /*
     DamnCute::APlayer* player_one = new Player<0>("../resources/ship_red.png", 100, 550);
     DamnCute::APlayer* player_two = new Player<1>("../resources/ship_blue.png", 100, 750);
 
+    */
     MonsterHandler* mh = new MonsterHandler("zizi", 20, 1000, std::make_pair(2000, 2500), std::make_pair(10, 1000));
 
-    config->parseConfigFile(player_one, player_two);
+    //config->parseConfigFile(player_one, player_two);
 
     _engine->addOnBg(bg);
-    _engine->addObject(player_one);
-    _engine->addObject(player_two);
+    //_engine->addObject(player_one);
+    //_engine->addObject(player_two);
     _engine->switchGameStatus();
 }
 
@@ -118,4 +120,26 @@ void DisplayManager::init()
             }
     }
     _init = true;
+}
+
+void DisplayManager::AddPlayer(DamnCute::APlayer* player, uint32 id)
+{
+    _players[id] = player;
+    _engine->addObject(player);
+}
+
+DamnCute::APlayer* DisplayManager::GetPlayer(uint32 id)
+{
+    auto itr = _players.find(id);
+    if (itr != _players.end())
+        return itr->second;
+    return NULL;
+}
+
+DamnCute::APlayer const* DisplayManager::GetPlayer(uint32 id) const
+{
+    auto itr = _players.find(id);
+    if (itr != _players.end())
+        return itr->second;
+    return NULL;
 }
