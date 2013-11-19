@@ -10,6 +10,7 @@
 # include <SFML/Graphics.hpp>
 # include <Core/Core.hh>
 #include "Thread.hpp"
+#include "Mutex.hpp"
 #include "APlayer.hh"
 
 enum DisplayMode
@@ -47,6 +48,10 @@ class DisplayManager
         bool _fullscreen;
         Client* _client;
         std::map<uint32, DamnCute::APlayer*> _players;
+        std::map<uint32, DamnCute::APlayer*> _playersAdded;
+        Mutex _playersAddedMutex;
+
+        void _ProcessAddedPlayers();
 };
 
 #endif /* !DISPLAYMANAGER_H_ */
