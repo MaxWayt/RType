@@ -88,8 +88,14 @@ void Client::UpdateIncomingPackets()
     }
 }
 
-void Client::UDPHandleReceive(Packet* recvPkt)
+void Client::UDPHandleReceive(Packet const* recvPkt)
 {
+    if (recvPkt->GetOpcode() == SMSG_PING)
+    {
+        Packet pkt(CMSG_PONG);
+        UDPSend(pkt);
+        return;
+    }
     Packet* recv = new Packet(*recvPkt);
     _recvQueue.add(recv);
 }

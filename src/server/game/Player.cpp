@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Game.h"
 #include "Opcodes.h"
+#include "ConfigMgr.h"
 
 #include <iostream>
 
@@ -9,12 +10,18 @@ namespace Game
 
 Player::Player(Game* game, Socket::SocketInfo const& sockInfo, uint8 number, uint32 key) :
     _sockInfo(sockInfo), _game(game), _number(number), _recvQueue(), _key(key),
-    _x(0.0f), _y(0.0f)
+    _x(0.0f), _y(0.0f), _pingTimer(0), _lastPing(GetMSTime())
 {
+    _pingTimer = sConfig->GetIntDefault("Game.Player.PingInterval", 2000);
 }
 
 void Player::HandleReceive(::Packet const* pkt)
 {
+    if (pkt->GetOpcode() == CMSG_PONG)
+    {
+        _lastPing = GetMSTime();
+        return;
+    }
     ::Packet* recv = new ::Packet(*pkt);
     _recvQueue.add(recv);
 }
@@ -40,6 +47,23 @@ void Player::Update(uint32 const diff)
 
         delete pkt;
     }
+
+    if (_pingTimer <= diff)
+    {
+        if (GetMSTimeDiffToNow(_lastPing) >= sConfig->GetIntDefault("Game.Player.PingInterval", 2000) + 1000)
+        {
+            std::cout << "Player " << GetHostIdentifier() << "'s ping timeout, removing" << std::endl;
+            _game->RemovePlayer(this);
+            _loginOut = true;
+            return;
+        }
+
+       Packet pkt(SMSG_PING);
+       Send(pkt);
+        _pingTimer = sConfig->GetIntDefault("Game.Player.PingInterval", 2000);
+    }
+    else
+        _pingTimer -= diff;
 }
 
 void Player::Send(Packet const& pkt)
