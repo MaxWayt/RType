@@ -18,7 +18,7 @@ class Pattern : public DamnCute::APattern {
             glm::mat4 m;
             m = glm::translate(glm::mat4(), glm::vec3(6, 0, 0));
             _x = new DamnCute::Path(m, 100, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 700), "../resources/mid_bullet_red.png");
-            _x->setAllPhysicBulletId(4);
+            _x->setPhysicBulletModelId(4);
             addPath(_x);
         }
 
