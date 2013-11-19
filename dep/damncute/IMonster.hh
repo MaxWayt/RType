@@ -9,6 +9,7 @@ namespace DamnCute {
         public:
             DamnCute::APattern *_pattern;
             virtual void shoot() = 0;
+            virtual bool isDead() const = 0;
 
     };
 }

@@ -17,6 +17,7 @@ class ShootPatternDefault : public DamnCute::APattern {
 
             _m = glm::translate(glm::mat4(), glm::vec3(-15, 0, 0));
             _x = new DamnCute::Path(_m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
+            _x->setAllPhysicBulletId(5);
             addPath(_x);
 
         }
@@ -38,10 +39,12 @@ class ShootPatternLevel1 : public DamnCute::APattern {
 
             _m = glm::translate(glm::mat4(), glm::vec3(-15, 2, 0));
             _y = new DamnCute::Path(_m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
+            _y->setAllPhysicBulletId(5);
             addPath(_y);
 
             _m = glm::translate(glm::mat4(), glm::vec3(-15, -2, 0));
             _z = new DamnCute::Path(_m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
+            _z->setAllPhysicBulletId(5);
             addPath(_z);
         }
 
@@ -63,14 +66,17 @@ class ShootPatternLevel2 : public DamnCute::APattern {
 
             _m = glm::translate(glm::mat4(), glm::vec3(-15, 0, 0));
             _x = new DamnCute::Path(_m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
+            _x->setAllPhysicBulletId(5);
             addPath(_x);
 
             _m = glm::translate(glm::mat4(), glm::vec3(-15, 4, 0));
             _y = new DamnCute::Path(_m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
+            _y->setAllPhysicBulletId(5);
             addPath(_y);
 
             _m = glm::translate(glm::mat4(), glm::vec3(-15, -4, 0));
             _z = new DamnCute::Path(_m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
+            _z->setAllPhysicBulletId(5);
             addPath(_z);
         }
 

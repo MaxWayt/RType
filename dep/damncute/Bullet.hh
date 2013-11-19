@@ -6,7 +6,7 @@
 #include "APhysics.hh"
 
 namespace DamnCute {
-    class Bullet : APhysics {
+    class Bullet : public APhysics {
         public:
             explicit Bullet(const glm::vec2&, const float = 0.0f, unsigned int = 60);
             explicit Bullet(const Bullet&) = delete;
@@ -15,12 +15,12 @@ namespace DamnCute {
             Bullet& operator=(const Bullet&) = delete;
             Bullet& operator=(Bullet&&);
             void update(const glm::mat4&, sf::RenderTarget*);
-	    unsigned int decreaseLifeTime();
-	    inline const sf::Sprite& getSprite() const noexcept {
-		return _s;
-	    }
-	    inline const glm::vec2& getOrigin() const noexcept {
-		return _origin;
+            unsigned int decreaseLifeTime();
+            inline const sf::Sprite& getSprite() const noexcept {
+                return _s;
+            }
+            inline const glm::vec2& getOrigin() const noexcept {
+                return _origin;
             }
             inline float getRot() const noexcept {
                 return _rot;
@@ -28,14 +28,14 @@ namespace DamnCute {
             inline unsigned int getLife() const noexcept {
                 return _lifeTime;
             }
-	    inline void setLife(unsigned int l) noexcept {
-		_lifeTime = l;
-	    }
+            inline void setLife(unsigned int l) noexcept {
+                _lifeTime = l;
+            }
             inline void moveOrigin(glm::vec2&& n) noexcept {
                 _origin = n;
             }
             void setTexure(sf::Texture*);
-	    virtual void collisionHandler(APhysics*);
+            virtual void collisionHandler(APhysics*);
         private:
             glm::vec2 _origin;
             float _rot;
