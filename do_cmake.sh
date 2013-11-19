@@ -3,5 +3,5 @@ rm -rf rtype
 mkdir build &&
 mkdir rtype &&
 cd build &&
-cmake ../ -DCMAKE_INSTALL_PREFIX=../rtype -DDEBUG=1
+cmake ../ -DCMAKE_INSTALL_PREFIX=../rtype -DDEBUG=1 -DCMAKE_BUILD_TYPE=Debug
 cd -
