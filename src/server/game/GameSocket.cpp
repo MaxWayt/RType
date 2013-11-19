@@ -103,7 +103,7 @@ void GameSocket::_HandlePlayerKey(::Packet& pkt, Socket::SocketInfo const& sockI
         return;
     }
 
-    uint8 number = _game->GetPlayerNumberByKey(key);
+    uint32 number = _game->GetPlayerNumberByKey(key);
 
     Player* player = new Player(_game, sockInfo, number, key);
     _game->AddPlayer(player);
@@ -112,6 +112,7 @@ void GameSocket::_HandlePlayerKey(::Packet& pkt, Socket::SocketInfo const& sockI
 
     Packet data(SMSG_CONNECT_RESULT);
     data << uint8(CONNECT_OK);
+    data << uint32(number);
     sendto(data.data(), data.size(), sockInfo);
 }
 

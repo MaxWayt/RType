@@ -13,10 +13,11 @@ class Game;
 class Player
 {
 public:
-    Player(Game* game, Socket::SocketInfo const& sockInfo, uint8 number, uint32 key);
+    Player(Game* game, Socket::SocketInfo const& sockInfo, uint32 number, uint32 key);
 
     std::string const& GetHostIdentifier() const { return _sockInfo.GetHostIdentifier(); }
     uint32 GetKey() const { return _key; }
+    uint32 GetId() const { return _id; }
 
     void HandleReceive(Packet const* pkt);
     void Send(Packet const& pkt);
@@ -35,7 +36,7 @@ public:
 private:
     Socket::SocketInfo _sockInfo;
     Game* _game;
-    uint8 _number;
+    uint32 _id;
     LockedQueue<Packet> _recvQueue;
     uint32 _key;
 

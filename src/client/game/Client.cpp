@@ -4,13 +4,19 @@
 
 #include <iostream>
 
-Client::Client(int32 width, int32 height, bool fullscreen) : _service(), _udpSocket(this, _service), _clientKey(0),
-    _recvQueue(), _display(this, width, height, fullscreen)
+Client::Client() : _service(), _udpSocket(this, _service), _clientKey(0),
+    _recvQueue(), _display(NULL)
 {
 }
 
 Client::~Client()
 {
+    delete _display;
+}
+
+void Client::Initialize(int32 width, int32 height, bool fullscreen)
+{
+    _display = new DisplayManager(this, width, height, fullscreen);
 }
 
 void Client::operator()()
@@ -42,7 +48,7 @@ void Client::Start(uint32 clientId)
     _service.Start();
     _run();
     InitializeGame(clientId, "127.0.0.1", "5000"); 
-    _display.Start(MODE_GAME); // Bloquant !
+    _display->Start(MODE_GAME); // Bloquant !
 }
 
 void Client::Stop()
@@ -118,7 +124,7 @@ void Client::UpdatePlayerPosition()
 {
     static sf::Vector2f pos(0.0f, 0.0f);
 
-    if (DamnCute::APlayer const* player = _display.GetPlayer(_clientKey))
+    if (DamnCute::APlayer const* player = _display->GetPlayer(_clientKey))
     {
         sf::Sprite const& sprite = player->getPlayer();
         sf::Vector2f const& newPos = sprite.getPosition();

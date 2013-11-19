@@ -15,8 +15,8 @@ int main(int ac, char** av) {
     d->run();
     */
 
-    Client client(800, 600);
-    client.Start(ac >= 2 ? to<uint32>(av[1]) : 1);
-    client.Wait();
+    sClient->Initialize(800, 600, false);
+    sClient->Start(ac >= 2 ? to<uint32>(av[1]) : 1);
+    sClient->Wait();
     return EXIT_SUCCESS;
 }
