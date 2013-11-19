@@ -27,6 +27,11 @@ DamnCute::IMonster* MonsterLoader::load(int row, int col) {
     return _monster;
 }
 
+DamnCute::IMonster *MonsterLoader::getMonster() {
+
+    return _monster;
+}
+
 void MonsterLoader::close() {
 
     dlclose(_handle);

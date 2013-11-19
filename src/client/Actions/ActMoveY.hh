@@ -3,8 +3,6 @@
 
 #define K1 0
 #define K2 1
-#define ST1 2
-#define ST2 3
 
 class ActMoveY : public DamnCute::AAction<DamnCute::APlayer>
 {
@@ -28,12 +26,12 @@ class ActMoveY : public DamnCute::AAction<DamnCute::APlayer>
             else if (hasStickAxis() == true) {
 
                 if (sf::Joystick::getAxisPosition(nbPlayer, _stickAxis) < -50) {
-                    _who = ST1;
+                    _who = K1;
                     return true;
                 }
 
                 else if (sf::Joystick::getAxisPosition(nbPlayer, _stickAxis) > 50) {
-                    _who = ST2;
+                    _who = K2;
                     return true;
                 }
 
@@ -42,10 +40,10 @@ class ActMoveY : public DamnCute::AAction<DamnCute::APlayer>
         }
 
         void execute() {
-            if (_who == K2 || _who == ST2)
-                _entity->getPlayer().move(0, _entity->getSpeed());
-            if (_who == K1 || _who == ST1)
+            if (_who == K1 && (_entity->getPlayer().getPosition().y > 0))
                 _entity->getPlayer().move(0, -(_entity->getSpeed()));
+            if (_who == K2 && (_entity->getPlayer().getPosition().y < 1080 - _entity->getPlayer().getTexture()->getSize().y))
+                _entity->getPlayer().move(0, _entity->getSpeed());
         }
 
         virtual inline const std::string& getName() const { return (_name); }

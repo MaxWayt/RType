@@ -39,3 +39,13 @@ void DamnCute::Path::update(sf::RenderTarget* w_ptr) {
 void DamnCute::Path::countdownPushMoveModifier(unsigned int framme, const glm::mat4& newMat) {
     _modEventStack.push({framme, newMat});
 }
+
+void DamnCute::Path::setPhysicBulletModelId(unsigned int id) {
+    _bulletModel.setType(id);
+}
+
+void DamnCute::Path::setAllPhysicBulletId(unsigned int id) {
+    for (std::list<Bullet>::iterator it = _bullets.begin(); it != _bullets.end(); ++it) {
+	(*it).setType(id);
+    }
+}

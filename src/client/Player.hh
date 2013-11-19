@@ -17,17 +17,21 @@ class Player : public DamnCute::APlayer {
         explicit Player(const std::string& texfile = "../resources/player.tga", float x = 980, float y = 950, int speed = 5) :
             APlayer(texfile, x, y, I, speed) {}
         virtual ~Player() = default;
-	Player& operator=(const Player&) = delete;
-	virtual void collisionHandler(DamnCute::APhysics* other) {
-	    DamnCute::Bullet* b = (DamnCute::Bullet*)other;
+        Player& operator=(const Player&) = delete;
+        virtual void collisionHandler(DamnCute::APhysics* other) {
 
-	    if (!other->isDestructible() && preciseDetection(getPlayer(), b->getSprite())) {
-		b->setLife(0);
-	    }
-	}
+            DamnCute::Bullet* b = (DamnCute::Bullet*)other;
+            if (other->getType() == 4) {
+                std::cout << "argh player is dead!" << std::endl;
+                b->setLife(0);
+            }
+            /*if (!other->isDestructible() && preciseDetection(getPlayer(), b->getSprite())) {
+                b->setLife(0);
+            }*/
+        }
 
-	void levelUp() {
-	    getAction("ActWeapon")->levelUp();
+        void levelUp() {
+            getAction("ActWeapon")->levelUp();
         }
     private:
         enum e {
@@ -35,7 +39,7 @@ class Player : public DamnCute::APlayer {
         };
 };
 
-template <>
+    template <>
 Player<0>::Player(const std::string& texfile, float x, float y, int speed) : DamnCute::APlayer(texfile, x, y, value, speed)
 {
     addAction(new ActMoveX(this, sf::Keyboard::Key::Left,
@@ -46,7 +50,7 @@ Player<0>::Player(const std::string& texfile, float x, float y, int speed) : Dam
     addAction(new ActWeapon(this, sf::Keyboard::Key::W, 0));
 }
 
-template <>
+    template <>
 Player<1>::Player(const std::string& texfile, float x, float y, int speed) : DamnCute::APlayer(texfile, x, y, value, speed)
 {
     addAction(new ActMoveX(this, sf::Keyboard::Key::Q,
