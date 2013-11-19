@@ -1,6 +1,6 @@
 #include "ConfigFile.hh"
 
-void ConfigFile::parseConfigFile(DamnCute::APlayer *player_one, DamnCute::APlayer *player_two) {
+void ConfigFile::parseConfigFile(DamnCute::APlayer *player_one) {
     std::ifstream file(_file);
     std::string line;
 
@@ -17,14 +17,6 @@ void ConfigFile::parseConfigFile(DamnCute::APlayer *player_one, DamnCute::APlaye
                 parseArguments(player_one, line);
             }
         }
-        
-        if (line.find("[2] {") == 0) {
-            while (line.find("}") != 0) {
-                std::getline(file, line);
-                parseArguments(player_two, line);
-            }
-        }
-    
     }
 }
 

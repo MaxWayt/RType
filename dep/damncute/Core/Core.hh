@@ -39,7 +39,7 @@ namespace DamnCute {
             void flushEvent();
             template <unsigned int SIZEX = __DWIDTH, unsigned int SIZEY = __DHEIGHT>
                 void createWin(unsigned int width = 0, unsigned int height = 0, bool full = false) {
-                    unsigned int style = full << 3;
+                    unsigned int style = full << 3 | sf::Style::Titlebar;
                     sf::VideoMode v;
 
                     if (full) {

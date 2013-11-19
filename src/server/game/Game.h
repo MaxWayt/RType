@@ -38,19 +38,26 @@ public:
     Player const* GetPlayer(std::string const& hostIdent) const;
 
     bool IsValidePlayerKey(uint32 key) const;
-    uint8 GetPlayerNumberByKey(uint32 key) const;
+    uint32 GetPlayerNumberByKey(uint32 key) const;
 
-    void AddPlayer(Player* player); // Called from _service thread /!\
+    void AddPlayer(Player* player); // Called from _service thread !!!!
+    void RemovePlayer(Player* player); // Can be call from _service thread
+
+    void BroadcastPlayerPositionChange(uint32 playerId, float x, float y) const;
+    void SendTo(Packet const& pkt, Socket::SocketInfo const& remote);
 
 private:
     void _ProcessAddedPlayer();
+    void _ProcessRemovedPlayer();
 
     GameConfig _config;
     NetService _service;
     GameSocket _sock;
     std::map<std::string, Player*> _playerMap;
     std::map<std::string, Player*> _playerAddedMap;
+    std::map<std::string, Player*> _playerRemovedMap;
     Mutex _playerAddedMutex;
+    Mutex _playerRemovedMutex;
 };
 }
 

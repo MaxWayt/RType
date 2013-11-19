@@ -45,7 +45,7 @@ void GameSocket::HandleReceive()
                 std::cout << "New connection from " << hostIdent << std::endl;
                 _waitingHost[hostIdent] = time(NULL) + sConfig->GetIntDefault("Game.Socket.Timeout", 10);
                 // send to
-                ::Packet pkt(SMSG_GREETING);
+                Packet pkt(SMSG_GREETING);
                 sendto(pkt.data(), pkt.size(), remote);
             }
             else
@@ -84,6 +84,9 @@ void GameSocket::_HandlePlayerKey(::Packet& pkt, Socket::SocketInfo const& sockI
     if (pkt.GetOpcode() != CMSG_PLAYER_KEY)
     {
         std::cerr << "Error: invalid key packet (" << pkt.GetOpcode() << ")" << std::endl;
+        Packet data(SMSG_CONNECT_RESULT);
+        data << uint8(CONNECT_FAIL);
+        sendto(data.data(), data.size(), sockInfo);
         return;
     }
 
@@ -93,15 +96,24 @@ void GameSocket::_HandlePlayerKey(::Packet& pkt, Socket::SocketInfo const& sockI
     if (!_game->IsValidePlayerKey(key))
     {
         std::cerr << "Error: player try to connect with an invalid key (" << key << ")" << std::endl;
+
+        Packet data(SMSG_CONNECT_RESULT);
+        data << uint8(CONNECT_FAIL);
+        sendto(data.data(), data.size(), sockInfo);
         return;
     }
 
-    uint8 number = _game->GetPlayerNumberByKey(key);
+    uint32 number = _game->GetPlayerNumberByKey(key);
 
     Player* player = new Player(_game, sockInfo, number, key);
     _game->AddPlayer(player);
 
     std::cout << "New registered player " << player->GetHostIdentifier() << std::endl;
+
+    Packet data(SMSG_CONNECT_RESULT);
+    data << uint8(CONNECT_OK);
+    data << uint32(number);
+    sendto(data.data(), data.size(), sockInfo);
 }
 
 }
