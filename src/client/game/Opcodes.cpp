@@ -6,6 +6,9 @@ Opcode::OpcodeHandler const* Opcode::GetHandler(Opcodes op)
 {
     static OpcodeHandler handlers[] = {
         { SMSG_GREETING, &Client::HandleGreeting            },
+        { SMSG_CONNECT_RESULT, &Client::HandleConnectResult },
+        { SMSG_PLAYER_POSITION, &Client::HandlePlayerPosition },
+        { SMSG_ADD_PLAYER, &Client::HandleAddPlayer         },
         { OPCODE_COUNT, NULL                                }
 
     };

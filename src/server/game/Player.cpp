@@ -8,7 +8,8 @@ namespace Game
 {
 
 Player::Player(Game* game, Socket::SocketInfo const& sockInfo, uint8 number, uint32 key) :
-    _sockInfo(sockInfo), _game(game), _number(number), _recvQueue(), _key(key)
+    _sockInfo(sockInfo), _game(game), _number(number), _recvQueue(), _key(key),
+    _x(0.0f), _y(0.0f)
 {
 }
 
@@ -39,6 +40,11 @@ void Player::Update(uint32 const diff)
 
         delete pkt;
     }
+}
+
+void Player::Send(Packet const& pkt)
+{
+    _game->SendTo(pkt, _sockInfo);
 }
 
 }

@@ -16,9 +16,11 @@ public:
 
     void operator()();
 
-    void Start();
+    void Start(uint32 clientId);
     void Stop();
     void Wait();
+
+    uint32 GetClientKey() const { return _clientKey; }
 
     bool InitializeGame(uint32 clientKey, std::string const& addr, std::string const& port);
 
@@ -29,9 +31,14 @@ public:
 
     void UDPSend(Packet const& pkt);
 
+    void UpdatePlayerPosition();
+
     // Handlers
 
     void HandleGreeting(Packet* recvPkt);
+    void HandleConnectResult(Packet* recvPkt);
+    void HandlePlayerPosition(Packet* recvPkt);
+    void HandleAddPlayer(Packet* recvPkt);
 private:
     NetService _service;
     UDPSocket _udpSocket;

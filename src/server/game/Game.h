@@ -42,6 +42,9 @@ public:
 
     void AddPlayer(Player* player); // Called from _service thread /!\
 
+    void BroadcastPlayerPositionChange(uint32 playerId, float x, float y) const;
+    void SendTo(Packet const& pkt, Socket::SocketInfo const& remote);
+
 private:
     void _ProcessAddedPlayer();
 

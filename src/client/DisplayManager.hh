@@ -10,6 +10,7 @@
 # include <SFML/Graphics.hpp>
 # include <Core/Core.hh>
 #include "Thread.hpp"
+#include "APlayer.hh"
 
 enum DisplayMode
 {
@@ -30,6 +31,11 @@ class DisplayManager
         void Start(DisplayMode mode = MODE_MENU);
         void SwitchMode(DisplayMode mode);
         void run();
+
+        void AddPlayer(DamnCute::APlayer* player, uint32 id);
+        DamnCute::APlayer* GetPlayer(uint32 id);
+        DamnCute::APlayer const* GetPlayer(uint32 id) const;
+
     private:
         void init();
         DamnCute::Core* _engine;
@@ -40,6 +46,7 @@ class DisplayManager
         int32 _height;
         bool _fullscreen;
         Client* _client;
+        std::map<uint32, DamnCute::APlayer*> _players;
 };
 
 #endif /* !DISPLAYMANAGER_H_ */

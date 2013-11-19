@@ -1,5 +1,6 @@
 #include <iostream>
 //#include "DisplayManager.hh"
+#include "Utils.hpp"
 #include "Client.h"
 
 int main(int ac, char** av) {
@@ -14,8 +15,8 @@ int main(int ac, char** av) {
     d->run();
     */
 
-    Client client(1920, 1080);
-    client.Start();
+    Client client(800, 600);
+    client.Start(ac >= 2 ? to<uint32>(av[1]) : 1);
     client.Wait();
     return EXIT_SUCCESS;
 }

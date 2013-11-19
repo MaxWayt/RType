@@ -10,9 +10,18 @@ enum Opcodes
 {
     SMSG_GREETING               = 0,
     CMSG_PLAYER_KEY             = 1,
-    CMSG_PLAYER_POSITION        = 2,
+    SMSG_CONNECT_RESULT         = 2,
+    CMSG_PLAYER_POSITION        = 3,
+    SMSG_PLAYER_POSITION        = 4,
+    SMSG_ADD_PLAYER             = 5,
     OPCODE_COUNT
 
+};
+
+enum ConnectResults
+{
+    CONNECT_OK                  = 0,
+    CONNECT_FAIL                = 1,
 };
 
 class Player;

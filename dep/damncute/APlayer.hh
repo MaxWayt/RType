@@ -28,6 +28,7 @@ namespace DamnCute
             void addAction(AAction<APlayer>*);
 
             inline sf::Sprite& getPlayer() { return _entity; }
+            inline sf::Sprite const& getPlayer() const { return _entity; }
             inline sf::Texture& getTexture() { return _tex; }
             inline int& getSpeed() { return _speed; }
             inline AAction<APlayer>* getAction(std::string);

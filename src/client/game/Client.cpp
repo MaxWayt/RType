@@ -37,11 +37,12 @@ void Client::operator()()
     }
 }
 
-void Client::Start()
+void Client::Start(uint32 clientId)
 {
     _service.Start();
     _run();
-    _display.Start(MODE_GAME);
+    InitializeGame(clientId, "127.0.0.1", "5000"); 
+    _display.Start(MODE_GAME); // Bloquant !
 }
 
 void Client::Stop()
@@ -60,6 +61,7 @@ void Client::Update(uint32 const diff)
 {
     //client.InitializeGame(1, "127.0.0.1", "5000");
     UpdateIncomingPackets();
+    UpdatePlayerPosition();
 
 }
 
@@ -104,4 +106,23 @@ bool Client::InitializeGame(uint32 clientKey, std::string const& addr, std::stri
 void Client::UDPSend(Packet const& pkt)
 {
     _udpSocket.Send(pkt.data(), pkt.size());
+}
+
+void Client::UpdatePlayerPosition()
+{
+    static sf::Vector2f pos(0.0f, 0.0f);
+
+    if (DamnCute::APlayer const* player = _display.GetPlayer(_clientKey))
+    {
+        sf::Sprite const& sprite = player->getPlayer();
+        sf::Vector2f const& newPos = sprite.getPosition();
+        if (newPos != pos)
+        {
+            pos = newPos;
+            Packet pkt(CMSG_PLAYER_POSITION);
+            pkt << pos.x;
+            pkt << pos.y;
+            UDPSend(pkt);
+        }
+    }
 }
