@@ -3,7 +3,6 @@
 #include <Menu.hh>
 #include <Core/Core.hh>
 #include "DisplayManager.hh"
-#include "Player.hh"
 #include "ConfigFile.hh"
 #include "MonsterHandler.hh"
 
@@ -12,7 +11,8 @@
 void runGame();
 
 DisplayManager::DisplayManager(Client* client, int width, int height, bool fullscreen) : _alive(true), _mode(MODE_MENU), _init(false),
-    _width(width), _height(height), _fullscreen(fullscreen), _client(client)
+    _width(width), _height(height), _fullscreen(fullscreen), _client(client),
+    _players(), _playersAdded(), _playersAddedMutex()
 {
 }
 
@@ -52,17 +52,19 @@ void DisplayManager::gameMode() {
     DamnCute::Background* bg = new DamnCute::Background("../resources/decor009.jpg");
     bg->setScrollSpeed(-0.4, 0);
 
-    DamnCute::APlayer* player_one = new Player<0>("../resources/ship_green.png", 100, 550);
-    DamnCute::APlayer* player_two = new Player<1>("../resources/ship_yellow.png", 100, 750);
+    /*
+    DamnCute::APlayer* player_one = new Player<0>("../resources/ship_red.png", 100, 550);
+    DamnCute::APlayer* player_two = new Player<1>("../resources/ship_blue.png", 100, 750);
 
-    MonsterHandler* mh = new MonsterHandler("zizi", 100, 3000, std::make_pair(2000, 2400), std::make_pair(0, 1000));
+    */
+    //MonsterHandler* mh = new MonsterHandler("zizi", 100, 3000, std::make_pair(2000, 2400), std::make_pair(0, 1000));
 
-    config->parseConfigFile(player_one, player_two);
+    //config->parseConfigFile(player_one, player_two);
 
     _engine->addOnBg(bg);
-    _engine->addObject(mh);
-    _engine->addObject(player_one);
-    _engine->addObject(player_two);
+    //_engine->addObject(mh);
+    //_engine->addObject(player_one);
+    //_engine->addObject(player_two);
     _engine->switchGameStatus();
 }
 
@@ -90,6 +92,8 @@ void DisplayManager::run()
     while (_alive) {
         if (!_init)
             init();
+        if (_mode == MODE_GAME)
+            _ProcessAddedPlayers();
         _engine->flushScene();
         if (!_init)
             continue;
@@ -119,4 +123,37 @@ void DisplayManager::init()
             }
     }
     _init = true;
+}
+
+void DisplayManager::AddPlayer(DamnCute::APlayer* player, uint32 id)
+{
+    ScopLock lock(_playersAddedMutex);
+    _playersAdded[id] = player;
+}
+
+void DisplayManager::_ProcessAddedPlayers()
+{
+    ScopLock lock(_playersAddedMutex);
+    for (auto itr = _playersAdded.begin(); itr != _playersAdded.end(); ++itr)
+    {
+        _players[itr->first] = itr->second;
+        _engine->addObject(itr->second);
+    }
+    _playersAdded.clear();
+}
+
+DamnCute::APlayer* DisplayManager::GetPlayer(uint32 id)
+{
+    auto itr = _players.find(id);
+    if (itr != _players.end())
+        return itr->second;
+    return NULL;
+}
+
+DamnCute::APlayer const* DisplayManager::GetPlayer(uint32 id) const
+{
+    auto itr = _players.find(id);
+    if (itr != _players.end())
+        return itr->second;
+    return NULL;
 }

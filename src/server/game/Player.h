@@ -13,14 +13,21 @@ class Game;
 class Player
 {
 public:
-    Player(Game* game, Socket::SocketInfo const& sockInfo, uint8 number, uint32 key);
+    Player(Game* game, Socket::SocketInfo const& sockInfo, uint32 number, uint32 key);
 
     std::string const& GetHostIdentifier() const { return _sockInfo.GetHostIdentifier(); }
     uint32 GetKey() const { return _key; }
+    uint32 GetId() const { return _id; }
 
     void HandleReceive(Packet const* pkt);
+    void Send(Packet const& pkt);
 
     void Update(uint32 const diff);
+
+    float GetPositionX() const { return _x; }
+    float GetPositionY() const { return _y; }
+
+    bool IsLoginOut() const { return _loginOut; }
 
 
     // Handlers
@@ -29,9 +36,17 @@ public:
 private:
     Socket::SocketInfo _sockInfo;
     Game* _game;
-    uint8 _number;
+    uint32 _id;
     LockedQueue<Packet> _recvQueue;
     uint32 _key;
+
+    float _x;
+    float _y;
+
+    uint32 _pingTimer;
+    uint32 _lastPing;
+
+    bool _loginOut;
 };
 
 }

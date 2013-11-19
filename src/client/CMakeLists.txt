@@ -51,6 +51,7 @@ set(ALL_LIBS
     ${SFML_LIBRARY}
     -ldamncute
     -lshared
+    -ldl
 )
 
 set(CLIENT_NAME "rtype-client")

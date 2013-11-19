@@ -37,7 +37,7 @@ class ConfigFile {
         ConfigFile(std::string configFile = std::string(DEFAULT_CONFIG_FILE)) : _file(configFile) {}
         ~ConfigFile() = default;
 
-        void parseConfigFile(DamnCute::APlayer *, DamnCute::APlayer *);
+        void parseConfigFile(DamnCute::APlayer *);
         bool hasMusicPath();
         std::string getMusicPath();
 

@@ -61,6 +61,19 @@ namespace DamnCute {
 		    return std::move(_path);
 		}
 
+	    template <unsigned int sizeX, unsigned int sizeY, unsigned short iter>
+		inline std::list<QuadTree<std::list<APhysics*>, __DQUADTREE_COMPLEXITY__>::Array_Type_>&& generateQuadTreePos(unsigned int x, unsigned int y, unsigned int w, unsigned int h) noexcept {
+            std::list<QuadTree<std::list<APhysics*>, __DQUADTREE_COMPLEXITY__>::Array_Type_> list;
+            unsigned int quadWidth = sizeX / (2 * __DQUADTREE_COMPLEXITY__);
+            unsigned int quadHeight = sizeY / (2 * __DQUADTREE_COMPLEXITY__);
+
+            for (unsigned int i = 0; i < w; i += quadWidth)
+                for (unsigned int j = 0; j < h; j += quadHeight)
+                    list.push_back(generateQuadTreePos(x + i, y + j));
+
+            return std::move(list);
+        }
+
 	public:
 	    APhysics(unsigned int x, unsigned int y, bool destructibility, unsigned int type = 0) : _physicallyActive(true), _destructible(destructibility), _isInList(false), _type(type), _quadTree(sCore->getQuadTree()) {
 		generateQuadTreePos<1920, 1080, __DQUADTREE_COMPLEXITY__>(x, y);

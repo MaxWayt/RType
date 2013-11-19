@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "ConfigMgr.h"
+#include "Opcodes.h"
 
 #include <Utils.hpp>
 #include <iostream>
@@ -10,7 +11,7 @@ namespace Game
 
 Game::Game(GameConfig const& conf) :
     _config(conf), _service(), _sock(this, _service), _playerMap(),
-    _playerAddedMap(), _playerAddedMutex()
+    _playerAddedMap(), _playerRemovedMap(), _playerAddedMutex(), _playerRemovedMutex()
 {
 }
 
@@ -70,6 +71,10 @@ void Game::Update(uint32 const diff)
 {
     _ProcessAddedPlayer();
 //    std::cout << "UPDATE GAME " << _config.gameId << std::endl;
+    for (auto itr = _playerMap.begin(); itr != _playerMap.end(); ++itr)
+        if (!itr->second->IsLoginOut())
+            itr->second->Update(diff);
+    _ProcessRemovedPlayer();
 }
 
 Player* Game::GetPlayer(std::string const& hostIdent)
@@ -104,7 +109,7 @@ bool Game::IsValidePlayerKey(uint32 key) const
     return false;
 }
 
-uint8 Game::GetPlayerNumberByKey(uint32 key) const
+uint32 Game::GetPlayerNumberByKey(uint32 key) const
 {
     for (uint8 i = 0; i < MAX_PLAYERS; ++i)
         if (_config.playersToken[i] == key)
@@ -118,12 +123,67 @@ void Game::AddPlayer(Player* player)
     _playerAddedMap[player->GetHostIdentifier()] = player;
 }
 
+void Game::RemovePlayer(Player* player)
+{
+    ScopLock lock(_playerRemovedMutex);
+    _playerRemovedMap[player->GetHostIdentifier()] = player;
+}
+
 void Game::_ProcessAddedPlayer()
 {
     ScopLock lock(_playerAddedMutex);
     for (auto itr = _playerAddedMap.begin(); itr != _playerAddedMap.end(); ++itr)
+    {
+        Packet currPkt(SMSG_ADD_PLAYER);
+        currPkt << itr->second->GetId();
+        currPkt << itr->second->GetPositionX();
+        currPkt << itr->second->GetPositionY();
+        for (auto itr2 = _playerMap.begin(); itr2 != _playerMap.end(); ++itr2)
+        {
+            itr2->second->Send(currPkt);
+            Packet newPkt(SMSG_ADD_PLAYER);
+            newPkt << itr2->second->GetId();
+            newPkt << itr2->second->GetPositionX();
+            newPkt << itr2->second->GetPositionY();
+            itr->second->Send(newPkt);
+        }
         _playerMap[itr->first] = itr->second;
+    }
     _playerAddedMap.clear();
 }
 
+void Game::_ProcessRemovedPlayer()
+{
+    ScopLock lock(_playerRemovedMutex);
+    for (auto itr = _playerRemovedMap.begin(); itr != _playerRemovedMap.end(); ++itr)
+    {
+        Packet currPkt(SMSG_REMOVE_PLAYER);
+        currPkt << itr->second->GetId();
+        _playerMap.erase(itr->first);
+        for (auto itr2 = _playerMap.begin(); itr2 != _playerMap.end(); ++itr2)
+            itr2->second->Send(currPkt);
+    }
+    _playerRemovedMap.clear();
+}
+
+
+void Game::BroadcastPlayerPositionChange(uint32 playerId, float x, float y) const
+{
+    Packet pkt(SMSG_PLAYER_POSITION);
+    pkt << uint32(playerId);
+    pkt << x;
+    pkt << y;
+
+    for (auto itr = _playerMap.begin(); itr != _playerMap.end(); ++itr)
+        if (itr->second->GetKey() != playerId)
+            itr->second->Send(pkt);
+}
+
+void Game::SendTo(Packet const& pkt, Socket::SocketInfo const& remote)
+{
+    _sock.sendto(pkt.data(), pkt.size(), remote);
+}
+
 } // namespace Game
+
+
