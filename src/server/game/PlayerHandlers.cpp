@@ -21,14 +21,12 @@ void Player::HandlePosition(Packet* pkt)
 
 void Player::HandleShot(Packet* pkt)
 {
-    float x, y;
-    uint8 level;
-    *pkt >> x >> y >> level;
+    uint8 active, level;
+    *pkt >> active >> level;
 
     Packet data(SMSG_SHOT);
     data << uint32(GetId());
-    data << x;
-    data << y;
+    data << uint8(active);
     data << uint8(level);
     _game->BroadcastToAll(data);
 }
