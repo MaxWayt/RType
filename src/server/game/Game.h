@@ -40,6 +40,9 @@ public:
 
     bool IsValidePlayerKey(uint32 key) const;
     uint32 GetPlayerNumberByKey(uint32 key) const;
+    uint32 GetPlayerCount() const { return _playerMap.size(); }
+    Level const &GetLevel() const { return _level; }
+    Level &GetLevel() { return _level; }
 
     void AddPlayer(Player* player); // Called from _service thread !!!!
     void RemovePlayer(Player* player); // Can be call from _service thread

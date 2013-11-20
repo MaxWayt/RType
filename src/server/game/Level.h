@@ -45,6 +45,7 @@ public:
     void update(uint32 time);
     void sendMonster(Monster *monster);
     Monster *getMonster(uint32 id);
+    void removeMonster(uint32 id);
 private:
     float _getRandomBetween(int min, int max);
     Game *_game;
