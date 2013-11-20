@@ -12,6 +12,7 @@
 #include "Thread.hpp"
 #include "Mutex.hpp"
 #include "Player.hh"
+#include "Monster.h"
 
 enum DisplayMode
 {
@@ -40,6 +41,8 @@ class DisplayManager
         void RemovePlayer(Player* player);
         Player* GetPlayer(uint32 id);
         Player const* GetPlayer(uint32 id) const;
+
+        void AddMonster(Monster* monster);
 
         static std::string const& GetFileForClientId(uint32 id);
 

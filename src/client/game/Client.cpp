@@ -1,6 +1,7 @@
 #include "Client.h"
 #include "Utils.hpp"
 #include "Opcodes.h"
+#include "MonsterMgr.h"
 
 #include <iostream>
 
@@ -81,6 +82,8 @@ bool Client::InitializeGame(uint32 clientKey, std::string const& addr, std::stri
         return false;
 
     _clientKey = clientKey;
+
+    sMonsterMgr->addMonterLoader("test");
     return true;
 }
 

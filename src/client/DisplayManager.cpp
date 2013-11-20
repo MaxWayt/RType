@@ -148,3 +148,8 @@ std::string const& DisplayManager::GetFileForClientId(uint32 id)
     };
     return file[id];
 }
+
+void DisplayManager::AddMonster(Monster* monster)
+{
+    _engine->addObject(monster);
+}

@@ -3,6 +3,7 @@
 #include "Player.hh"
 #include "DisplayManager.hh"
 #include <iostream>
+#include "MonsterMgr.h"
 
 void Client::HandleGreeting(Packet* recvPkt)
 {
@@ -88,6 +89,10 @@ void Client::HandleAddMonster(Packet* recvPkt)
     uint8 weapon, health, fire;
     float x, y;
     *recvPkt >> fire >> id >> type >> weapon >> x >> health >> y;
+
+    Monster* monster = sMonsterMgr->createMonster(type, x, y);
+    monster->SetFire(fire != 0);
+    _display->AddMonster(monster);
 
 
 }
