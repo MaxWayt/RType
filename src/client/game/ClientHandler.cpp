@@ -67,7 +67,6 @@ void Client::HandleRemovePlayer(Packet* recvPkt)
             return;
         _display->RemovePlayer(player);
     }
-
 }
 
 
@@ -81,4 +80,14 @@ void Client::HandlePlayerShot(Packet* recvPkt)
         player->SetFire(active != 0);
 
     std::cout << "Player " << playerId << " SHOT" << std::endl;
+}
+
+void Client::HandleAddMonster(Packet* recvPkt)
+{
+    uint32 id, type;
+    uint8 weapon, health, fire;
+    float x, y;
+    *recvPkt >> fire >> id >> type >> weapon >> x >> health >> y;
+
+
 }

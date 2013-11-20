@@ -7,7 +7,7 @@
 
 Player::Player(const std::string& texfile, float x, float y, int speed, bool active, int num) :
 APlayer(texfile, x, y, num, speed, active),
-_fire(false), _sp1(NULL), _sp2(NULL), _sp3(NULL), _level(0)
+_fire(false), _sp1(NULL), _sp2(NULL), _sp3(NULL), _level(0), _health(5)
 {
     if (_active)
     {
