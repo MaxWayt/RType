@@ -55,6 +55,11 @@ Monster *Level::getMonster(uint32 id) {
     return itr->second;
 }
 
+void Level::removeMonster(uint32 id) {
+
+    _monsters.erase(id);
+}
+
 void Level::update(uint32 diff) {
 
     for (int i = 0; i < _config->nb; ++i) {

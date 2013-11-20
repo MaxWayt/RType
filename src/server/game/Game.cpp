@@ -74,7 +74,8 @@ void Game::Update(uint32 const diff)
     for (auto itr = _playerMap.begin(); itr != _playerMap.end(); ++itr)
         if (!itr->second->IsLoginOut())
             itr->second->Update(diff);
-    _level.update(diff);
+    if (GetPlayerCount() >= 2)
+        _level.update(diff);
     _ProcessRemovedPlayer();
 }
 

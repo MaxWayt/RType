@@ -32,5 +32,25 @@ void Player::HandleShot(Packet* pkt)
     data << uint8(level);
     _game->BroadcastToAll(data);
 }
+void Player::HandleHitMonster(Packet* pkt)
+{
+    uint32 id;
+    *pkt >> id;
+
+    auto monster = _game->GetLevel().getMonster(id);
+    if (monster == NULL)
+        return;
+    if (monster->health - 1 <= 0) {
+
+        _game->GetLevel().removeMonster(id);
+        Packet data(SMSG_REMOVE_MONSTER);
+        data >> id;
+        _game->BroadcastToAll(data);
+    }
+    else {
+
+        monster->health = monster->health - 1;
+    }
+}
 
 }
