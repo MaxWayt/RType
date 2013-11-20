@@ -31,14 +31,16 @@ class DisplayManager
 
         void Start(DisplayMode mode = MODE_MENU);
         void SwitchMode(DisplayMode mode);
-        void run();
+        bool IsAlive() const { return _alive; }
+        inline void flushAll() { _engine->flushScene(); _engine->flushEvent(); }
+        inline void UpdateAlive() { _alive = DamnCute::Core::getInstance()->getWindowStatus(); }
+        void Init();
 
         void AddPlayer(DamnCute::APlayer* player, uint32 id);
         DamnCute::APlayer* GetPlayer(uint32 id);
         DamnCute::APlayer const* GetPlayer(uint32 id) const;
 
     private:
-        void init();
         DamnCute::Core* _engine;
         bool _alive;
         DisplayMode _mode;
@@ -48,10 +50,6 @@ class DisplayManager
         bool _fullscreen;
         Client* _client;
         std::map<uint32, DamnCute::APlayer*> _players;
-        std::map<uint32, DamnCute::APlayer*> _playersAdded;
-        Mutex _playersAddedMutex;
-
-        void _ProcessAddedPlayers();
 };
 
 #endif /* !DISPLAYMANAGER_H_ */

@@ -10,9 +10,9 @@
 
 void runGame();
 
-DisplayManager::DisplayManager(Client* client, int width, int height, bool fullscreen) : _alive(true), _mode(MODE_MENU), _init(false),
+DisplayManager::DisplayManager(Client* client, int width, int height, bool fullscreen) : _engine(NULL), _alive(true), _mode(MODE_MENU), _init(false),
     _width(width), _height(height), _fullscreen(fullscreen), _client(client),
-    _players(), _playersAdded(), _playersAddedMutex()
+    _players()
 {
 }
 
@@ -68,46 +68,26 @@ void DisplayManager::gameMode() {
     _engine->switchGameStatus();
 }
 
-
-void DisplayManager::Start(DisplayMode mode)
-{
-    _mode = mode;
-    run();
-}
-
 void DisplayManager::SwitchMode(DisplayMode mode)
 {
     _mode = mode;
     _init = false;
 }
 
-
-void DisplayManager::run()
-{
-    //_engine->menuMusic();
-    DamnCute::Core::getInstance()->createWin(_width, _height, _fullscreen);
-    _engine = DamnCute::Core::getInstance();
-
-    init();
-    while (_alive) {
-        if (!_init)
-            init();
-        if (_mode == MODE_GAME)
-            _ProcessAddedPlayers();
-        _engine->flushScene();
-        if (!_init)
-            continue;
-        _engine->flushEvent();
-        _alive = DamnCute::Core::getInstance()->getWindowStatus();
-    }
-}
-
-void DisplayManager::init()
+void DisplayManager::Init()
 {
     if (_init)
         return;
+    bool created = false;
+    if (!_engine)
+    {
+        _engine = DamnCute::Core::getInstance();
+        _engine->createWin(_width, _height, _fullscreen);
+        created = true;
+    }
 
-    _engine->freeAll();
+    if (!created)
+        _engine->freeAll();
 
     switch (_mode)
     {
@@ -127,19 +107,8 @@ void DisplayManager::init()
 
 void DisplayManager::AddPlayer(DamnCute::APlayer* player, uint32 id)
 {
-    ScopLock lock(_playersAddedMutex);
-    _playersAdded[id] = player;
-}
-
-void DisplayManager::_ProcessAddedPlayers()
-{
-    ScopLock lock(_playersAddedMutex);
-    for (auto itr = _playersAdded.begin(); itr != _playersAdded.end(); ++itr)
-    {
-        _players[itr->first] = itr->second;
-        _engine->addObject(itr->second);
-    }
-    _playersAdded.clear();
+    _players[id] = player;
+    _engine->addObject(player);
 }
 
 DamnCute::APlayer* DisplayManager::GetPlayer(uint32 id)

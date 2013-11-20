@@ -16,7 +16,6 @@ int main(int ac, char** av) {
     */
 
     sClient->Initialize(800, 600, false);
-    sClient->Start(ac >= 2 ? to<uint32>(av[1]) : 1);
-    sClient->Wait();
+    sClient->Launch(ac >= 2 ? to<uint32>(av[1]) : 1);
     return EXIT_SUCCESS;
 }

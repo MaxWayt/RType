@@ -9,24 +9,19 @@
 
 #define DEFAULT_SLEEP_TIME 50
 
-class Client : public Thread, public Singleton<Client>
+class Client : public Singleton<Client>
 {
 public:
     Client();
     virtual ~Client();
 
-    void operator()();
     void Initialize(int32 width, int32 height, bool fullscreen);
 
-    void Start(uint32 clientId);
-    void Stop();
-    void Wait();
+    void Launch(uint32 clientId);
 
     uint32 GetClientKey() const { return _clientKey; }
 
     bool InitializeGame(uint32 clientKey, std::string const& addr, std::string const& port);
-
-    void Update(uint32 const diff);
 
     void UDPHandleReceive(Packet const* recvPkt);
     void UpdateIncomingPackets();
