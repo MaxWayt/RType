@@ -3,10 +3,14 @@
 MonsterTest::MonsterTest(int x, int y) : Monster(x, y)
 {
 
-    sf::Texture tex;
-    tex.loadFromFile("../resources/dango_monster.png");
-    _sprite.setTexture(tex);
+    _tex.loadFromFile("../resources/dango_monster.png");
+    _sprite.setTexture(_tex);
     _sprite.setScale(0.3, 0.3);
+
+    DamnCute::Core* engine = DamnCute::Core::getInstance();
+    _shootPattern = new TestShootPattern(convertVec(_sprite.getPosition()));
+    _shootPattern->setStatusGen(false);
+    engine->addObject(_shootPattern);
 }
 
 void MonsterTest::update(sf::RenderTarget* w_ptr) {

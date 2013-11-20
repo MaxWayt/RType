@@ -88,10 +88,11 @@ void Client::HandleAddMonster(Packet* recvPkt)
     uint32 id, type;
     uint8 weapon, health, fire;
     float x, y;
-    *recvPkt >> fire >> id >> type >> weapon >> x >> health >> y;
+    *recvPkt >> fire >> id >> type >> x >> health >> y;
 
     Monster* monster = sMonsterMgr->createMonster(type, x, y);
     monster->SetFire(fire != 0);
+    monster->SetHealth(health);
     _display->AddMonster(monster);
 
 

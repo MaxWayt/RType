@@ -10,9 +10,6 @@
 #include "Bullet.hh"
 #include "IMonster.hh"
 #include "SharedDefines.h"
-#include "ShootPattern.hpp"
-
-#define MAX_SHOOT_PATTERN_COUNT 3
 
 class Monster : public DamnCute::IMonster, public DamnCute::APhysics {
 
@@ -32,15 +29,16 @@ class Monster : public DamnCute::IMonster, public DamnCute::APhysics {
 
         virtual void update(sf::RenderTarget* w_ptr) = 0;
         bool isDead() const { return _health > 0; }
+        void SetHealth(uint8 val) { _health = val; }
     protected:
         bool _fire;
 
-        DamnCute::APattern* _shootPattern[MAX_SHOOT_PATTERN_COUNT];
+        DamnCute::APattern* _shootPattern;
 
         uint8 _health;
 
         sf::Sprite _sprite;
-        uint8 _weapon;
+        sf::Texture _tex;
 };
 
 #endif /* !MONSTER_H_ */
