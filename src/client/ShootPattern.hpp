@@ -64,7 +64,7 @@ class ShootPatternLevel1 : public DamnCute::APattern {
 
 class ShootPatternLevel2 : public DamnCute::APattern {
     public:
-        explicit ShootPatternLevel2(glm::vec2 v, bool reverse = false) : _v(v) _reverse(reverse) {
+        explicit ShootPatternLevel2(glm::vec2 v, bool reverse = false) : _v(v), _reverse(reverse) {
             initialize();
         }
 
