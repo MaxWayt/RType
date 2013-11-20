@@ -3,8 +3,13 @@
 
 #include <SFML/Graphics.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "Player.hh"
 #include "Core/Core.hh"
 #include "APattern.hh"
+#include "Client.h"
+#include "Opcodes.h"
+
+#define TIME_SEPARATOR 6
 
 class ShootPatternDefault : public DamnCute::APattern {
     public:
@@ -16,10 +21,9 @@ class ShootPatternDefault : public DamnCute::APattern {
         virtual void initialize() {
 
             _m = glm::translate(glm::mat4(), glm::vec3(-15, 0, 0));
-            _x = new DamnCute::Path(_m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
+            _x = new DamnCute::Path(_m, TIME_SEPARATOR, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
             _x->setPhysicBulletModelId(5);
             addPath(_x);
-
         }
 
     private:
@@ -38,12 +42,12 @@ class ShootPatternLevel1 : public DamnCute::APattern {
         virtual void initialize() {
 
             _m = glm::translate(glm::mat4(), glm::vec3(-15, 2, 0));
-            _y = new DamnCute::Path(_m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
+            _y = new DamnCute::Path(_m, TIME_SEPARATOR, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
             _y->setPhysicBulletModelId(5);
             addPath(_y);
 
             _m = glm::translate(glm::mat4(), glm::vec3(-15, -2, 0));
-            _z = new DamnCute::Path(_m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
+            _z = new DamnCute::Path(_m, TIME_SEPARATOR, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
             _z->setPhysicBulletModelId(5);
             addPath(_z);
         }
@@ -65,17 +69,17 @@ class ShootPatternLevel2 : public DamnCute::APattern {
         virtual void initialize() {
 
             _m = glm::translate(glm::mat4(), glm::vec3(-15, 0, 0));
-            _x = new DamnCute::Path(_m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
+            _x = new DamnCute::Path(_m, TIME_SEPARATOR, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
             _x->setPhysicBulletModelId(5);
             addPath(_x);
 
             _m = glm::translate(glm::mat4(), glm::vec3(-15, 4, 0));
-            _y = new DamnCute::Path(_m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
+            _y = new DamnCute::Path(_m, TIME_SEPARATOR, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
             _y->setPhysicBulletModelId(5);
             addPath(_y);
 
             _m = glm::translate(glm::mat4(), glm::vec3(-15, -4, 0));
-            _z = new DamnCute::Path(_m, 6, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
+            _z = new DamnCute::Path(_m, TIME_SEPARATOR, DamnCute::Bullet(glm::vec2(0, 0.0f), 0, 150), "../resources/pink-bullet.tga");
             _z->setPhysicBulletModelId(5);
             addPath(_z);
         }
@@ -93,7 +97,7 @@ class ActWeapon : public DamnCute::AAction<DamnCute::APlayer>
 
     public:
         explicit ActWeapon(DamnCute::APlayer *p, sf::Keyboard::Key k1, int button)
-            : AAction(p, k1, button), _level(0) {
+            : AAction(p, k1, button), _level(0), _timeLoad(0) {
                 _engine = DamnCute::Core::getInstance();
                 _sp1 = new ShootPatternDefault(convertVec(_entity->getPlayer().getPosition()));
                 _sp2 = new ShootPatternLevel1(convertVec(_entity->getPlayer().getPosition()));
@@ -126,6 +130,21 @@ class ActWeapon : public DamnCute::AAction<DamnCute::APlayer>
         }
 
         void execute() {
+
+            if ( _timeLoad == TIME_SEPARATOR)
+            {
+                _timeLoad = 0;
+                sf::Vector2f const& pos = _entity->getPlayer().getPosition();
+                Packet pkt(CMSG_SHOT);
+                pkt << pos.x;
+                pkt << pos.y;
+                pkt << uint8(_level);
+                sClient->UDPSend(pkt);
+            }
+            else
+                ++_timeLoad;
+
+            /*
             if (_level == 0) {
                 _sp1->moveOrigin(convertVec(_entity->getPlayer().getPosition()));
                 _sp1->setStatusGen(true);
@@ -138,6 +157,7 @@ class ActWeapon : public DamnCute::AAction<DamnCute::APlayer>
                 _sp3->moveOrigin(convertVec(_entity->getPlayer().getPosition()));
                 _sp3->setStatusGen(true);
             } 
+            */
         }
 
         virtual inline const std::string& getName() const { return _name; }
@@ -156,6 +176,7 @@ class ActWeapon : public DamnCute::AAction<DamnCute::APlayer>
         ShootPatternLevel1 *_sp2;
         ShootPatternLevel2 *_sp3;
         DamnCute::Core *_engine;
+        unsigned int _timeLoad;
 
 };
 

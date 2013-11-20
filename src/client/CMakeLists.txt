@@ -22,13 +22,13 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${DEBUG_FLAGS} -std=c++0x"
 set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${DEBUG_FLAGS} -std=c++0x")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${DEBUG_FLAGS} -std=c++0x")
 
-file(GLOB_RECURSE source_files *.cpp *.h *.hpp *.hh)
+file(GLOB_RECURSE source_file *.cpp *.h *.hpp *.hh)
 file(GLOB_RECURSE source_actions Actions/*.cpp Actions/*.h Actions/*.hpp Actions/*.hh)
 file(GLOB_RECURSE source_game game/*.cpp game/*.h game/*.hpp game/*.hh)
 
 set(rtype_client_SRCS
     ${rtype_client_SRCS}
-    ${source_files}
+    ${source_file}
     ${source_actions}
     ${source_game}
 )

@@ -34,7 +34,7 @@ public:
     void operator()();
     void Update(uint32 const diff);
 
-    Player* GetPlayer(std::string const& hostIdent);
+    Player* GetPlayer(std::string const& hostIdent, bool inAdded = false);
     Player const* GetPlayer(std::string const& hostIdent) const;
 
     bool IsValidePlayerKey(uint32 key) const;
@@ -43,7 +43,7 @@ public:
     void AddPlayer(Player* player); // Called from _service thread !!!!
     void RemovePlayer(Player* player); // Can be call from _service thread
 
-    void BroadcastPlayerPositionChange(uint32 playerId, float x, float y) const;
+    void BroadcastToAll(Packet const& pkt, Player const* except = NULL) const;
     void SendTo(Packet const& pkt, Socket::SocketInfo const& remote);
 
 private:

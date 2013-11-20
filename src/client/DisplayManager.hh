@@ -11,7 +11,7 @@
 # include <Core/Core.hh>
 #include "Thread.hpp"
 #include "Mutex.hpp"
-#include "APlayer.hh"
+#include "Player.hh"
 
 enum DisplayMode
 {
@@ -36,9 +36,12 @@ class DisplayManager
         inline void UpdateAlive() { _alive = DamnCute::Core::getInstance()->getWindowStatus(); }
         void Init();
 
-        void AddPlayer(DamnCute::APlayer* player, uint32 id);
-        DamnCute::APlayer* GetPlayer(uint32 id);
-        DamnCute::APlayer const* GetPlayer(uint32 id) const;
+        void AddPlayer(Player* player);
+        void RemovePlayer(Player* player);
+        Player* GetPlayer(uint32 id);
+        Player const* GetPlayer(uint32 id) const;
+
+        static std::string const& GetFileForClientId(uint32 id);
 
     private:
         DamnCute::Core* _engine;
@@ -49,7 +52,7 @@ class DisplayManager
         int32 _height;
         bool _fullscreen;
         Client* _client;
-        std::map<uint32, DamnCute::APlayer*> _players;
+        std::map<uint32, Player*> _players;
 };
 
 #endif /* !DISPLAYMANAGER_H_ */

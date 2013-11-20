@@ -31,7 +31,8 @@ public:
 
 
     // Handlers
-    void HandlePosition(::Packet* pkt);
+    void HandlePosition(Packet* pkt);
+    void HandleShot(Packet* pkt);
 
 private:
     Socket::SocketInfo _sockInfo;

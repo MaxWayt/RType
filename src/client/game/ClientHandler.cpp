@@ -1,6 +1,7 @@
 #include "Client.h"
 #include "Opcodes.h"
 #include "Player.hh"
+#include "DisplayManager.hh"
 #include <iostream>
 
 void Client::HandleGreeting(Packet* recvPkt)
@@ -21,13 +22,12 @@ void Client::HandleConnectResult(Packet* recvPkt)
         return;
     }
 
+    std::cout << "Successfull authed" << std::endl;
     uint32 playerId;
     *recvPkt >> playerId;
 
-    DamnCute::APlayer* player = new Player<0>("../resources/ship_red.png", 100, 550);
-    _display->AddPlayer(player, playerId);
-
-    UpdatePlayerPosition();
+    _player = new Player(DisplayManager::GetFileForClientId(playerId), 100, 550, 5, true, (int)playerId);
+    _display->AddPlayer(_player);
 }
 
 void Client::HandlePlayerPosition(Packet* recvPkt)
@@ -49,11 +49,31 @@ void Client::HandleAddPlayer(Packet* recvPkt)
     *recvPkt >> playerId;
     *recvPkt >> x >> y;
 
-    DamnCute::APlayer* player = new Player<1>("../resources/ship_blue.png", x, y);
-    _display->AddPlayer(player, playerId);
+    Player* player = new Player(DisplayManager::GetFileForClientId(playerId), x, y, 5, false, (int)playerId);
+    _display->AddPlayer(player);
 }
 
 void Client::HandleRemovePlayer(Packet* recvPkt)
 {
+    uint32 playerId;
+    *recvPkt >> playerId;
 
+    if (Player* player = _display->GetPlayer(playerId))
+    {
+        if (player == _player)
+            return;
+        _display->RemovePlayer(player);
+    }
+
+}
+
+
+void Client::HandlePlayerShot(Packet* recvPkt)
+{
+    uint32 playerId;
+    float x, y;
+    uint8 level;
+    *recvPkt >> playerId >> x >> y >> level;
+
+    std::cout << "Player " << playerId << " SHOT" << std::endl;
 }
