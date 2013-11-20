@@ -15,7 +15,6 @@ Level::Level(Game *game)
     _config->collection[0].timer = 1200;
     _config->collection[0].monster.id = 0;
     _config->collection[0].monster.type = 0;
-    _config->collection[0].monster.weapon = 0;
     _config->collection[0].monster.health = 100;
     _config->collection[0].monster.fire = 20;
     _config->collection[0].monster.x = 2000.0;
@@ -26,18 +25,34 @@ Level::~Level() {
 
 }
 
+float Level::_getRandomBetween(int min, int max) {
+
+    std::random_device rd;
+    std::uniform_int_distribution<int> generator(min, max);
+    float random = (float)generator(rd);
+
+    return random;
+}
+
 void Level::sendMonster(Monster *monster) {
 
     Packet pkt(SMSG_ADD_MONSTER);
-    pkt <<  (uint8)monster->fire; 
-    pkt << (uint32)monster->id; 
-    pkt << (uint32)monster->type; 
-    pkt <<  (uint8)monster->weapon; 
-    pkt <<  (float)monster->x; 
-    pkt <<  (uint8)monster->health; 
-    pkt <<  (float)monster->y; 
+    pkt <<  (uint8)monster->fire;
+    pkt << (uint32)monster->id;
+    pkt << (uint32)monster->type;
+    pkt <<  _getRandomBetween(2000, 2400);
+    pkt <<  (uint8)monster->health;
+    pkt <<  _getRandomBetween(0, 1000);
     _game->BroadcastToAll(pkt);
-    std::cout << "Toto : " << monster->id << std::endl;    
+    std::cout << "Monster = { id : " << monster->id << ", type : " << monster->type << " }" << std::endl;
+}
+
+Monster *Level::getMonster(uint32 id) {
+
+    auto itr = _monsters.find(id);
+    if (itr == _monsters.end())
+        return NULL;
+    return itr->second;
 }
 
 void Level::update(uint32 diff) {

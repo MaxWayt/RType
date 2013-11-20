@@ -1,12 +1,13 @@
 #ifndef LEVELUUUU_H_
 # define LEVELUUUU_H_
 
+#include <random>
 #include <unordered_map>
 #include "SharedDefines.h"
 #include "Opcodes.h"
 
-/*                           8    32 32   8      F UINT8  F */
-/* Packet : SMSG_ADD_MONSTER FIRE ID TYPE WEAPON X HEAL   Y */
+/*                           8    32 32   F UINT8  F */
+/* Packet : SMSG_ADD_MONSTER FIRE ID TYPE X HEAL   Y */
 
 namespace Game
 {
@@ -17,7 +18,6 @@ struct Monster
 {
     uint32 id;
     uint32 type;
-    uint8 weapon;
     uint8 health;
     uint8 fire;
     float x;
@@ -44,7 +44,9 @@ public:
     virtual ~Level();
     void update(uint32 time);
     void sendMonster(Monster *monster);
+    Monster *getMonster(uint32 id);
 private:
+    float _getRandomBetween(int min, int max);
     Game *_game;
     LevelConfig *_config;
     std::unordered_map<uint32, Monster *> _monsters;
