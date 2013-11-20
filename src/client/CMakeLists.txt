@@ -33,6 +33,14 @@ set(rtype_client_SRCS
     ${source_game}
 )
 
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
+
+file(GLOB_RECURSE source_monster_test monsters/monster_test/*.cpp monsters/monster_test/*.h monsters/monster_test/*.hh monsters/monster_test/*.hpp)
+set(monster_test_SRCS
+    ${monster_test_SRCS}
+    ${source_monster_test}
+)
+
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/Actions
@@ -62,8 +70,16 @@ add_executable(${CLIENT_EXECUTABLE_NAME}
 )
 target_link_libraries(${CLIENT_EXECUTABLE_NAME} ${ALL_LIBS})
 
+set(MONSTER_TEST_LIBRARY_NAME "test")
+add_library(${MONSTER_TEST_LIBRARY_NAME}
+    SHARED
+    ${monster_test_SRCS}
+)
+target_link_libraries(${MONSTER_TEST_LIBRARY_NAME} ${ALL_LIBS})
+
 install_targets(/bin ${CLIENT_EXECUTABLE_NAME})
 install_programs(/bin ${CLIENT_NAME})
 install_files(/etc ${CLIENT_NAME}.conf.dist)
 install (DIRECTORY ${CMAKE_SOURCE_DIR}/resources DESTINATION "${CMAKE_INSTALL_PREFIX}")
+install_files(/lib ${MONSTER_TEST_LIBRARY_NAME})
 

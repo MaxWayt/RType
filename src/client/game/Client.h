@@ -36,6 +36,8 @@ public:
     void HandleAddPlayer(Packet* recvPkt);
     void HandleRemovePlayer(Packet* recvPkt);
     void HandlePlayerShot(Packet* recvPkt);
+    void HandleAddMonster(Packet* recvPkt);
+ 
 private:
     NetService _service;
     UDPSocket _udpSocket;

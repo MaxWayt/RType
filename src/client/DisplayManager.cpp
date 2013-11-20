@@ -4,8 +4,6 @@
 #include <Core/Core.hh>
 #include "DisplayManager.hh"
 #include "ConfigFile.hh"
-#include "MonsterHandler.hh"
-
 #include "Client.h"
 
 void runGame();

@@ -1,5 +1,5 @@
-#ifndef PLAYER_H_
-# define PLAYER_H_
+#ifndef MONSTER_H_
+# define MONSTER_H_
 
 #include <SFML/Graphics.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -8,19 +8,17 @@
 #include <iostream>
 #include <vector>
 #include "Bullet.hh"
-#include "APlayer.hh"
+#include "IMonster.hh"
 #include "SharedDefines.h"
 #include "ShootPattern.hpp"
 
-class Player : public DamnCute::APlayer {
+#define MAX_SHOOT_PATTERN_COUNT 3
+
+class Monster : public DamnCute::IMonster, public DamnCute::APhysics {
 
     public:
-        explicit Player(const std::string& texfile = "../resources/player.tga", float x = 980, float y = 950, int speed = 5, bool active = true, int num = 0);
-        virtual ~Player() = default;
-        Player& operator=(const Player&) = delete;
+        Monster(int x, int y);
         virtual void collisionHandler(DamnCute::APhysics* other);
-
-        void levelUp() { ++_level; }
 
         void SetFire(bool fire);
         bool IsFire() const { return _fire; }
@@ -30,18 +28,19 @@ class Player : public DamnCute::APlayer {
         }
 
         void UpdateFirePosition();
-    private:
+
+
+        virtual void update(sf::RenderTarget* w_ptr) = 0;
+        bool isDead() const { return _health > 0; }
+    protected:
         bool _fire;
 
-        ShootPatternDefault *_sp1;
-        ShootPatternLevel1 *_sp2;
-        ShootPatternLevel2 *_sp3;
-
-        uint8 _level;
+        DamnCute::APattern* _shootPattern[MAX_SHOOT_PATTERN_COUNT];
 
         uint8 _health;
+
+        sf::Sprite _sprite;
+        uint8 _weapon;
 };
 
-
-
-#endif
+#endif /* !MONSTER_H_ */
