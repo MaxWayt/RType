@@ -14,8 +14,10 @@
 class Monster : public DamnCute::IMonster, public DamnCute::APhysics {
 
     public:
-        Monster(int x, int y);
+        Monster(uint32 id, int x, int y);
         virtual void collisionHandler(DamnCute::APhysics* other);
+
+        uint32 GetId() const { return _id; }
 
         void SetFire(bool fire);
         bool IsFire() const { return _fire; }
@@ -31,6 +33,7 @@ class Monster : public DamnCute::IMonster, public DamnCute::APhysics {
         bool isDead() const { return _health > 0; }
         void SetHealth(uint8 val) { _health = val; }
     protected:
+        uint32 _id;
         bool _fire;
 
         DamnCute::APattern* _shootPattern;

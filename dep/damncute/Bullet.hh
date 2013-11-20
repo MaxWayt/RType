@@ -8,7 +8,7 @@
 namespace DamnCute {
     class Bullet : public APhysics {
         public:
-            explicit Bullet(const glm::vec2&, const float = 0.0f, unsigned int = 60);
+            explicit Bullet(const glm::vec2&, const float = 0.0f, unsigned int = 60, unsigned int = 0);
             explicit Bullet(const Bullet&) = delete;
             explicit Bullet(Bullet&&);
             virtual ~Bullet() = default;
@@ -36,6 +36,8 @@ namespace DamnCute {
             }
             void setTexure(sf::Texture*);
             virtual void collisionHandler(APhysics*);
+
+            unsigned int getOwnerId() const { return _id; }
         private:
             glm::vec2 _origin;
             float _rot;
@@ -43,6 +45,7 @@ namespace DamnCute {
             sf::Texture* _tex; // TODO : need to be deleted or changed by referance
             sf::Sprite _s;
             unsigned int _lifeTime;
+            unsigned int _id;
     };
 }
 

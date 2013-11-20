@@ -34,7 +34,7 @@ class TestShootPattern : public DamnCute::APattern {
 class MonsterTest : public Monster
 {
     public:
-        MonsterTest(int x, int y);
+        MonsterTest(unsigned int id, int x, int y);
 
         void update(sf::RenderTarget* w_ptr);
 };

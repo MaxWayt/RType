@@ -13,10 +13,10 @@ void MonsterMgr::addMonterLoader(std::string const& name)
     _monsterLoaders[_nextId++] = loader; 
 }
 
-Monster* MonsterMgr::createMonster(uint32 type, int32 x, int32 y)
+Monster* MonsterMgr::createMonster(uint32 id, uint32 type, int32 x, int32 y)
 {
     auto itr = _monsterLoaders.find(type);
     if (itr != _monsterLoaders.end())
-        return itr->second->load(x, y);
+        return itr->second->load(id, x, y);
     return NULL;
 }

@@ -20,9 +20,9 @@ _fire(false), _sp1(NULL), _sp2(NULL), _sp3(NULL), _level(0), _health(5)
     }
 
     DamnCute::Core* engine = DamnCute::Core::getInstance();
-    _sp1 = new ShootPatternDefault(convertVec(getPlayer().getPosition()));
-    _sp2 = new ShootPatternLevel1(convertVec(getPlayer().getPosition()));
-    _sp3 = new ShootPatternLevel2(convertVec(getPlayer().getPosition()));
+    _sp1 = new ShootPatternDefault(convertVec(getPlayer().getPosition()), num);
+    _sp2 = new ShootPatternLevel1(convertVec(getPlayer().getPosition()), num);
+    _sp3 = new ShootPatternLevel2(convertVec(getPlayer().getPosition()), num);
     _sp1->setStatusGen(false);
     _sp2->setStatusGen(false);
     _sp3->setStatusGen(false);
