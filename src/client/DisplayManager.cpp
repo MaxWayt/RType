@@ -105,13 +105,19 @@ void DisplayManager::Init()
     _init = true;
 }
 
-void DisplayManager::AddPlayer(DamnCute::APlayer* player, uint32 id)
+void DisplayManager::AddPlayer(Player* player)
 {
-    _players[id] = player;
+    _players[player->getNumPlayer()] = player;
     _engine->addObject(player);
 }
 
-DamnCute::APlayer* DisplayManager::GetPlayer(uint32 id)
+void DisplayManager::RemovePlayer(Player* player)
+{
+    _players.erase(player->getNumPlayer());
+    _engine->delObject(player);
+}
+
+Player* DisplayManager::GetPlayer(uint32 id)
 {
     auto itr = _players.find(id);
     if (itr != _players.end())
@@ -119,10 +125,22 @@ DamnCute::APlayer* DisplayManager::GetPlayer(uint32 id)
     return NULL;
 }
 
-DamnCute::APlayer const* DisplayManager::GetPlayer(uint32 id) const
+Player const* DisplayManager::GetPlayer(uint32 id) const
 {
     auto itr = _players.find(id);
     if (itr != _players.end())
         return itr->second;
     return NULL;
+}
+
+
+std::string const& DisplayManager::GetFileForClientId(uint32 id)
+{
+    static std::string file[] = {
+        "../resources/ship_red.png",
+        "../resources/ship_blue.png",
+        "../resources/ship_green.png",
+        "../resources/ship_yellow.png"
+    };
+    return file[id];
 }

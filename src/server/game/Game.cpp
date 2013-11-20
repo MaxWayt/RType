@@ -77,11 +77,17 @@ void Game::Update(uint32 const diff)
     _ProcessRemovedPlayer();
 }
 
-Player* Game::GetPlayer(std::string const& hostIdent)
+Player* Game::GetPlayer(std::string const& hostIdent, bool inAdded)
 {
     auto itr = _playerMap.find(hostIdent);
     if (itr != _playerMap.end())
         return itr->second;
+    if (inAdded)
+    {
+        auto itr2 = _playerAddedMap.find(hostIdent);
+        if (itr2 != _playerAddedMap.end())
+            return itr2->second;
+    }
     return NULL;
 }
 
@@ -159,24 +165,18 @@ void Game::_ProcessRemovedPlayer()
     {
         Packet currPkt(SMSG_REMOVE_PLAYER);
         currPkt << itr->second->GetId();
+        BroadcastToAll(currPkt, itr->second);
         _playerMap.erase(itr->first);
-        for (auto itr2 = _playerMap.begin(); itr2 != _playerMap.end(); ++itr2)
-            itr2->second->Send(currPkt);
     }
     _playerRemovedMap.clear();
 }
 
-
-void Game::BroadcastPlayerPositionChange(uint32 playerId, float x, float y) const
+void Game::BroadcastToAll(Packet const& pkt, Player const* except) const
 {
-    Packet pkt(SMSG_PLAYER_POSITION);
-    pkt << uint32(playerId);
-    pkt << x;
-    pkt << y;
-
     for (auto itr = _playerMap.begin(); itr != _playerMap.end(); ++itr)
-        if (itr->second->GetKey() != playerId)
+        if (itr->second != except)
             itr->second->Send(pkt);
+
 }
 
 void Game::SendTo(Packet const& pkt, Socket::SocketInfo const& remote)

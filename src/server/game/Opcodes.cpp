@@ -11,6 +11,7 @@ Opcode::OpcodeHandler const* Opcode::GetHandler(Opcodes op)
         { SMSG_GREETING, NULL                               },
         { CMSG_PLAYER_KEY, NULL                             },
         { CMSG_PLAYER_POSITION, &Player::HandlePosition     },
+        { CMSG_SHOT, &Player::HandleShot                    },
         { OPCODE_COUNT, NULL                                }
 
     };

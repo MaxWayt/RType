@@ -17,6 +17,8 @@ enum Opcodes
     SMSG_PING                   = 6,
     CMSG_PONG                   = 7,
     SMSG_REMOVE_PLAYER          = 8,
+    CMSG_SHOT                   = 9,
+    SMSG_SHOT                   = 10,
     OPCODE_COUNT
 
 };

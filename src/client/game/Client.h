@@ -37,12 +37,14 @@ public:
     void HandlePlayerPosition(Packet* recvPkt);
     void HandleAddPlayer(Packet* recvPkt);
     void HandleRemovePlayer(Packet* recvPkt);
+    void HandlePlayerShot(Packet* recvPkt);
 private:
     NetService _service;
     UDPSocket _udpSocket;
     uint32 _clientKey;
     LockedQueue<Packet> _recvQueue;
     DisplayManager* _display;
+    Player* _player;
 
 };
 

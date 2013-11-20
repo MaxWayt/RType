@@ -35,7 +35,7 @@ void GameSocket::HandleReceive()
 
         std::string const& hostIdent = remote.GetHostIdentifier();
 
-        if (Player* player = _game->GetPlayer(hostIdent))
+        if (Player* player = _game->GetPlayer(hostIdent, true))
             player->HandleReceive(&recvPkt);
         else
         {
@@ -106,6 +106,7 @@ void GameSocket::_HandlePlayerKey(::Packet& pkt, Socket::SocketInfo const& sockI
     uint32 number = _game->GetPlayerNumberByKey(key);
 
     Player* player = new Player(_game, sockInfo, number, key);
+    _waitingHost.erase(player->GetHostIdentifier());
     _game->AddPlayer(player);
 
     std::cout << "New registered player " << player->GetHostIdentifier() << std::endl;

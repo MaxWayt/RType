@@ -5,7 +5,7 @@
 #include <iostream>
 
 Client::Client() : _service(), _udpSocket(this, _service), _clientKey(0),
-    _recvQueue(), _display(NULL)
+    _recvQueue(), _display(NULL), _player(NULL)
 {
 }
 
@@ -92,9 +92,9 @@ void Client::UpdatePlayerPosition()
 {
     static sf::Vector2f pos(0.0f, 0.0f);
 
-    if (DamnCute::APlayer const* player = _display->GetPlayer(_clientKey))
+    if (_player)
     {
-        sf::Sprite const& sprite = player->getPlayer();
+        sf::Sprite const& sprite = _player->getPlayer();
         sf::Vector2f const& newPos = sprite.getPosition();
         if (newPos != pos)
         {
@@ -106,3 +106,4 @@ void Client::UpdatePlayerPosition()
         }
     }
 }
+
