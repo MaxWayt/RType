@@ -28,8 +28,6 @@ public:
 
     void UDPSend(Packet const& pkt);
 
-    void UpdatePlayerPosition();
-
     // Handlers
 
     void HandleGreeting(Packet* recvPkt);
