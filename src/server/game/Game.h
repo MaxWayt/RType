@@ -4,6 +4,7 @@
 #include <SharedDefines.h>
 #include <Thread.hpp>
 #include "GameSocket.h"
+#include "Level.h"
 #include "Utils.hpp"
 #include "Player.h"
 
@@ -58,6 +59,7 @@ private:
     std::map<std::string, Player*> _playerRemovedMap;
     Mutex _playerAddedMutex;
     Mutex _playerRemovedMutex;
+    Level _level;
 };
 }
 
