@@ -84,5 +84,5 @@ install_targets(/bin ${CLIENT_EXECUTABLE_NAME})
 install_programs(/bin ${CLIENT_NAME})
 install_files(/etc ${CLIENT_NAME}.conf.dist)
 install (DIRECTORY ${CMAKE_SOURCE_DIR}/resources DESTINATION "${CMAKE_INSTALL_PREFIX}")
-install_files(/lib ${MONSTER_TEST_LIBRARY_NAME})
+install(TARGETS ${MONSTER_TEST_LIBRARY_NAME} DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
 
