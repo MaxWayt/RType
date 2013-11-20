@@ -90,10 +90,20 @@ void Client::HandleAddMonster(Packet* recvPkt)
     float x, y;
     *recvPkt >> fire >> id >> type >> x >> health >> y;
 
-    Monster* monster = sMonsterMgr->createMonster(type, x, y);
+    Monster* monster = sMonsterMgr->createMonster(id, type, x, y);
     monster->SetFire(fire != 0);
     monster->SetHealth(health);
     _display->AddMonster(monster);
 
 
+}
+
+void Client::HandleRemoveMonster(Packet* recvPkt)
+{
+    uint32 id;
+    *recvPkt >> id;
+
+    Monster* monster = _display->GetMonster(id);
+    if (monster)
+        _display->RemoveMonster(monster);
 }

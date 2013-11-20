@@ -1,6 +1,6 @@
 #include "MonsterTest.h"
 
-MonsterTest::MonsterTest(int x, int y) : Monster(x, y)
+MonsterTest::MonsterTest(unsigned int id, int x, int y) : Monster(id, x, y)
 {
 
     _tex.loadFromFile("../resources/dango_monster.png");

@@ -1,7 +1,9 @@
 #include "Monster.h"
+#include "Client.h"
+#include "Opcodes.h"
 
-Monster::Monster(int x, int y) : DamnCute::APhysics(x, y, true),
-    _fire(false), _shootPattern(NULL), _health(5), _sprite()
+Monster::Monster(uint32 id, int x, int y) : DamnCute::APhysics(x, y, true),
+    _id(id), _fire(false), _shootPattern(NULL), _health(5), _sprite()
 {
     _sprite.setPosition(x, y);
 }
@@ -10,8 +12,14 @@ void Monster::collisionHandler(DamnCute::APhysics* other) {
 
     // 5 == player bullets
     if (other->getType() == 5) {
-        _health--;
-        ((DamnCute::Bullet*)other)->setLife(0);
+        DamnCute::Bullet* bullet = (DamnCute::Bullet*)other;
+        if (bullet->getOwnerId() == sClient->GetPlayerId())
+        {
+            Packet pkt(CMSG_PLAYER_HIT_MONSTER);
+            pkt << GetId();
+            sClient->UDPSend(pkt);
+        }
+        bullet->setLife(0);
     }
 }
 

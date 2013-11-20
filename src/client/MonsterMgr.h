@@ -10,7 +10,7 @@ public:
     MonsterMgr() : _monsterLoaders(), _nextId(0) {}
     void addMonterLoader(std::string const& name);
 
-    Monster* createMonster(uint32 type, int32 x, int32 y);
+    Monster* createMonster(uint32 id, uint32 type, int32 x, int32 y);
 private:
     std::map<uint32, MonsterLoader*> _monsterLoaders;
     uint32 _nextId;

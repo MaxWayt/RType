@@ -13,7 +13,7 @@ class MonsterLoader {
         MonsterLoader(std::string);
         ~MonsterLoader();
 
-        Monster* load(int, int);
+        Monster* load(unsigned int, int, int);
     private:
         void *_handle;
 
