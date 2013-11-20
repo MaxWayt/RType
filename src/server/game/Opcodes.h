@@ -19,6 +19,7 @@ enum Opcodes
     SMSG_REMOVE_PLAYER          = 8,
     CMSG_SHOT                   = 9,
     SMSG_SHOT                   = 10,
+    SMSG_ADD_MONSTER            = 11,
     OPCODE_COUNT
 
 };
