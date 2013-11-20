@@ -43,6 +43,8 @@ class DisplayManager
 
         static std::string const& GetFileForClientId(uint32 id);
 
+        void UpdateFirePosition();
+
     private:
         DamnCute::Core* _engine;
         bool _alive;

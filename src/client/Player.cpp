@@ -53,26 +53,33 @@ void Player::SetFire(bool fire)
         _sp3->setStatusGen(false);
     }
     else
+    {
+        UpdateFirePosition();
         switch (_level)
         {
             case 0:
                 {
-                    _sp1->moveOrigin(convertVec(getPlayer().getPosition()));
                     _sp1->setStatusGen(true);
                     break;
                 }
             case 1:
                 {
-                    _sp2->moveOrigin(convertVec(getPlayer().getPosition()));
                     _sp2->setStatusGen(true);
                     break;
                 }
             case 2:
                 {
-                    _sp3->moveOrigin(convertVec(getPlayer().getPosition()));
                     _sp3->setStatusGen(true);
                     break;
                 } 
         }
+    }
+}
+
+void Player::UpdateFirePosition()
+{
+    _sp1->moveOrigin(convertVec(getPlayer().getPosition()));
+    _sp2->moveOrigin(convertVec(getPlayer().getPosition()));
+    _sp3->moveOrigin(convertVec(getPlayer().getPosition()));
 }
 
