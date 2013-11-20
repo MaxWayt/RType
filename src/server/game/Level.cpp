@@ -10,7 +10,7 @@ Level::Level(Game *game)
     // Do stuff
     _config = new LevelConfig();
     _config->nb = 1;
-    _config->collection[0].nb = 2;
+    _config->collection[0].nb = 66;
     _config->collection[0].pregnancy_time = 5000;
     _config->collection[0].timer = 1200;
     _config->collection[0].monster.id = 0;
@@ -18,8 +18,8 @@ Level::Level(Game *game)
     _config->collection[0].monster.weapon = 0;
     _config->collection[0].monster.health = 100;
     _config->collection[0].monster.fire = 20;
-    _config->collection[0].monster.x = 200.0;
-    _config->collection[0].monster.y = 200.0;
+    _config->collection[0].monster.x = 2000.0;
+    _config->collection[0].monster.y = 500.0;
 }
 
 Level::~Level() {
