@@ -19,56 +19,24 @@ void Client::Initialize(int32 width, int32 height, bool fullscreen)
     _display = new DisplayManager(this, width, height, fullscreen);
 }
 
-void Client::operator()()
-{
-    uint32 prevTime = GetMSTime();
-    uint32 currTime = 0;
-    uint32 prevSleep = 0;
-    uint32 sleepTime = DEFAULT_SLEEP_TIME;
-    while (!_isStopped())
-    {
-        currTime = GetMSTime();
-        uint32 diff = GetMSTimeDiff(prevTime, currTime);
-
-        Update(diff);
-        prevTime = currTime;
-
-        if (diff <= sleepTime + prevSleep)
-        {
-            prevSleep = sleepTime + prevSleep - diff;
-            Thread::Sleep(prevSleep);
-        }
-        else
-            prevSleep = 0;
-    }
-}
-
-void Client::Start(uint32 clientId)
+void Client::Launch(uint32 clientId)
 {
     _service.Start();
-    _run();
     InitializeGame(clientId, "127.0.0.1", "5000"); 
-    _display->Start(MODE_GAME); // Bloquant !
-}
+    _display->SwitchMode(MODE_GAME);
+    _display->Init();
 
-void Client::Stop()
-{
+    while (_display->IsAlive())
+    {
+        _display->Init(); // Init only if needed
+        _display->flushAll();
+        _display->UpdateAlive();
+
+        UpdateIncomingPackets();
+        UpdatePlayerPosition();
+    }
     _service.Stop();
-    _stop();
-}
-
-void Client::Wait()
-{
     _service.Wait();
-    _join();
-}
-
-void Client::Update(uint32 const diff)
-{
-    //client.InitializeGame(1, "127.0.0.1", "5000");
-    UpdateIncomingPackets();
-    UpdatePlayerPosition();
-
 }
 
 void Client::UpdateIncomingPackets()
