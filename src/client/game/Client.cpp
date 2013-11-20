@@ -19,10 +19,10 @@ void Client::Initialize(int32 width, int32 height, bool fullscreen)
     _display = new DisplayManager(this, width, height, fullscreen);
 }
 
-void Client::Launch(uint32 clientId)
+void Client::Launch(uint32 clientId, std::string const &addr, std::string const &port)
 {
     _service.Start();
-    InitializeGame(clientId, "127.0.0.1", "5000"); 
+    InitializeGame(clientId, addr, port); 
     _display->SwitchMode(MODE_GAME);
     _display->Init();
 

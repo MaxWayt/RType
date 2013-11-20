@@ -17,7 +17,7 @@ public:
 
     void Initialize(int32 width, int32 height, bool fullscreen);
 
-    void Launch(uint32 clientId);
+    void Launch(uint32 clientId, std::string const &addr, std::string const &port);
 
     uint32 GetClientKey() const { return _clientKey; }
 
