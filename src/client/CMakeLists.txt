@@ -38,6 +38,9 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
 file(GLOB_RECURSE source_monster_test monsters/monster_test/*.cpp monsters/monster_test/*.h monsters/monster_test/*.hh monsters/monster_test/*.hpp)
 set(monster_test_SRCS
     ${monster_test_SRCS}
+    ${source_file}
+    ${source_actions}
+    ${source_game}
     ${source_monster_test}
 )
 
