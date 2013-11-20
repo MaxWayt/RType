@@ -24,6 +24,8 @@ void Player::HandleShot(Packet* pkt)
     uint8 active, level;
     *pkt >> active >> level;
 
+    _shooting = (active != 0);
+
     Packet data(SMSG_SHOT);
     data << uint32(GetId());
     data << uint8(active);

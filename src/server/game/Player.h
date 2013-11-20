@@ -30,6 +30,11 @@ public:
     bool IsLoginOut() const { return _loginOut; }
 
 
+    void BuildCreatePacket(Packet& pkt) const;
+
+    bool IsShooting() const { return _shooting; }
+
+
     // Handlers
     void HandlePosition(Packet* pkt);
     void HandleShot(Packet* pkt);
@@ -48,6 +53,7 @@ private:
     uint32 _lastPing;
 
     bool _loginOut;
+    bool _shooting;
 };
 
 }

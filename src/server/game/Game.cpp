@@ -141,16 +141,12 @@ void Game::_ProcessAddedPlayer()
     for (auto itr = _playerAddedMap.begin(); itr != _playerAddedMap.end(); ++itr)
     {
         Packet currPkt(SMSG_ADD_PLAYER);
-        currPkt << itr->second->GetId();
-        currPkt << itr->second->GetPositionX();
-        currPkt << itr->second->GetPositionY();
+        itr->second->BuildCreatePacket(currPkt);
         for (auto itr2 = _playerMap.begin(); itr2 != _playerMap.end(); ++itr2)
         {
             itr2->second->Send(currPkt);
             Packet newPkt(SMSG_ADD_PLAYER);
-            newPkt << itr2->second->GetId();
-            newPkt << itr2->second->GetPositionX();
-            newPkt << itr2->second->GetPositionY();
+            itr2->second->BuildCreatePacket(newPkt);
             itr->second->Send(newPkt);
         }
         _playerMap[itr->first] = itr->second;
