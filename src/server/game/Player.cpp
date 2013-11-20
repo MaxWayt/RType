@@ -10,7 +10,8 @@ namespace Game
 
 Player::Player(Game* game, Socket::SocketInfo const& sockInfo, uint32 number, uint32 key) :
     _sockInfo(sockInfo), _game(game), _id(number), _recvQueue(), _key(key),
-    _x(0.0f), _y(0.0f), _pingTimer(0), _lastPing(GetMSTime())
+    _x(0.0f), _y(0.0f), _pingTimer(0), _lastPing(GetMSTime()), _loginOut(false),
+    _shooting(false)
 {
     _pingTimer = sConfig->GetIntDefault("Game.Player.PingInterval", 2000);
 }
@@ -69,6 +70,14 @@ void Player::Update(uint32 const diff)
 void Player::Send(Packet const& pkt)
 {
     _game->SendTo(pkt, _sockInfo);
+}
+
+void Player::BuildCreatePacket(Packet& pkt) const
+{
+    pkt << uint32(GetId());
+    pkt << GetPositionX();
+    pkt << GetPositionY();
+    pkt << uint8(IsShooting() ? 1 : 0);
 }
 
 }

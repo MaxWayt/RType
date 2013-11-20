@@ -46,11 +46,14 @@ void Client::HandleAddPlayer(Packet* recvPkt)
 {
     uint32 playerId;
     float x, y;
+    uint8 fire;
     *recvPkt >> playerId;
     *recvPkt >> x >> y;
+    *recvPkt >> fire;
 
     Player* player = new Player(DisplayManager::GetFileForClientId(playerId), x, y, 5, false, (int)playerId);
     _display->AddPlayer(player);
+    player->SetFire(fire != 0);
 }
 
 void Client::HandleRemovePlayer(Packet* recvPkt)
