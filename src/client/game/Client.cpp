@@ -33,7 +33,6 @@ void Client::Launch(uint32 clientId)
         _display->UpdateAlive();
 
         UpdateIncomingPackets();
-        UpdatePlayerPosition();
     }
     _service.Stop();
     _service.Wait();
@@ -87,23 +86,3 @@ void Client::UDPSend(Packet const& pkt)
 {
     _udpSocket.Send(pkt.data(), pkt.size());
 }
-
-void Client::UpdatePlayerPosition()
-{
-    static sf::Vector2f pos(0.0f, 0.0f);
-
-    if (_player)
-    {
-        sf::Sprite const& sprite = _player->getPlayer();
-        sf::Vector2f const& newPos = sprite.getPosition();
-        if (newPos != pos)
-        {
-            pos = newPos;
-            Packet pkt(CMSG_PLAYER_POSITION);
-            pkt << pos.x;
-            pkt << pos.y;
-            UDPSend(pkt);
-        }
-    }
-}
-

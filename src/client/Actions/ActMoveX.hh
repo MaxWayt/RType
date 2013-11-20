@@ -1,6 +1,10 @@
 #ifndef _ACTMOVEX_H_
 # define _ACTMOVEX_H_
 
+#include "Opcodes.h"
+#include "Packet.hpp"
+#include "Client.h"
+
 #define K1 0
 #define K2 1
 
@@ -44,6 +48,12 @@ class ActMoveX : public DamnCute::AAction<DamnCute::APlayer>
                 _entity->getPlayer().move(-(_entity->getSpeed()), 0);
             if (_who == K2 && _entity->getPlayer().getPosition().x < 1920 - _entity->getPlayer().getTexture()->getSize().x)
                 _entity->getPlayer().move(_entity->getSpeed(), 0);
+
+            sf::Vector2f const& pos = _entity->getPlayer().getPosition();
+            Packet pkt(CMSG_PLAYER_POSITION);
+            pkt << pos.x;
+            pkt << pos.y;
+            sClient->UDPSend(pkt);
 
         }
 
