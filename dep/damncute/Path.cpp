@@ -28,14 +28,12 @@ void DamnCute::Path::update(sf::RenderTarget* w_ptr) {
 	}
     }
 
-    /*
     if ((( _timeLoad == _timeSeparator) > 0) && (_generate)) {
         _timeLoad = 0;
         _bullets.push_back(std::move(_bulletModel));
     } else if (_generate){
 	++_timeLoad;
     }
-    */
 }
 
 void DamnCute::Path::countdownPushMoveModifier(unsigned int framme, const glm::mat4& newMat) {

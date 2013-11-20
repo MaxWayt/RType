@@ -33,6 +33,8 @@ void Client::Launch(uint32 clientId, std::string const &addr, std::string const 
         _display->UpdateAlive();
 
         UpdateIncomingPackets();
+
+        _display->UpdateFirePosition();
     }
     _service.Stop();
     _service.Wait();

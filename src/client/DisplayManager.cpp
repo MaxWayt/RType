@@ -105,6 +105,12 @@ void DisplayManager::Init()
     _init = true;
 }
 
+void DisplayManager::UpdateFirePosition()
+{
+    for (auto itr = _players.begin(); itr != _players.end(); ++itr)
+        itr->second->UpdateFirePosition();
+}
+
 void DisplayManager::AddPlayer(Player* player)
 {
     _players[player->getNumPlayer()] = player;
