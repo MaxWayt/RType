@@ -16,4 +16,6 @@ private:
     uint32 _nextId;
 };
 
+#define sMonsterMgr MonsterMgr::instance()
+
 #endif /* !MONSTERMGR_H_ */
