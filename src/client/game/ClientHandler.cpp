@@ -71,9 +71,11 @@ void Client::HandleRemovePlayer(Packet* recvPkt)
 void Client::HandlePlayerShot(Packet* recvPkt)
 {
     uint32 playerId;
-    float x, y;
-    uint8 level;
-    *recvPkt >> playerId >> x >> y >> level;
+    uint8 active, level;
+    *recvPkt >> playerId >> active;
+    
+    if (Player* player = _display->GetPlayer(playerId))
+        player->SetFire(active != 0);
 
     std::cout << "Player " << playerId << " SHOT" << std::endl;
 }
