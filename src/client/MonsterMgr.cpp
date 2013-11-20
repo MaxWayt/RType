@@ -2,7 +2,13 @@
 
 void MonsterMgr::addMonterLoader(std::string const& name)
 {
-    MonsterLoader* loader = new MonsterLoader(name);
+#ifdef OSX
+    MonsterLoader* loader = new MonsterLoader(std::string("../lib/lib" + name + ".dylib"));
+#elif defined(LINUX)
+    MonsterLoader* loader = new MonsterLoader(std::string("../lib/lib" + name + ".so"));
+#else
+    MonsterLoader* loader = new MonsterLoader(std::string("../lib/lib" + name + ".dll"));
+#endif
 
     _monsterLoaders[_nextId++] = loader; 
 }

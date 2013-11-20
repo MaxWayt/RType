@@ -6,9 +6,9 @@ Monster::Monster(int x, int y) : DamnCute::APhysics(x, y, true),
     _sprite.setPosition(x, y);
 
     DamnCute::Core* engine = DamnCute::Core::getInstance();
-    _shootPattern[0] = new ShootPatternDefault(convertVec(_sprite.getPosition()));
-    _shootPattern[1] = new ShootPatternLevel1(convertVec(_sprite.getPosition()));
-    _shootPattern[2] = new ShootPatternLevel2(convertVec(_sprite.getPosition()));
+    _shootPattern[0] = new ShootPatternDefault(convertVec(_sprite.getPosition()), true);
+    _shootPattern[1] = new ShootPatternLevel1(convertVec(_sprite.getPosition()), true);
+    _shootPattern[2] = new ShootPatternLevel2(convertVec(_sprite.getPosition()), true);
     _shootPattern[0]->setStatusGen(false);
     _shootPattern[1]->setStatusGen(false);
     _shootPattern[2]->setStatusGen(false);
