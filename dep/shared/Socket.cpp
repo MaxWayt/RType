@@ -52,24 +52,29 @@ Socket::SocketInfo::operator struct sockaddr*()
 
 std::string const& Socket::SocketInfo::GetRemoteHost() const
 {
-    static std::string str;
-    str = inet_ntoa(_sockInfo.sin_addr);
+    static std::string str = "";
+    if (str == "")
+        str = inet_ntoa(_sockInfo.sin_addr);
     return str;
 }
 
 std::string const& Socket::SocketInfo::GetRemotePort() const
 {
-    static std::string str;
-    IntToString((int)ntohs(_sockInfo.sin_port), str);
+    static std::string str = "";
+    if (str == "")
+        IntToString((int)ntohs(_sockInfo.sin_port), str);
     return str;
 }
 
 std::string const& Socket::SocketInfo::GetHostIdentifier() const
 {
-    static std::string str;
-    str = GetRemoteHost();
-    str += ":";
-    str += GetRemotePort();
+    static std::string str = "";
+    if (str == "")
+    {
+        str = GetRemoteHost();
+        str += ":";
+        str += GetRemotePort();
+    }
     return str;
 }
 
