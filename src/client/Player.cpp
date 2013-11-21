@@ -31,6 +31,13 @@ _fire(false), _sp1(NULL), _sp2(NULL), _sp3(NULL), _level(0), _health(5)
     engine->addObject(_sp3);
 }
 
+Player::~Player()
+{
+    _sp1->setStatusGen(false);
+    _sp2->setStatusGen(false);
+    _sp3->setStatusGen(false);
+}
+
 void Player::collisionHandler(DamnCute::APhysics* other) {
 
     DamnCute::Bullet* b = (DamnCute::Bullet*)other;

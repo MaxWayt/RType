@@ -8,6 +8,12 @@ Monster::Monster(uint32 id, int x, int y) : DamnCute::APhysics(x, y, true),
     _sprite.setPosition(x, y);
 }
 
+Monster::~Monster()
+{
+    if (_shootPattern)
+        _shootPattern->setStatusGen(false);
+}
+
 void Monster::collisionHandler(DamnCute::APhysics* other) {
 
     // 5 == player bullets

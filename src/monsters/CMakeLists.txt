@@ -1,0 +1,2 @@
+add_subdirectory(monster_test)
+add_subdirectory(monster_test2)
