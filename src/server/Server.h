@@ -9,6 +9,7 @@
 #include "Thread.hpp"
 #include "SharedDefines.h"
 
+#include <string>
 #include <map>
 
 #define SERVER_SLEEP_TIME 50

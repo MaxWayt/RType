@@ -1,6 +1,7 @@
 #ifndef LEVELUUUU_H_
 # define LEVELUUUU_H_
 
+#include <iostream>
 #include <random>
 #include <unordered_map>
 #include "SharedDefines.h"
@@ -42,6 +43,7 @@ class Level
 public:
     Level(Game *game);
     virtual ~Level();
+    void load(std::string const &file);
     void update(uint32 time);
     void sendMonster(Monster *monster);
     Monster *getMonster(uint32 id);
