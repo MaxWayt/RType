@@ -9,16 +9,27 @@ Level::Level(Game *game)
 
     // Do stuff
     _config = new LevelConfig();
-    _config->nb = 1;
+    _config->nb = 2;
+
     _config->collection[0].nb = 66;
     _config->collection[0].pregnancy_time = 5000;
-    _config->collection[0].timer = 1200;
+    _config->collection[0].timer = 5000;
     _config->collection[0].monster.id = 0;
     _config->collection[0].monster.type = 0;
-    _config->collection[0].monster.health = 10;
+    _config->collection[0].monster.health = 5;
     _config->collection[0].monster.fire = 1;
-    _config->collection[0].monster.x = 2000.0;
-    _config->collection[0].monster.y = 500.0;
+    _config->collection[0].monster.x = 0.0;
+    _config->collection[0].monster.y = 0.0;
+
+    _config->collection[1].nb = 50;
+    _config->collection[1].pregnancy_time = 10000;
+    _config->collection[1].timer = 10000;
+    _config->collection[1].monster.id = 0;
+    _config->collection[1].monster.type = 1;
+    _config->collection[1].monster.health = 15;
+    _config->collection[1].monster.fire = 1;
+    _config->collection[1].monster.x = 0.0;
+    _config->collection[1].monster.y = 0.0;
 }
 
 Level::~Level() {
@@ -76,7 +87,7 @@ void Level::update(uint32 diff) {
             qm->timer = qm->pregnancy_time;
         }
         else {
-            
+
             qm->timer -= diff;
         }
     }
