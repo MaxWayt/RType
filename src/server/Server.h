@@ -26,10 +26,17 @@ public:
     void Stop();
     void Wait();
 
-    void Update(uint32 const diff);
-
     Game::Game* CreateNewGame();
     void DeleteGame(Game::Game* game);
+
+    struct ServerCommand
+    {
+        char const* str;
+        void (Server::*func)(std::string const&);
+    };
+    ServerCommand const* GetCommand(std::string const&) const;
+    void CommandGameCreate(std::string const& params);
+    void CommandGameList(std::string const& params);
 
 private:
     uint32 _GetNewGameId() const;

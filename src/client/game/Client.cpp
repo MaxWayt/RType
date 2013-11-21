@@ -84,6 +84,7 @@ bool Client::InitializeGame(uint32 clientKey, std::string const& addr, std::stri
     _clientKey = clientKey;
 
     sMonsterMgr->addMonterLoader("test");
+    sMonsterMgr->addMonterLoader("test2");
     return true;
 }
 
