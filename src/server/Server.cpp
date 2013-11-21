@@ -24,20 +24,29 @@ void Server::operator()()
 {
     static uint32 temp = 1 * IN_MILLISECONDS;
 
-    while (true)
+    std::cout << "R-Type> ";
+    std::string str;
+    while (std::getline(std::cin, str))
     {
-        std::cout << "R-Type> ";
-        std::string str;
-        std::getline(std::cin, str);
         ServerCommand const* cmd = GetCommand(trim(str));
         if (!cmd)
         {
             std::cerr << "Command no found" << std::endl;
+            std::cout << "R-Type> ";
             continue;
         }
-        std::string params = str.substr(strlen(cmd->str));
+        std::string params = "";
+        if (str.length() > strlen(cmd->str))
+            params = str.substr(strlen(cmd->str));
         (this->*(cmd->func))(trim(params));
+        std::cout << "R-Type> ";
     }
+
+    for (auto itr = _gameMap.begin(); itr != _gameMap.end(); ++itr)
+        itr->second->Stop();
+
+    for (auto itr = _gameMap.begin(); itr != _gameMap.end(); ++itr)
+        itr->second->Wait();
     /*
     if (temp <= diff)
     {
@@ -77,7 +86,7 @@ void Server::Wait()
     _join();
 }
 
-Server::ServerCommand const*Server::GetCommand(std::string const& cmd) const
+Server::ServerCommand const* Server::GetCommand(std::string const& cmd) const
 {
     static ServerCommand cmdList[] = {
         {"game create", &Server::CommandGameCreate},
@@ -86,8 +95,10 @@ Server::ServerCommand const*Server::GetCommand(std::string const& cmd) const
     };
 
     for (uint32 i = 0; cmdList[i].str; ++i)
-        if (strncmp(cmdList[i].str, cmd.c_str(), strlen(cmdList[i].str)))
+    {
+        if (strncmp(cmdList[i].str, cmd.c_str(), strlen(cmdList[i].str)) == 0)
             return &cmdList[i];
+    }
     return NULL;
 }
 
@@ -165,7 +176,5 @@ void Server::CommandGameList(std::string const& params)
     std::cout << "Game count : " << _gameMap.size() << std::endl;
 
     for (auto itr = _gameMap.begin(); itr != _gameMap.end(); ++itr)
-    {
         std::cout << "\tGameId: " << itr->first << " - port: " << itr->second->GetPort() << " - players: " << itr->second->GetPlayerCount() << std::endl;
-    }
 }
