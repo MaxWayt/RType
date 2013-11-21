@@ -11,8 +11,9 @@ namespace Game
 
 Game::Game(GameConfig const& conf) :
     _config(conf), _service(), _sock(this, _service), _playerMap(),
-    _playerAddedMap(), _playerRemovedMap(), _playerAddedMutex(), _playerRemovedMutex(), _level(this)
+    _playerAddedMap(), _playerRemovedMap(), _playerAddedMutex(), _playerRemovedMutex(), _level(this), _gamePlayerCount(0)
 {
+    _gamePlayerCount = sConfig->GetIntDefault("Game.PlayerCount", MAX_PLAYERS);
 }
 
 Game::~Game()
@@ -74,7 +75,7 @@ void Game::Update(uint32 const diff)
     for (auto itr = _playerMap.begin(); itr != _playerMap.end(); ++itr)
         if (!itr->second->IsLoginOut())
             itr->second->Update(diff);
-    if (GetPlayerCount() >= 2)
+    if (GetPlayerCount() >= _gamePlayerCount)
         _level.update(diff);
     _ProcessRemovedPlayer();
 }

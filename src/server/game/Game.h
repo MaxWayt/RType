@@ -63,6 +63,7 @@ private:
     Mutex _playerAddedMutex;
     Mutex _playerRemovedMutex;
     Level _level;
+    uint32 _gamePlayerCount;
 };
 }
 

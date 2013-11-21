@@ -11,6 +11,7 @@
 #include "Utils.hpp"
 #include "ConfigMgr.h"
 #include "Game.h"
+#include "Utils.hpp"
 
 #include <iostream>
 #include <unistd.h>
@@ -21,46 +22,23 @@ Server::Server() : _gameMap()
 
 void Server::operator()()
 {
-    uint32 prevTime = GetMSTime();
-    uint32 currTime = 0;
-    uint32 prevSleep = 0;
-    uint32 sleepTime = sConfig->GetIntDefault("Server.SleepTime", 50);
-    while (!_isStopped())
-    {
-        currTime = GetMSTime();
-        uint32 diff = GetMSTimeDiff(prevTime, currTime);
-
-        Update(diff);
-        prevTime = currTime;
-
-        if (diff <= sleepTime + prevSleep)
-        {
-            prevSleep = sleepTime + prevSleep - diff;
-            Thread::Sleep(prevSleep);
-        }
-        else
-            prevSleep = 0;
-    }
-}
-
-void Server::Start()
-{
-    _run();
-}
-
-void Server::Stop()
-{
-    _stop();
-}
-
-void Server::Wait()
-{
-    _join();
-}
-
-void Server::Update(uint32 const diff)
-{
     static uint32 temp = 1 * IN_MILLISECONDS;
+
+    while (true)
+    {
+        std::cout << "R-Type> ";
+        std::string str;
+        std::getline(std::cin, str);
+        ServerCommand const* cmd = GetCommand(trim(str));
+        if (!cmd)
+        {
+            std::cerr << "Command no found" << std::endl;
+            continue;
+        }
+        std::string params = str.substr(strlen(cmd->str));
+        (this->*(cmd->func))(trim(params));
+    }
+    /*
     if (temp <= diff)
     {
         if (_gameMap.size() == 0)
@@ -81,6 +59,36 @@ void Server::Update(uint32 const diff)
     }
     else
         temp -= diff;
+        */
+}
+
+void Server::Start()
+{
+    _run();
+}
+
+void Server::Stop()
+{
+    _stop();
+}
+
+void Server::Wait()
+{
+    _join();
+}
+
+Server::ServerCommand const*Server::GetCommand(std::string const& cmd) const
+{
+    static ServerCommand cmdList[] = {
+        {"game create", &Server::CommandGameCreate},
+        {"game list", &Server::CommandGameList},
+        {NULL, NULL},
+    };
+
+    for (uint32 i = 0; cmdList[i].str; ++i)
+        if (strncmp(cmdList[i].str, cmd.c_str(), strlen(cmdList[i].str)))
+            return &cmdList[i];
+    return NULL;
 }
 
 uint32 Server::_GetNewGameId() const
@@ -135,4 +143,29 @@ void Server::DeleteGame(Game::Game* game)
 
     _gameMap.erase(game->GetId());
     delete game;
+}
+
+void Server::CommandGameCreate(std::string const& params)
+{
+    Game::Game* game = NULL;
+    try {
+        game = CreateNewGame();
+        if (sConfig->GetBoolDefault("Server.Debug", false))
+            std::cout << "Server: launching new game, id: " << game->GetId() << std::endl;
+        game->Start();
+    }
+    catch (std::exception const& e) {
+        std::cerr << e.what() << std::endl;
+        DeleteGame(game);
+    }
+}
+
+void Server::CommandGameList(std::string const& params)
+{
+    std::cout << "Game count : " << _gameMap.size() << std::endl;
+
+    for (auto itr = _gameMap.begin(); itr != _gameMap.end(); ++itr)
+    {
+        std::cout << "\tGameId: " << itr->first << " - port: " << itr->second->GetPort() << " - players: " << itr->second->GetPlayerCount() << std::endl;
+    }
 }
