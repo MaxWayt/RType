@@ -89,6 +89,11 @@ void Client::HandleAddMonster(Packet* recvPkt)
     *recvPkt >> fire >> id >> type >> x >> health >> y;
 
     Monster* monster = sMonsterMgr->createMonster(id, type, x, y);
+    if (!monster)
+    {
+        std::cerr << "Invalide monster type (" << type << ") received" << std::endl;
+        return;
+    }
     monster->SetFire(fire != 0);
     monster->SetHealth(health);
     _display->AddMonster(monster);
