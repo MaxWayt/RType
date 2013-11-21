@@ -12,6 +12,7 @@
 #include "Thread.hpp"
 #include "Mutex.hpp"
 #include "Player.hh"
+#include "Monster.h"
 
 enum DisplayMode
 {
@@ -41,6 +42,11 @@ class DisplayManager
         Player* GetPlayer(uint32 id);
         Player const* GetPlayer(uint32 id) const;
 
+        void AddMonster(Monster* monster);
+        void RemoveMonster(Monster* monster);
+        Monster* GetMonster(uint32 id);
+        Monster const* GetMonster(uint32 id) const;
+
         static std::string const& GetFileForClientId(uint32 id);
 
         void UpdateFirePosition();
@@ -55,6 +61,7 @@ class DisplayManager
         bool _fullscreen;
         Client* _client;
         std::map<uint32, Player*> _players;
+        std::map<uint32, Monster*> _monsters;
 };
 
 #endif /* !DISPLAYMANAGER_H_ */

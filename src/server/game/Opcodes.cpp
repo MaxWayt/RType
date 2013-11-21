@@ -8,11 +8,12 @@ namespace Game
 Opcode::OpcodeHandler const* Opcode::GetHandler(Opcodes op)
 {
     static OpcodeHandler handlers[] = {
-        { SMSG_GREETING, NULL                               },
-        { CMSG_PLAYER_KEY, NULL                             },
-        { CMSG_PLAYER_POSITION, &Player::HandlePosition     },
-        { CMSG_SHOT, &Player::HandleShot                    },
-        { OPCODE_COUNT, NULL                                }
+        { SMSG_GREETING, NULL                                },
+        { CMSG_PLAYER_KEY, NULL                              },
+        { CMSG_PLAYER_POSITION, &Player::HandlePosition      },
+        { CMSG_SHOT, &Player::HandleShot                     },
+        { CMSG_PLAYER_HIT_MONSTER, &Player::HandleHitMonster },
+        { OPCODE_COUNT, NULL                                 }
 
     };
 

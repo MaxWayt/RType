@@ -1,1 +1,2 @@
-add_subdirectory(monster_one)
+add_subdirectory(monster_test)
+add_subdirectory(monster_test2)

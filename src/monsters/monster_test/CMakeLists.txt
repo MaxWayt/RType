@@ -22,17 +22,29 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${DEBUG_FLAGS} -std=c++0x"
 set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${DEBUG_FLAGS} -std=c++0x")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${DEBUG_FLAGS} -std=c++0x")
 
-file(GLOB_RECURSE source_file *.cpp *.h *.hpp *.hh)
+file(GLOB_RECURSE source_file ../../client/*.cpp ../../client/*.h ../../client/*.hpp ../../client/*.hh)
+file(GLOB_RECURSE source_actions ../../client/Actions/*.cpp ../../client/Actions/*.h ../../client/Actions/*.hpp ../../client/Actions/*.hh)
+file(GLOB_RECURSE source_game ../../client/game/*.cpp ../../client/game/*.h ../../client/game/*.hpp ../../client/game/*.hh)
 
-set(monsters_SRCS
-    ${monsters_SRCS}
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
+
+file(GLOB_RECURSE source_monster_test monsters/monster_test/*.cpp monsters/monster_test/*.h monsters/monster_test/*.hh monsters/monster_test/*.hpp)
+set(monster_test_SRCS
+    ${monster_test_SRCS}
     ${source_file}
+    ${source_actions}
+    ${source_game}
+    ${source_monster_test}
 )
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_SOURCE_DIR}/dep/damncute
     ${CMAKE_SOURCE_DIR}/dep
+    ${CMAKE_SOURCE_DIR}/dep/damncute
+    ${CMAKE_SOURCE_DIR}/dep/shared
+    ${CMAKE_SOURCE_DIR}/src/client/
+    ${CMAKE_SOURCE_DIR}/src/client/Actions
+    ${CMAKE_SOURCE_DIR}/src/client/game
     ${SFML_INCLUDE_DIR}
 )
 
@@ -43,17 +55,15 @@ link_directories(
 set(ALL_LIBS
     ${SFML_LIBRARY}
     -ldamncute
+    -lshared
+    -ldl
 )
 
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
-
-set(ZIZI_LIBRARY_NAME "zizi")
-
-add_library(
-    ${ZIZI_LIBRARY_NAME}
+set(MONSTER_TEST_LIBRARY_NAME "test")
+add_library(${MONSTER_TEST_LIBRARY_NAME}
     SHARED
-    ${monsters_SRCS}
+    ${monster_test_SRCS}
 )
-target_link_libraries(${ZIZI_LIBRARY_NAME} ${ALL_LIBS})
+target_link_libraries(${MONSTER_TEST_LIBRARY_NAME} ${ALL_LIBS})
 
-install(TARGETS ${ZIZI_LIBRARY_NAME} DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
+install(TARGETS ${MONSTER_TEST_LIBRARY_NAME} DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")

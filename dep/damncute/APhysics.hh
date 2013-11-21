@@ -83,7 +83,12 @@ namespace DamnCute {
 
 	    virtual ~APhysics() {
 		if (_listSection) {
-		    _listSection->erase(_whereInList);
+            for (std::list<APhysics*>::iterator it = _listSection->begin(); it != _listSection->end(); ++it)
+                if (it == _whereInList)
+                {
+		            _listSection->erase(_whereInList);
+                    return ;
+                }
 		}
 	    }
 

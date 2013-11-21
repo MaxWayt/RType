@@ -4,8 +4,6 @@
 #include <Core/Core.hh>
 #include "DisplayManager.hh"
 #include "ConfigFile.hh"
-#include "MonsterHandler.hh"
-
 #include "Client.h"
 
 void runGame();
@@ -109,6 +107,9 @@ void DisplayManager::UpdateFirePosition()
 {
     for (auto itr = _players.begin(); itr != _players.end(); ++itr)
         itr->second->UpdateFirePosition();
+
+    for (auto itr = _monsters.begin(); itr != _monsters.end(); ++itr)
+        itr->second->UpdateFirePosition();
 }
 
 void DisplayManager::AddPlayer(Player* player)
@@ -149,4 +150,32 @@ std::string const& DisplayManager::GetFileForClientId(uint32 id)
         "../resources/ship_yellow.png"
     };
     return file[id];
+}
+
+void DisplayManager::AddMonster(Monster* monster)
+{
+    _monsters[monster->GetId()] = monster;
+    _engine->addObject(monster);
+}
+
+void DisplayManager::RemoveMonster(Monster* monster)
+{
+    _monsters.erase(monster->GetId());
+    _engine->delObject(monster);
+}
+
+Monster* DisplayManager::GetMonster(uint32 id)
+{
+    auto itr = _monsters.find(id);
+    if (itr != _monsters.end())
+        return itr->second;
+    return NULL;
+}
+
+Monster const* DisplayManager::GetMonster(uint32 id) const
+{
+    auto itr = _monsters.find(id);
+    if (itr != _monsters.end())
+        return itr->second;
+    return NULL;
 }

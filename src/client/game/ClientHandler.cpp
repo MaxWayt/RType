@@ -3,6 +3,7 @@
 #include "Player.hh"
 #include "DisplayManager.hh"
 #include <iostream>
+#include "MonsterMgr.h"
 
 void Client::HandleGreeting(Packet* recvPkt)
 {
@@ -67,7 +68,6 @@ void Client::HandleRemovePlayer(Packet* recvPkt)
             return;
         _display->RemovePlayer(player);
     }
-
 }
 
 
@@ -79,6 +79,30 @@ void Client::HandlePlayerShot(Packet* recvPkt)
     
     if (Player* player = _display->GetPlayer(playerId))
         player->SetFire(active != 0);
+}
 
-    std::cout << "Player " << playerId << " SHOT" << std::endl;
+void Client::HandleAddMonster(Packet* recvPkt)
+{
+    uint32 id, type;
+    uint8 weapon, health, fire;
+    float x, y;
+    *recvPkt >> fire >> id >> type >> x >> health >> y;
+
+    Monster* monster = sMonsterMgr->createMonster(id, type, x, y);
+    monster->SetFire(fire != 0);
+    monster->SetHealth(health);
+    _display->AddMonster(monster);
+
+
+}
+
+void Client::HandleRemoveMonster(Packet* recvPkt)
+{
+    uint32 id;
+    *recvPkt >> id;
+
+    std::cout << "DESPAWN MONSTER " << id << std::endl;
+    Monster* monster = _display->GetMonster(id);
+    if (monster)
+        _display->RemoveMonster(monster);
 }

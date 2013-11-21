@@ -11,6 +11,8 @@ Opcode::OpcodeHandler const* Opcode::GetHandler(Opcodes op)
         { SMSG_ADD_PLAYER, &Client::HandleAddPlayer         },
         { SMSG_REMOVE_PLAYER, &Client::HandleRemovePlayer },
         { SMSG_SHOT, &Client::HandlePlayerShot              },
+        { SMSG_ADD_MONSTER, &Client::HandleAddMonster       },
+        { SMSG_REMOVE_MONSTER, &Client::HandleRemoveMonster },
         { OPCODE_COUNT, NULL                                }
 
     };

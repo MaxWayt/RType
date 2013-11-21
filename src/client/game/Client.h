@@ -28,6 +28,10 @@ public:
 
     void UDPSend(Packet const& pkt);
 
+    DisplayManager* GetDisplay() { return _display; }
+
+    uint32 GetPlayerId() const { return (_player ? _player->getNumPlayer() : 0); }
+
     // Handlers
 
     void HandleGreeting(Packet* recvPkt);
@@ -36,6 +40,9 @@ public:
     void HandleAddPlayer(Packet* recvPkt);
     void HandleRemovePlayer(Packet* recvPkt);
     void HandlePlayerShot(Packet* recvPkt);
+    void HandleAddMonster(Packet* recvPkt);
+    void HandleRemoveMonster(Packet* recvPkt);
+ 
 private:
     NetService _service;
     UDPSocket _udpSocket;
