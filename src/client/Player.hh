@@ -16,7 +16,7 @@ class Player : public DamnCute::APlayer {
 
     public:
         explicit Player(const std::string& texfile = "../resources/player.tga", float x = 980, float y = 950, int speed = 5, bool active = true, int num = 0);
-        virtual ~Player() = default;
+        virtual ~Player();
         Player& operator=(const Player&) = delete;
         virtual void collisionHandler(DamnCute::APhysics* other);
 

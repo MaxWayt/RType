@@ -22,26 +22,29 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${DEBUG_FLAGS} -std=c++0x"
 set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${DEBUG_FLAGS} -std=c++0x")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${DEBUG_FLAGS} -std=c++0x")
 
-file(GLOB_RECURSE source_file *.cpp *.h *.hpp *.hh)
-file(GLOB_RECURSE source_actions Actions/*.cpp Actions/*.h Actions/*.hpp Actions/*.hh)
-file(GLOB_RECURSE source_game game/*.cpp game/*.h game/*.hpp game/*.hh)
-
-set(rtype_client_SRCS
-    ${rtype_client_SRCS}
-    ${source_file}
-    ${source_actions}
-    ${source_game}
-)
+file(GLOB_RECURSE source_file ../../client/*.cpp ../../client/*.h ../../client/*.hpp ../../client/*.hh)
+file(GLOB_RECURSE source_actions ../../client/Actions/*.cpp ../../client/Actions/*.h ../../client/Actions/*.hpp ../../client/Actions/*.hh)
+file(GLOB_RECURSE source_game ../../client/game/*.cpp ../../client/game/*.h ../../client/game/*.hpp ../../client/game/*.hh)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
 
+file(GLOB_RECURSE source_monster_test monsters/monster_test/*.cpp monsters/monster_test/*.h monsters/monster_test/*.hh monsters/monster_test/*.hpp)
+set(monster_test_SRCS
+    ${monster_test_SRCS}
+    ${source_file}
+    ${source_actions}
+    ${source_game}
+    ${source_monster_test}
+)
+
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/Actions
-    ${CMAKE_CURRENT_SOURCE_DIR}/game
     ${CMAKE_SOURCE_DIR}/dep
     ${CMAKE_SOURCE_DIR}/dep/damncute
     ${CMAKE_SOURCE_DIR}/dep/shared
+    ${CMAKE_SOURCE_DIR}/src/client/
+    ${CMAKE_SOURCE_DIR}/src/client/Actions
+    ${CMAKE_SOURCE_DIR}/src/client/game
     ${SFML_INCLUDE_DIR}
 )
 
@@ -56,15 +59,11 @@ set(ALL_LIBS
     -ldl
 )
 
-set(CLIENT_NAME "rtype-client")
-set(CLIENT_EXECUTABLE_NAME "${CLIENT_NAME}-bin")
-
-add_executable(${CLIENT_EXECUTABLE_NAME}
-    ${rtype_client_SRCS}
+set(MONSTER_TEST_LIBRARY_NAME "test")
+add_library(${MONSTER_TEST_LIBRARY_NAME}
+    SHARED
+    ${monster_test_SRCS}
 )
-target_link_libraries(${CLIENT_EXECUTABLE_NAME} ${ALL_LIBS})
+target_link_libraries(${MONSTER_TEST_LIBRARY_NAME} ${ALL_LIBS})
 
-install_targets(/bin ${CLIENT_EXECUTABLE_NAME})
-install_programs(/bin ${CLIENT_NAME})
-install_files(/etc ${CLIENT_NAME}.conf.dist)
-install (DIRECTORY ${CMAKE_SOURCE_DIR}/resources DESTINATION "${CMAKE_INSTALL_PREFIX}")
+install(TARGETS ${MONSTER_TEST_LIBRARY_NAME} DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")

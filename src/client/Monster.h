@@ -15,6 +15,7 @@ class Monster : public DamnCute::IMonster, public DamnCute::APhysics {
 
     public:
         Monster(uint32 id, int x, int y);
+        virtual ~Monster();
         virtual void collisionHandler(DamnCute::APhysics* other);
 
         uint32 GetId() const { return _id; }
