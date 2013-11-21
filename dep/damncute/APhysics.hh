@@ -68,12 +68,10 @@ namespace DamnCute {
             unsigned int quadHeight = sizeY / (2 * __DQUADTREE_COMPLEXITY__);
 
             for (unsigned int i = 0; i < w; i += quadWidth) {
-
                 for (unsigned int j = 0; j < h; j += quadHeight) {
                     list.push_back(generateQuadTreePos<sizeX, sizeY, __DQUADTREE_COMPLEXITY__>(x + i, y + j));
                 }
             }
-
             return std::move(list);
         }
 
@@ -110,7 +108,6 @@ namespace DamnCute {
 		}
 		return false;
 	    }
-
 
 	    void updateQuadTreePos(unsigned int x, unsigned int y) {
 		if (_listSection && _isInList) {
