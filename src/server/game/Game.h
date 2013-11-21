@@ -17,6 +17,7 @@ struct GameConfig
     uint32 gameId;
     uint32 playersToken[MAX_PLAYERS];
     std::string gamePort;
+    std::string level;
 };
 
 class Game : public Thread
@@ -27,6 +28,7 @@ public:
 
     uint32 GetId() const { return _config.gameId; }
     uint32 GetPort() const { return to<uint32>(_config.gamePort); }
+    std::string const& GetLevelFile() const { return _config.level; }
 
     void Start();
     void Stop();

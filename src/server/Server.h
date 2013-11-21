@@ -27,7 +27,7 @@ public:
     void Stop();
     void Wait();
 
-    Game::Game* CreateNewGame();
+    Game::Game* CreateNewGame(std::string const& file);
     void DeleteGame(Game::Game* game);
 
     struct ServerCommand
