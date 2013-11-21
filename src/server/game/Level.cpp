@@ -11,7 +11,7 @@ Level::Level(Game *game)
     // Do stuff
     _config = new LevelConfig();
     _config->nb = 0;
-    load("../levels/level1.bin");
+    load(_game->GetLevelFile());
 }
 
 Level::~Level() { }

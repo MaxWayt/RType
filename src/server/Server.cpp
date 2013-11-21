@@ -126,7 +126,7 @@ uint32 Server::_GetFreeGamePort() const
     return 0;
 }
 
-Game::Game* Server::CreateNewGame()
+Game::Game* Server::CreateNewGame(std::string const& file)
 {
     if (sConfig->GetIntDefault("Server.MaxGameCount", 100) <= _gameMap.size())
         throw std::runtime_error("Max game count exceded");
@@ -141,6 +141,7 @@ Game::Game* Server::CreateNewGame()
     if (port == 0)
         throw std::runtime_error("Fail to get a free port");
     IntToString(port, config.gamePort);
+    config.level = std::string("../levels/" + file);
 
     Game::Game* game = new Game::Game(config);
     _gameMap[config.gameId] = game;
@@ -158,9 +159,14 @@ void Server::DeleteGame(Game::Game* game)
 
 void Server::CommandGameCreate(std::string const& params)
 {
+    if (params.empty())
+    {
+        std::cerr << "Syntax: game create $level_file" << std::endl;
+        return;
+    }
     Game::Game* game = NULL;
     try {
-        game = CreateNewGame();
+        game = CreateNewGame(params);
         if (sConfig->GetBoolDefault("Server.Debug", false))
             std::cout << "Server: launching new game, id: " << game->GetId() << std::endl;
         game->Start();
