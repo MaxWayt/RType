@@ -53,7 +53,7 @@ Socket::SocketInfo::operator struct sockaddr*()
 std::string const& Socket::SocketInfo::GetRemoteHost() const
 {
     static std::string str = "";
-    if (str == "")
+    //if (str == "")
         str = inet_ntoa(_sockInfo.sin_addr);
     return str;
 }
@@ -61,7 +61,7 @@ std::string const& Socket::SocketInfo::GetRemoteHost() const
 std::string const& Socket::SocketInfo::GetRemotePort() const
 {
     static std::string str = "";
-    if (str == "")
+    //if (str == "")
         IntToString((int)ntohs(_sockInfo.sin_port), str);
     return str;
 }
@@ -69,7 +69,7 @@ std::string const& Socket::SocketInfo::GetRemotePort() const
 std::string const& Socket::SocketInfo::GetHostIdentifier() const
 {
     static std::string str = "";
-    if (str == "")
+    //if (str == "")
     {
         str = GetRemoteHost();
         str += ":";
