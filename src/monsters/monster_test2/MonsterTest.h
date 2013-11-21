@@ -8,14 +8,14 @@
 #include "Monster.h"
 #include "APhysics.hh"
 
-class TestShootPattern : public DamnCute::APattern {
+class Test2ShootPattern : public DamnCute::APattern {
 
     public:
-        explicit TestShootPattern(glm::vec2 v) : _v(v) {
+        explicit Test2ShootPattern(glm::vec2 v) : _v(v) {
             initialize();
         }
 
-        virtual ~TestShootPattern() = default;
+        virtual ~Test2ShootPattern() = default;
         virtual void initialize() {
 
             glm::mat4 m;
