@@ -15,8 +15,8 @@ Level::Level(Game *game)
     _config->collection[0].timer = 1200;
     _config->collection[0].monster.id = 0;
     _config->collection[0].monster.type = 0;
-    _config->collection[0].monster.health = 100;
-    _config->collection[0].monster.fire = 20;
+    _config->collection[0].monster.health = 10;
+    _config->collection[0].monster.fire = 1;
     _config->collection[0].monster.x = 2000.0;
     _config->collection[0].monster.y = 500.0;
 }
@@ -70,7 +70,7 @@ void Level::update(uint32 diff) {
 
             Monster *m = new Monster(qm->monster);
             m->id = _id++;
-            _monsters[_id] = m;
+            _monsters[m->id] = m;
             sendMonster(m);
             qm->nb = qm->nb - 1;
             qm->timer = qm->pregnancy_time;

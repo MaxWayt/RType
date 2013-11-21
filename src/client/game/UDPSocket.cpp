@@ -47,7 +47,6 @@ void UDPSocket::HandleReceive()
 void UDPSocket::Send(char const buff[], size_t size)
 {
     SocketInfo info(_sockIn);
-    std::cout << "Send to : " << info.GetHostIdentifier() << std::endl;
     sendto(buff, size, info);
 }
 

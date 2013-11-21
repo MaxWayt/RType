@@ -79,8 +79,6 @@ void Client::HandlePlayerShot(Packet* recvPkt)
     
     if (Player* player = _display->GetPlayer(playerId))
         player->SetFire(active != 0);
-
-    std::cout << "Player " << playerId << " SHOT" << std::endl;
 }
 
 void Client::HandleAddMonster(Packet* recvPkt)
@@ -103,6 +101,7 @@ void Client::HandleRemoveMonster(Packet* recvPkt)
     uint32 id;
     *recvPkt >> id;
 
+    std::cout << "DESPAWN MONSTER " << id << std::endl;
     Monster* monster = _display->GetMonster(id);
     if (monster)
         _display->RemoveMonster(monster);

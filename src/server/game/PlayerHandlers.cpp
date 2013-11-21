@@ -37,15 +37,21 @@ void Player::HandleHitMonster(Packet* pkt)
     uint32 id;
     *pkt >> id;
 
+    std::cout << "PLAYER " << GetId() << " HIT MONSTER " << id << std::endl;
+
     auto monster = _game->GetLevel().getMonster(id);
     if (monster == NULL)
+    {
+        std::cout << "MONSTER " << id << " NOT FOUND" << std::endl;
         return;
+    }
     if (monster->health - 1 <= 0) {
 
         _game->GetLevel().removeMonster(id);
         Packet data(SMSG_REMOVE_MONSTER);
-        data >> id;
+        data << id;
         _game->BroadcastToAll(data);
+        std::cout << "SEND REMOVE MOSNTER " << id << std::endl;
     }
     else {
 
