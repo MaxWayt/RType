@@ -45,24 +45,18 @@ include_directories(
     ${SFML_INCLUDE_DIR}
 )
 
-link_directories(
-    ${CMAKE_SOURCE_DIR}/lib
-)
-
-set(ALL_LIBS
-    ${SFML_LIBRARY}
-    damncute
-    shared
-    -ldl
-)
-
 set(CLIENT_NAME "rtype-client")
 set(CLIENT_EXECUTABLE_NAME "${CLIENT_NAME}-bin")
 
 add_executable(${CLIENT_EXECUTABLE_NAME}
     ${rtype_client_SRCS}
 )
-target_link_libraries(${CLIENT_EXECUTABLE_NAME} ${ALL_LIBS})
+target_link_libraries(${CLIENT_EXECUTABLE_NAME}
+    ${SFML_LIBRARY}
+    damncute
+    shared
+    -ldl
+)
 
 install_targets(/bin ${CLIENT_EXECUTABLE_NAME})
 install_programs(/bin ${CLIENT_NAME})

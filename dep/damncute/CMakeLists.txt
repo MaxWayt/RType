@@ -38,19 +38,11 @@ include_directories(
     ${SFML_INCLUDE_DIR}
 )
 
-set(ALL_LIBS
-    ${SFML_LIBRARY}
-)
-
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
-
 set(DAMNCUTE_LIBRARY_NAME "damncute")
 
-add_library(
-    ${DAMNCUTE_LIBRARY_NAME}
-    #    SHARED
+add_library(${DAMNCUTE_LIBRARY_NAME}
     ${damncute_SRCS}
 )
-target_link_libraries(${DAMNCUTE_LIBRARY_NAME} ${ALL_LIBS})
+target_link_libraries(${DAMNCUTE_LIBRARY_NAME} ${SFML_LIBRARY})
 
 #install(TARGETS ${DAMNCUTE_LIBRARY_NAME} DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
