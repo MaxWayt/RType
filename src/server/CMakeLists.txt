@@ -47,7 +47,7 @@ link_directories(
 )
 
 set(ALL_LIBS
-    -lshared
+    shared
 )
 
 set(SERVER_NAME "rtype-server")
