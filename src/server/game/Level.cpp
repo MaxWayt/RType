@@ -72,7 +72,7 @@ void Level::removeMonster(uint32 id) {
 
 void Level::update(uint32 diff) {
 
-    for (int i = 0; i < _config->nb; ++i) {
+    for (uint32 i = 0; i < _config->nb; ++i) {
 
         QueenMonster *qm = &(_config->collection[i]);
 

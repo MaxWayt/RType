@@ -11,6 +11,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include "ActMenu.hh"
 #include "Menu.hh"
+#include <functional>
 
 DamnCute::Menu::SubMenu::SubMenu(sf::Text &text, const std::string &optionName, std::vector<sf::Text *> optionChoice) : _text(text), _options(optionChoice) {
     _it = _options.begin();
@@ -129,7 +130,7 @@ void	DamnCute::Menu::addSubMenu(const std::string &Button, const std::string &Op
     sf::Text test(Option, _font, _characterSize);
     std::vector<sf::Text *> listoption2;
     sf::Text *tmp;
-    test.setPosition(x, y);
+    test.setPosition((float)x, (float)y);
     test.setColor(sf::Color::White);
     for (std::vector<std::string>::iterator it = listOption.begin() ; it != listOption.end(); ++it) {
         tmp = new sf::Text(*it, _font, _characterSize);

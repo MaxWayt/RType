@@ -15,12 +15,12 @@ namespace DamnCute {
     class Path : public IRenderable {
         public:
             explicit Path(const glm::mat4&, unsigned int frameStep = 5, Bullet&& = Bullet(glm::vec2(0,0)), const std::string& = "resources/test.tga");
-            virtual ~Path() = default;
+            virtual ~Path();
             virtual void update(sf::RenderTarget*);
             void countdownPushMoveModifier(unsigned int, const glm::mat4&);
 	    void setPhysicBulletModelId(unsigned int);
 	    void setAllPhysicBulletId(unsigned int);
-            inline void moveOrigin(glm::vec2&& n) noexcept {
+            inline void moveOrigin(glm::vec2&& n) {
                 _bulletModel.moveOrigin(std::move(n));
             }
             inline void switchGen() {
