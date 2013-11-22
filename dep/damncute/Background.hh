@@ -11,7 +11,7 @@ namespace DamnCute {
     class Background : public IRenderable {
         public:
             Background(const std::string&, int = 0, int = 0);
-            virtual ~Background() = default;
+            virtual ~Background();
             void setScrollSpeed(float, float);
             float getXScrollSpeed() const ;
             float getYScrollSpeed() const ;

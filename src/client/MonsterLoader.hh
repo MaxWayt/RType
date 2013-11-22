@@ -1,11 +1,15 @@
 #ifndef MONSTERLOADER_H_
 # define MONSTERLOADER_H_
 
-# include <iostream>
-# include <vector>
+#include <iostream>
+#include <vector>
+#if defined(UNIX)
 # include <dlfcn.h>
-# include <glm/gtc/matrix_transform.hpp>
-# include "Monster.h"
+#else
+#include <WinBase.h>
+#endif
+#include <glm/gtc/matrix_transform.hpp>
+#include "Monster.h"
 
 class MonsterLoader {
 

@@ -24,10 +24,10 @@ namespace DamnCute {
     class APhysics;
     class Core {
         public:
-            Core(const Core&) = delete;
-            Core(const Core&&) = delete;
-            Core& operator=(const Core&) = delete;
-            Core& operator=(const Core&&) = delete;
+            Core(const Core&);
+            Core(const Core&&);
+            Core& operator=(const Core&);
+            Core& operator=(const Core&&);
 
             static Core* getInstance();
             void reset();

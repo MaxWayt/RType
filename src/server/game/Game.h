@@ -42,7 +42,7 @@ public:
 
     bool IsValidePlayerKey(uint32 key) const;
     uint32 GetPlayerNumberByKey(uint32 key) const;
-    uint32 GetPlayerCount() const { return _playerMap.size(); }
+    uint32 GetPlayerCount() const { return uint32(_playerMap.size()); }
     Level const &GetLevel() const { return _level; }
     Level &GetLevel() { return _level; }
 

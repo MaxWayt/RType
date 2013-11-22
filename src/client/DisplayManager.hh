@@ -34,7 +34,7 @@ class DisplayManager
         void SwitchMode(DisplayMode mode);
         bool IsAlive() const { return _alive; }
         inline void flushAll() { _engine->flushScene(); _engine->flushEvent(); }
-        inline void UpdateAlive() { _alive = DamnCute::Core::getInstance()->getWindowStatus(); }
+        inline void UpdateAlive() { _alive = (bool)DamnCute::Core::getInstance()->getWindowStatus(); }
         void Init();
 
         void AddPlayer(Player* player);

@@ -3,7 +3,9 @@
 #include "Packet.hpp"
 #include "Opcodes.h"
 #include "ConfigMgr.h"
-
+#ifdef WIN32
+# include <time.h>
+#endif
 #include <iostream>
 
 namespace Game

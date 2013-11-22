@@ -15,7 +15,7 @@ class Test2ShootPattern : public DamnCute::APattern {
             initialize();
         }
 
-        virtual ~Test2ShootPattern() = default;
+        virtual ~Test2ShootPattern();
         virtual void initialize() {
 
             glm::mat4 m;
