@@ -3,7 +3,7 @@
 MonsterTest::MonsterTest(unsigned int id, int x, int y) : Monster(id, x, y), _up(false)
 {
 
-    _tex.loadFromFile("../resources/dango_monster.png");
+    _tex.loadFromFile("../resources/mart_s.jpg");
     _sprite.setTexture(_tex);
     _sprite.setScale(1.2, 1.2);
 
