@@ -37,7 +37,8 @@ void DamnCute::Path::update(sf::RenderTarget* w_ptr) {
 }
 
 void DamnCute::Path::countdownPushMoveModifier(unsigned int framme, const glm::mat4& newMat) {
-    _modEventStack.push({framme, newMat});
+	modEvent event = {framme, newMat};
+    _modEventStack.push(event);
 }
 
 void DamnCute::Path::setPhysicBulletModelId(unsigned int id) {

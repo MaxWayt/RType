@@ -58,6 +58,9 @@ add_executable(${SERVER_EXECUTABLE_NAME}
 )
 
 target_link_libraries(${SERVER_EXECUTABLE_NAME} ${ALL_LIBS})
+if ( WIN32 )
+	target_link_libraries(${SHARED_LIBRARY_NAME} ws2_32)
+endif()
 
 install_targets(/bin ${SERVER_EXECUTABLE_NAME})
 install_programs(/bin ${SERVER_NAME})
