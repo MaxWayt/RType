@@ -202,7 +202,11 @@ void Socket::async_read(std::function<void()> fct)
 Socket* Socket::accept() const
 {
     int newFd;
+#ifdef UNIX
+    socklen_t t;
+#else
     int t;
+#endif
     struct sockaddr_in remote;
 
     t = sizeof(remote);
