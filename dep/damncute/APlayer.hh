@@ -43,10 +43,7 @@ namespace DamnCute
                 }
 
             template <typename T>
-                void setActionInput(int i, T t, int a) {
-                    (void)i; (void)t; (void)a;
-                    static_assert(std::is_same<T, int>::value || std::is_same<T, sf::Keyboard::Key>::value || std::is_same<T, sf::Joystick::Axis>::value, "Error: type is not defined for input.");
-                }
+                void setActionInput(int i, T t, int a);
 
         private:
             void action();
