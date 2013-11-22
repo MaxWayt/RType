@@ -7,7 +7,7 @@
 #include <functional>
 #include <map>
 
-#ifdef IMOX
+#ifdef UNIX
 #include <sys/select.h>
 #else // Windows
 #ifndef NOMINMAX
