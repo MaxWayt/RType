@@ -80,7 +80,7 @@ void DisplayManager::Init()
     if (!_engine)
     {
         _engine = DamnCute::Core::getInstance();
-        _engine->createWin(_width, _height, _fullscreen);
+        _engine->createWin<__DWIDTH, __DHEIGHT>(_width, _height, _fullscreen);
         created = true;
     }
 
