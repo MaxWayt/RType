@@ -15,7 +15,7 @@ namespace DamnCute {
     class Path : public IRenderable {
         public:
             explicit Path(const glm::mat4&, unsigned int frameStep = 5, Bullet&& = Bullet(glm::vec2(0,0)), const std::string& = "resources/test.tga");
-            virtual ~Path();
+            virtual ~Path() {}
             virtual void update(sf::RenderTarget*);
             void countdownPushMoveModifier(unsigned int, const glm::mat4&);
 	    void setPhysicBulletModelId(unsigned int);

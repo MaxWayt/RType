@@ -9,10 +9,8 @@ namespace DamnCute {
     class Bullet : public APhysics {
         public:
             explicit Bullet(const glm::vec2&, const float = 0.0f, unsigned int = 60, unsigned int = 0);
-            explicit Bullet(const Bullet&);
             explicit Bullet(Bullet&&);
-            virtual ~Bullet();
-            Bullet& operator=(const Bullet&);
+            virtual ~Bullet() {}
             Bullet& operator=(Bullet&&);
             void update(const glm::mat4&, sf::RenderTarget*);
             unsigned int decreaseLifeTime();

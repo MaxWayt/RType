@@ -15,7 +15,7 @@ namespace DamnCute {
 #define __BULLER_PHYSIC_ID__ 0
     class APattern : public IRenderable {
 	public:
-	    APattern();
+	    APattern() {}
 
 	    ~APattern() {
 		for (unsigned int i = 0; i != _paths.size(); ++i) {
