@@ -11,15 +11,18 @@ Level::Level(Game *game)
     // Do stuff
     _config = new LevelConfig();
     _config->nb = 0;
-    load(_game->GetLevelFile());
+    if (!load(_game->GetLevelFile()))
+        throw std::runtime_error("Fail to load level file");
 }
 
 Level::~Level() { }
 
-void Level::load(std::string const &file) {
+bool Level::load(std::string const &file) {
 
     std::ifstream isFile;
     isFile.open(file, std::ios::in|std::ios::binary);
+    if (!isFile.is_open())
+        return false;
 
     uint32 nb = 0;
 
@@ -29,6 +32,7 @@ void Level::load(std::string const &file) {
         _config->nb = _config->nb + 1;
         nb++;
     }
+    return true;
 }
 
 float Level::_getRandomBetween(int min, int max) {
