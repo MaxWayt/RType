@@ -173,7 +173,8 @@ void Server::CommandGameCreate(std::string const& params)
     }
     catch (std::exception const& e) {
         std::cerr << e.what() << std::endl;
-        DeleteGame(game);
+        if (game)
+            DeleteGame(game);
     }
 }
 
