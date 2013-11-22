@@ -44,11 +44,11 @@ int main(int ac, char **av)
         {"edit", &edit_monster},
         {NULL, NULL}
     };
+    int i;
 
     if (ac < 2)
         return usage();
 
-    int i;
     for (i = 0; pointer[i].function != NULL; ++i)
         if (strcmp(av[1], pointer[i].key) == 0)
         {

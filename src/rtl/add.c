@@ -8,7 +8,6 @@
 ** Last update Thu Nov 21 19:33:00 2013 vincent leroy
 */
 
-#include <unistd.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
@@ -31,20 +30,21 @@ void set_monster(struct QueenMonster *monster, int ac, char **avi)
 
 int add_monster(int ac, char **avi)
 {
+    FILE* fd;
+    struct QueenMonster monster;
+    int i;
+
     if (ac < 1)
         return -1;
 
-    int fd;
-    if ((fd = open(avi[0], O_RDWR)) == -1)
+    if ((fd = fopen(avi[0], "r+")) == NULL)
     {
         fprintf(stderr, "Unable to open file '%s': %m\n", avi[0]);
         return 1;
     }
 
-    struct QueenMonster monster;
-    int i = 0;
-
-    while (read(fd, &monster, sizeof(struct QueenMonster)) > 0)
+	i = 0;
+    while (fread(&monster, sizeof(struct QueenMonster), 1, fd) > 0)
         ++i;
 
     if (i >= NB_MAX_MONSTER_PER_LEVEL)
@@ -56,9 +56,9 @@ int add_monster(int ac, char **avi)
     memset(&monster, 0, sizeof(struct QueenMonster));
     set_monster(&monster, ac - 1, avi + 1);
 
-    write(fd, &monster, sizeof(struct QueenMonster));
+    fwrite(&monster, sizeof(struct QueenMonster), 1, fd);
 
-    close(fd);
+    fclose(fd);
 
     return 0;
 }
