@@ -51,8 +51,8 @@ link_directories(
 
 set(ALL_LIBS
     ${SFML_LIBRARY}
-    -ldamncute
-    -lshared
+    damncute
+    shared
     -ldl
 )
 
