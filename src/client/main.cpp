@@ -1,7 +1,6 @@
-#include <iostream>
-//#include "DisplayManager.hh"
 #include "Utils.hpp"
 #include "Client.h"
+#include <iostream>
 
 int main(int ac, char** av) {
     /*

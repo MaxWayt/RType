@@ -6,13 +6,13 @@
 #  define __DHEIGHT 1200
 # endif
 
-# include <iostream>
 # include <SFML/Graphics.hpp>
-# include <Core/Core.hh>
+# include "Core/Core.hh"
 #include "Thread.hpp"
 #include "Mutex.hpp"
 #include "Player.hh"
 #include "Monster.h"
+# include <iostream>
 
 enum DisplayMode
 {

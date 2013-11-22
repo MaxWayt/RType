@@ -10,6 +10,9 @@
 
 #ifdef WIN32
 # undef __STRICT_ANSI__
+#ifndef NOMINMAX
+# define NOMINMAX
+#endif
 #elif defined(LINUX) || defined(OSX)
 # include <unistd.h>
 #endif

@@ -1,15 +1,18 @@
 #ifndef MONSTERLOADER_H_
 # define MONSTERLOADER_H_
 
+#include <glm/gtc/matrix_transform.hpp>
+#include "Monster.h"
 #include <iostream>
 #include <vector>
 #if defined(UNIX)
 # include <dlfcn.h>
 #else
-#include <WinBase.h>
+#ifndef NOMINMAX
+# define NOMINMAX
 #endif
-#include <glm/gtc/matrix_transform.hpp>
-#include "Monster.h"
+#include <windows.h>
+#endif
 
 class MonsterLoader {
 

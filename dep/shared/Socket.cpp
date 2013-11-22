@@ -8,7 +8,7 @@
 ** Last update Wed Oct 30 17:35:20 2013 vincent leroy
 */
 
-#if defined(LINUX) || defined(OSX)
+#ifdef UNIX
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/socket.h>
@@ -17,6 +17,9 @@
 # include <poll.h>
 #else
 # define _WIN32_WINNT 0x501
+#ifndef NOMINMAX
+# define NOMINMAX
+#endif
 # include <Winsock2.h>
 # include <Mswsock.h>
 # include <ws2tcpip.h>

@@ -55,8 +55,12 @@ target_link_libraries(${CLIENT_EXECUTABLE_NAME}
     ${SFML_LIBRARY}
     damncute
     shared
-    -ldl
 )
+if ( WIN32 )
+	target_link_libraries(${CLIENT_EXECUTABLE_NAME} kernel32)
+elseif ( UNIX )
+	target_link_libraries(${CLIENT_EXECUTABLE_NAME} -ldl)
+endif()
 
 install_targets(/bin ${CLIENT_EXECUTABLE_NAME})
 install_programs(/bin ${CLIENT_NAME})

@@ -5,11 +5,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Core/Core.hh"
 #include "APattern.hh"
-#include <iostream>
-#include <vector>
 #include "Bullet.hh"
 #include "IMonster.hh"
 #include "SharedDefines.h"
+#include <iostream>
+#include <vector>
 
 class Monster : public DamnCute::IMonster, public DamnCute::APhysics {
 

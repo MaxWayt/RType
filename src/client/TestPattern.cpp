@@ -1,6 +1,6 @@
 #include <glm/gtc/matrix_transform.hpp>
-#include <random>
 #include "TestPattern.hh"
+#include <random>
 
 TestPattern::TestPattern() : APattern() {
     initialize();
@@ -47,7 +47,7 @@ void pat2::initialize() {
     addPath(a1);
 }
 
-pat1::pat1() : APattern() {
+pat1::pat1() : APattern(), _timeframe(60) {
     initialize();
 }
 

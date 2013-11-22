@@ -1,10 +1,10 @@
-#include <random>
-#include <Background.hh>
-#include <Menu.hh>
-#include <Core/Core.hh>
+#include "Background.hh"
+#include "Menu.hh"
+#include "Core/Core.hh"
 #include "DisplayManager.hh"
 #include "ConfigFile.hh"
 #include "Client.h"
+#include <random>
 
 void runGame();
 
