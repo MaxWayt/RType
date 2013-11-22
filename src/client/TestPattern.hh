@@ -6,14 +6,14 @@
 class TestPattern : public DamnCute::APattern {
     public:
         explicit TestPattern();
-        virtual ~TestPattern();
+        virtual ~TestPattern() {}
         virtual void initialize();
 };
 
 class pat1 : public DamnCute::APattern {
     public:
         explicit pat1();
-        virtual ~pat1();
+        virtual ~pat1() {}
         virtual void initialize();
         void up();
         void labyrinth(int);
@@ -28,7 +28,7 @@ class pat1 : public DamnCute::APattern {
 class pat2 : public DamnCute::APattern {
     public:
         explicit pat2();
-        virtual ~pat2();
+        virtual ~pat2() {}
         virtual void initialize();
 
 };
@@ -36,7 +36,7 @@ class pat2 : public DamnCute::APattern {
 class CrossingDeath : public DamnCute::APattern {
     public:
         explicit CrossingDeath();
-        virtual ~CrossingDeath();
+        virtual ~CrossingDeath() {}
         virtual void initialize();
         void generate(int, int, int, int);
 };

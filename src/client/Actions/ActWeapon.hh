@@ -70,7 +70,7 @@ class ActWeapon : public DamnCute::AAction<DamnCute::APlayer>
 
         virtual inline const std::string& getName() const { return _name; }
 
-        virtual ~ActWeapon();
+        virtual ~ActWeapon() {}
 
     private:
         int _nbPlayer;

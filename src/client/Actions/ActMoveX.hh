@@ -59,7 +59,7 @@ class ActMoveX : public DamnCute::AAction<DamnCute::APlayer>
 
         virtual inline const std::string& getName() const { return (_name); }
 
-        virtual ~ActMoveX();
+        virtual ~ActMoveX() {}
 
     private:
         int _who;

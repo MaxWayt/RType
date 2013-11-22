@@ -15,7 +15,7 @@ class Boss1ShootPattern : public DamnCute::APattern {
             initialize();
         }
 
-        virtual ~Boss1ShootPattern();
+        virtual ~Boss1ShootPattern() {}
         virtual void initialize() {
 
             glm::mat4 m;

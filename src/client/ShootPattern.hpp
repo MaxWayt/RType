@@ -18,7 +18,7 @@ class ShootPatternDefault : public DamnCute::APattern {
             initialize();
         }
 
-        virtual ~ShootPatternDefault();
+        virtual ~ShootPatternDefault() {}
         virtual void initialize() {
 
             _m = glm::translate(glm::mat4(), glm::vec3(-15, 0, 0));
@@ -40,7 +40,7 @@ class ShootPatternLevel1 : public DamnCute::APattern {
             initialize();
         }
 
-        virtual ~ShootPatternLevel1();
+        virtual ~ShootPatternLevel1() {}
         virtual void initialize() {
 
             _m = glm::translate(glm::mat4(), glm::vec3(-15, 2, 0));
@@ -68,7 +68,7 @@ class ShootPatternLevel2 : public DamnCute::APattern {
             initialize();
         }
 
-        virtual ~ShootPatternLevel2();
+        virtual ~ShootPatternLevel2() {}
         virtual void initialize() {
 
             _m = glm::translate(glm::mat4(), glm::vec3(-15, 0, 0));
