@@ -5,12 +5,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Core/Core.hh"
 #include "APattern.hh"
-#include <iostream>
-#include <vector>
 #include "Bullet.hh"
 #include "APlayer.hh"
 #include "SharedDefines.h"
 #include "ShootPattern.hpp"
+#include <iostream>
+#include <vector>
 
 class Player : public DamnCute::APlayer {
 

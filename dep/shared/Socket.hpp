@@ -16,10 +16,11 @@
 #include <cstring>
 #include <stdexcept>
 
-#if defined(LINUX) || defined(OSX)
+#ifdef UNIX
 # include <errno.h>
 # include <netinet/in.h>
 #endif
+
 enum Protocoles
 {
     PROTO_TCP       = 0,

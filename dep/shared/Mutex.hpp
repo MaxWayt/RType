@@ -12,9 +12,12 @@
 # define MUTEX_H_
 
 #include "os.hpp"
-#ifdef OS_UNIX
+#ifdef UNIX
 #   include <pthread.h>
 #else
+#ifndef NOMINMAX
+# define NOMINMAX
+#endif
 #   include <windows.h>
 #endif /* OS_UNIX */
 

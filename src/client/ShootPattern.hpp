@@ -5,10 +5,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Core/Core.hh"
 #include "APattern.hh"
-#include <iostream>
-#include <vector>
 #include "Bullet.hh"
 #include "SharedDefines.h"
+#include <iostream>
+#include <vector>
 
 #define TIME_SEPARATOR 6
 

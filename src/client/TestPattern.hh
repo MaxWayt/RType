@@ -21,7 +21,7 @@ class pat1 : public DamnCute::APattern {
 
     private:
         std::vector<int> labyrinthGroup;
-        int _timeframe = 60;
+        int _timeframe;
 
 };
 

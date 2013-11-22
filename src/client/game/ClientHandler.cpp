@@ -2,8 +2,8 @@
 #include "Opcodes.h"
 #include "Player.hh"
 #include "DisplayManager.hh"
-#include <iostream>
 #include "MonsterMgr.h"
+#include <iostream>
 
 void Client::HandleGreeting(Packet* recvPkt)
 {

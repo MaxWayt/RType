@@ -13,9 +13,12 @@
 
 #include "SharedDefines.h"
 #include "os.hpp"
-#if defined(LINUX) || defined(OSX)
+#ifdef UNIX
 #   include <pthread.h>
 #else
+#ifndef NOMINMAX
+# define NOMINMAX
+#endif
 #   include <windows.h>
 #endif
 
