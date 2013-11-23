@@ -42,10 +42,11 @@ set(ALL_LIBS
 set(SHARED_LIBRARY_NAME "shared")
 
 add_library(
-    ${SHARED_LIBRARY_NAME}
-    SHARED
-    ${shared_SRCS}
+	${SHARED_LIBRARY_NAME}
+	SHARED
+	${shared_SRCS}
 )
+
 target_link_libraries(${SHARED_LIBRARY_NAME} ${ALL_LIBS})
 if ( WIN32 )
 	target_link_libraries(${SHARED_LIBRARY_NAME} ws2_32)

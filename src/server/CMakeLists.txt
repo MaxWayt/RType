@@ -49,6 +49,9 @@ link_directories(
 set(ALL_LIBS
     shared
 )
+if ( WIN32 )
+	SET(ALL_LIBS ${ALL_LIBS} ws2_32.dll)
+endif()
 
 set(SERVER_NAME "rtype-server")
 set(SERVER_EXECUTABLE_NAME ${SERVER_NAME}-bin)
@@ -58,9 +61,6 @@ add_executable(${SERVER_EXECUTABLE_NAME}
 )
 
 target_link_libraries(${SERVER_EXECUTABLE_NAME} ${ALL_LIBS})
-if ( WIN32 )
-	target_link_libraries(${SHARED_LIBRARY_NAME} ws2_32)
-endif()
 
 install_targets(/bin ${SERVER_EXECUTABLE_NAME})
 install_programs(/bin ${SERVER_NAME})
