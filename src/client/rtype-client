@@ -1,3 +1,4 @@
 #!/usr/bin/env sh
 export LD_LIBRARY_PATH=../lib
+export DYLD_LIBRARY_PATH=../lib/:$DYLD_LIBRARY_PATH
 ./rtype-client-bin $1 $2 $3
