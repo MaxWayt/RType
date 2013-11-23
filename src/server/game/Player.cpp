@@ -51,7 +51,7 @@ void Player::Update(uint32 const diff)
 
     if (_pingTimer <= diff)
     {
-        if (GetMSTimeDiffToNow(_lastPing) >= sConfig->GetIntDefault("Game.Player.PingInterval", 2000) + 1000)
+        if (GetMSTimeDiffToNow(_lastPing) >= uint32(sConfig->GetIntDefault("Game.Player.PingInterval", 2000) + 1000))
         {
             std::cout << "Player " << GetHostIdentifier() << "'s ping timeout, removing" << std::endl;
             _game->RemovePlayer(this);

@@ -4,7 +4,9 @@
 
 #include <Utils.hpp>
 #include <iostream>
-#include <unistd.h>
+#ifdef UNIX
+# include <unistd.h>
+#endif
 
 namespace Game
 {

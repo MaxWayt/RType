@@ -1,10 +1,10 @@
-#include <random>
-#include <Background.hh>
-#include <Menu.hh>
-#include <Core/Core.hh>
+#include "Background.hh"
+#include "Menu.hh"
+#include "Core/Core.hh"
 #include "DisplayManager.hh"
 #include "ConfigFile.hh"
 #include "Client.h"
+#include <random>
 
 void runGame();
 
@@ -80,7 +80,7 @@ void DisplayManager::Init()
     if (!_engine)
     {
         _engine = DamnCute::Core::getInstance();
-        _engine->createWin(_width, _height, _fullscreen);
+        _engine->createWin<__DWIDTH, __DHEIGHT>(_width, _height, _fullscreen);
         created = true;
     }
 

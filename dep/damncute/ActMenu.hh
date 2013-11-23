@@ -60,7 +60,7 @@ class ActMenu : public DamnCute::AAction<DamnCute::Menu>
                 _entity->MoveReturn();
         }
         virtual inline const std::string& getName() const { return (_name); }
-        virtual ~ActMenu() = default;
+        virtual ~ActMenu() {}
 
     private:
         int _who;

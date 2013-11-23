@@ -11,7 +11,7 @@
 #ifndef OS_H_
 # define OS_H_
 
-#if defined(LINUX) || defined(OSX)
+#ifdef UNIX
 #   define FOR_UNIX(...)    __VA_ARGS__
 #   define FOR_WIN(...)
 #   define OS_UNIX

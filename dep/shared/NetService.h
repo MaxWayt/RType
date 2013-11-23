@@ -7,9 +7,13 @@
 #include <functional>
 #include <map>
 
-#if defined(LINUX) || defined(OSX)
+#ifdef UNIX
 #include <sys/select.h>
 #else // Windows
+#ifndef NOMINMAX
+# define NOMINMAX
+#endif
+
 #endif
 
 class NetService : public Thread

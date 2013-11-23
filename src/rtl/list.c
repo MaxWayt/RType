@@ -9,26 +9,25 @@
 */
 
 #include <stdio.h>
-#include <unistd.h>
 #include <fcntl.h>
 
 #include "rtl.h"
 
 int list_level(int ac, char **avi)
 {
+    FILE* fd;
+    struct QueenMonster monster;
+
     if (ac < 1)
         return -1;
 
-    int fd;
-    struct QueenMonster monster;
-
-    if ((fd = open(avi[0], O_RDONLY)) == -1)
+    if ((fd = fopen(avi[0], "r")) == NULL)
     {
         fprintf(stderr, "Unable to open file '%s': %m\n", avi[0]);
         return 1;
     }
 
-    while (read(fd, &monster, sizeof(struct QueenMonster)) > 0)
+    while (fread(&monster, sizeof(struct QueenMonster), 1, fd) > 0)
     {
         printf("nb = %d\n", monster.nb);
         printf("pregnancy_time = %d\n", monster.pregnancy_time);
@@ -41,7 +40,7 @@ int list_level(int ac, char **avi)
         printf("y = %.2f\n\n", monster.monster.y);
     }
 
-    close(fd);
+    fclose(fd);
 
     return 0;
 }

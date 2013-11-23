@@ -27,7 +27,7 @@ namespace DamnCute {
 	    std::list<APhysics*>::iterator _whereInList;
 
 	    template <unsigned int sizeX, unsigned int sizeY, unsigned short iter>
-		inline QuadTree<std::list<APhysics*>, __DQUADTREE_COMPLEXITY__>::Array_Type_&& generateQuadTreePos(unsigned int x, unsigned int y) noexcept {
+		inline QuadTree<std::list<APhysics*>, __DQUADTREE_COMPLEXITY__>::Array_Type_&& generateQuadTreePos(unsigned int x, unsigned int y) {
 		    unsigned int nodeX = sizeX / 2;
 		    unsigned int nodeY = sizeY / 2;
 
@@ -62,7 +62,7 @@ namespace DamnCute {
 		}
 
 	    template <unsigned int sizeX, unsigned int sizeY, unsigned short iter>
-		inline std::list<QuadTree<std::list<APhysics*>, __DQUADTREE_COMPLEXITY__>::Array_Type_>&& generateQuadTreePos(unsigned int x, unsigned int y, unsigned int w, unsigned int h) noexcept {
+		inline std::list<QuadTree<std::list<APhysics*>, __DQUADTREE_COMPLEXITY__>::Array_Type_>&& generateQuadTreePos(unsigned int x, unsigned int y, unsigned int w, unsigned int h) {
             std::list<QuadTree<std::list<APhysics*>, __DQUADTREE_COMPLEXITY__>::Array_Type_> list;
             unsigned int quadWidth = sizeX / (2 * __DQUADTREE_COMPLEXITY__);
             unsigned int quadHeight = sizeY / (2 * __DQUADTREE_COMPLEXITY__);

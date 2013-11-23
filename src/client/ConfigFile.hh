@@ -1,7 +1,7 @@
+#include "APlayer.hh"
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <APlayer.hh>
 
 #define DEFAULT_CONFIG_FILE "../etc/rtype-client.conf"
 
@@ -15,14 +15,14 @@ class ConfigFile {
         bool _hasKey2;
         bool _hasStick;
         bool _hasButton;
-        int _key1 = 0;
-        int _key2 = 0;
-        int _stick = 0;
-        int _button = 0;
+        int _key1;
+        int _key2;
+        int _stick;
+        int _button;
         std::string _action;
 
         // music
-        bool _hasMusicPath = false;
+        bool _hasMusicPath;
         std::string _musicPath;
         
         // functions
@@ -34,8 +34,10 @@ class ConfigFile {
         void saveMusicPath(std::string, size_t);
         
     public:
-        ConfigFile(std::string configFile = std::string(DEFAULT_CONFIG_FILE)) : _file(configFile) {}
-        ~ConfigFile() = default;
+		ConfigFile(std::string configFile = std::string(DEFAULT_CONFIG_FILE)) : _file(configFile), _key1(0), _key2(0),
+			_stick(0), _button(0), _hasMusicPath(false)
+		{}
+        ~ConfigFile();
 
         void parseConfigFile(DamnCute::APlayer *);
         bool hasMusicPath();

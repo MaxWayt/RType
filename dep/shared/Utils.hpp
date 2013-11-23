@@ -6,9 +6,9 @@
 #ifndef UTILS_H_
 # define UTILS_H_
 
+#include "SharedDefines.h"
 #include <sstream>
 #include <vector>
-#include "SharedDefines.h"
 
 template<class T>
 T to(char const* buff)

@@ -15,7 +15,7 @@ namespace DamnCute {
 #define __BULLER_PHYSIC_ID__ 0
     class APattern : public IRenderable {
 	public:
-	    APattern() = default;
+	    APattern() {}
 
 	    ~APattern() {
 		for (unsigned int i = 0; i != _paths.size(); ++i) {
@@ -33,7 +33,7 @@ namespace DamnCute {
 		}
 		up();
 	    }
-	    virtual void moveOrigin(glm::vec2&& n) noexcept {
+	    virtual void moveOrigin(glm::vec2&& n) {
 		for (unsigned int i = 0; i != _paths.size(); ++i) {
 		    _paths[i]->moveOrigin(std::move(n));
 		}

@@ -8,6 +8,7 @@
 #include "Background.hh"
 #include "AAction.hh"
 #include "Core/Core.hh"
+#include <functional>
 
 namespace DamnCute {
     class Menu : public IRenderable {
@@ -97,9 +98,9 @@ namespace DamnCute {
                     std::function<void()> _returnFunction;
             };
         private:
-            unsigned int _characterSize=30;
+            unsigned int _characterSize;
             sf::Font _font;
-            std::string _font_path = "../resources/font.ttf";
+            std::string _font_path;
             bool _alive;
             bool _clicked;
             bool _clicked2;
@@ -128,7 +129,7 @@ namespace DamnCute {
             void addButton(int x, int y, const std::string&, std::function<void()> const& func);
             void addSubMenu(const std::string &Button, const std::string &Option /*Nom de l'option*/, std::vector<std::string> listOption, int x, int y);
             void update() {
-                _alive  = DamnCute::Core::getInstance()->getWindowStatus();
+                _alive  = DamnCute::Core::getInstance()->getWindowStatus() != 0;
             }
             void    MoveDown();
             void    MoveUp();

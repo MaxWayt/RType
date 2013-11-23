@@ -9,29 +9,27 @@ namespace DamnCute {
     class Bullet : public APhysics {
         public:
             explicit Bullet(const glm::vec2&, const float = 0.0f, unsigned int = 60, unsigned int = 0);
-            explicit Bullet(const Bullet&) = delete;
             explicit Bullet(Bullet&&);
-            virtual ~Bullet() = default;
-            Bullet& operator=(const Bullet&) = delete;
+            virtual ~Bullet() {}
             Bullet& operator=(Bullet&&);
             void update(const glm::mat4&, sf::RenderTarget*);
             unsigned int decreaseLifeTime();
-            inline const sf::Sprite& getSprite() const noexcept {
+            inline const sf::Sprite& getSprite() const {
                 return _s;
             }
-            inline const glm::vec2& getOrigin() const noexcept {
+            inline const glm::vec2& getOrigin() const {
                 return _origin;
             }
-            inline float getRot() const noexcept {
+            inline float getRot() const {
                 return _rot;
             }
-            inline unsigned int getLife() const noexcept {
+            inline unsigned int getLife() const {
                 return _lifeTime;
             }
-            inline void setLife(unsigned int l) noexcept {
+            inline void setLife(unsigned int l) {
                 _lifeTime = l;
             }
-            inline void moveOrigin(glm::vec2&& n) noexcept {
+            inline void moveOrigin(glm::vec2&& n) {
                 _origin = n;
             }
             void setTexure(sf::Texture*);

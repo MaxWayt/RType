@@ -1,3 +1,5 @@
+FIND_PACKAGE(Threads)
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${DEBUG_FLAGS} -std=c++0x")
 
 if ( APPLE )
@@ -13,7 +15,7 @@ elseif ( UNIX )
     set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -lpthread")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -lpthread")
 elseif ( WIN32 )
-
+    set(CMAKE_CXX_FLAGS "-D WIN32 ${CMAKE_CXX_FLAGS}")
 endif()
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${DEBUG_FLAGS} -std=c++0x")
@@ -32,18 +34,20 @@ include_directories(
 )
 
 set(ALL_LIBS
-    -lpthread
+	${CMAKE_THREAD_LIBS_INIT}
 )
 
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
+#set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
 
 set(SHARED_LIBRARY_NAME "shared")
 
 add_library(
     ${SHARED_LIBRARY_NAME}
-    SHARED
     ${shared_SRCS}
 )
 target_link_libraries(${SHARED_LIBRARY_NAME} ${ALL_LIBS})
+if ( WIN32 )
+	target_link_libraries(${SHARED_LIBRARY_NAME} ws2_32)
+endif()
 
-install(TARGETS ${SHARED_LIBRARY_NAME} DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
+#install(TARGETS ${SHARED_LIBRARY_NAME} DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")

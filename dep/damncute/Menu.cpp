@@ -11,6 +11,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include "ActMenu.hh"
 #include "Menu.hh"
+#include <functional>
 
 DamnCute::Menu::SubMenu::SubMenu(sf::Text &text, const std::string &optionName, std::vector<sf::Text *> optionChoice) : _text(text), _options(optionChoice) {
     _it = _options.begin();
@@ -38,8 +39,8 @@ DamnCute::Menu::Button::Button(const std::string &Name, sf::Text &text, int x, i
     _x = x;
     _y = y;
     _s.setTexture(_tex);
-    _s.setPosition(x, y);
-    _text.setPosition(x + 10, y + 14);
+    _s.setPosition((float)x, (float)y);
+    _text.setPosition((float)(x + 10), (float)(y + 14));
 }
 
 void	DamnCute::Menu::Button::update(sf::RenderTarget* w_ptr) {
@@ -57,7 +58,7 @@ DamnCute::Menu::Button::~Button() {
 /********************* MENU *****************************/
 /********************************************************/
 
-DamnCute::Menu::Menu(const std::string& texfile) : IRenderable(), _bg(texfile)  {
+DamnCute::Menu::Menu(const std::string& texfile) : IRenderable(), _characterSize(30), _font_path("../resources/font.ttf"), _bg(texfile)  {
     Core* e = Core::getInstance();
     DamnCute::Background* bg = new DamnCute::Background(texfile);
 
@@ -95,7 +96,7 @@ void	DamnCute::Menu::update(sf::RenderTarget* win) {
     _clicked2 = false;
     if (_alive == true)
     {
-        _cursor->setPosition((*_itButtons)->getX() + _cursPosX, (*_itButtons)->getY() + _cursPosY);
+        _cursor->setPosition((float)((*_itButtons)->getX() + _cursPosX), (float)((*_itButtons)->getY() + _cursPosY));
         win->draw(*_cursor);
     }
 }
@@ -129,11 +130,11 @@ void	DamnCute::Menu::addSubMenu(const std::string &Button, const std::string &Op
     sf::Text test(Option, _font, _characterSize);
     std::vector<sf::Text *> listoption2;
     sf::Text *tmp;
-    test.setPosition(x, y);
+    test.setPosition((float)x, (float)y);
     test.setColor(sf::Color::White);
     for (std::vector<std::string>::iterator it = listOption.begin() ; it != listOption.end(); ++it) {
         tmp = new sf::Text(*it, _font, _characterSize);
-        tmp->setPosition(x+15, y + 25);
+        tmp->setPosition((float)x + 15.0f, (float)y + 25.0f);
         listoption2.push_back(tmp);
     }
     SubMenu *b = new SubMenu(test, Option, listoption2);

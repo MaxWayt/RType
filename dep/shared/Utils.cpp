@@ -5,13 +5,24 @@
 
 #ifdef WIN32
 # undef __STRICT_ANSI__
+#define _USE_MATH_DEFINES
 #endif
 
 #include <algorithm>
 #include <functional>
 #include <cctype>
 #include <locale>
-#include <sys/time.h>
+#ifdef UNIX
+# include <sys/time.h>
+#else
+#ifndef NOMINMAX
+# define NOMINMAX
+#endif
+# include <time.h>
+# include <Winsock2.h>
+# include <sys/types.h>
+# include <sys/timeb.h>
+#endif
 #include <cmath>
 #include <limits>
 
@@ -60,7 +71,14 @@ void trim_quote(std::string& s)
 uint32 GetMSTime()
 {
     timeval time;
+#ifdef UNIX
     gettimeofday(&time, NULL);
+#else
+	struct _timeb timebuffer;
+	_ftime_s (&timebuffer);
+	time.tv_sec = (long)timebuffer.time;
+	time.tv_usec = timebuffer.millitm * 1000;
+#endif
     return (time.tv_sec * 1000) + (time.tv_usec / 1000);
 }
 
@@ -84,7 +102,7 @@ bool FuzzyCompare(float f1, float f2)
 void Mod2PI(float &angle)
 {
     if (angle < 0.f)
-        angle = M_PI * 2 + angle;
-    else if (angle > M_PI * 2)
-        angle -= M_PI * 2;
+        angle = (float)M_PI * 2 + angle;
+    else if (angle > (float)M_PI * 2)
+        angle -= (float)M_PI * 2;
 }

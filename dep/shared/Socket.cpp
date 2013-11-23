@@ -8,7 +8,7 @@
 ** Last update Wed Oct 30 17:35:20 2013 vincent leroy
 */
 
-#if defined(LINUX) || defined(OSX)
+#ifdef UNIX
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/socket.h>
@@ -17,7 +17,10 @@
 # include <poll.h>
 #else
 # define _WIN32_WINNT 0x501
-# include <winsock2.h>
+#ifndef NOMINMAX
+# define NOMINMAX
+#endif
+# include <Winsock2.h>
 # include <Mswsock.h>
 # include <ws2tcpip.h>
 #endif
@@ -178,28 +181,20 @@ bool Socket::read(char *buff, size_t len)
 void Socket::write(const char *buff, size_t len) const
 {
     int ret = 0;
+#ifdef UNIX
     pollfd fdarray;
-    fdarray.fd = _sockfd;
-    fdarray.events = POLLWRNORM;
-#if defined(LINUX) || defined(OSX)
     ret = poll(&fdarray, 1, 0);
-#else
-    ret = WSAPoll(&fdarray, 1, 0);
-#endif
-    if (ret == 0)
+
+	if (ret == 0)
         throw std::runtime_error("Socket::write, request timedout");
     if (ret < 0)
         throw std::runtime_error("Socket::write, poll ret < 0");
     if (fdarray.revents & POLLWRNORM)
-    {
-        //Send data
-#if defined(LINUX) || defined(OSX)
         if (::write(_sockfd, buff, len) < 0)
 #else
-        if (SOCKET_ERROR == (ret = send(_sockfd, buff, len, 0)))
+    if (SOCKET_ERROR == (ret = send(_sockfd, buff, len, 0)))
 #endif
-            throw std::runtime_error("Socket::write, fail to write un the socket");
-    }
+		throw std::runtime_error("Socket::write, fail to write un the socket");
 }
 
 void Socket::async_read(std::function<void()> fct)
@@ -210,7 +205,11 @@ void Socket::async_read(std::function<void()> fct)
 Socket* Socket::accept() const
 {
     int newFd;
-    unsigned int t;
+#ifdef UNIX
+    socklen_t t;
+#else
+    int t;
+#endif
     struct sockaddr_in remote;
 
     t = sizeof(remote);

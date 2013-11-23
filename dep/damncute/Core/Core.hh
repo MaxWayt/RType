@@ -24,10 +24,10 @@ namespace DamnCute {
     class APhysics;
     class Core {
         public:
-            Core(const Core&) = delete;
-            Core(const Core&&) = delete;
-            Core& operator=(const Core&) = delete;
-            Core& operator=(const Core&&) = delete;
+            Core(const Core&);
+            Core(const Core&&);
+            Core& operator=(const Core&);
+            Core& operator=(const Core&&);
 
             static Core* getInstance();
             void reset();
@@ -37,7 +37,8 @@ namespace DamnCute {
             void addOnBg(IRenderable*);
             void flushScene();
             void flushEvent();
-            template <unsigned int SIZEX = __DWIDTH, unsigned int SIZEY = __DHEIGHT>
+            //template <unsigned int SIZEX = __DWIDTH, unsigned int SIZEY = __DHEIGHT>
+            template <unsigned int SIZEX, unsigned int SIZEY>
                 void createWin(unsigned int width = 0, unsigned int height = 0, bool full = false) {
                     unsigned int style = full << 3 | sf::Style::Titlebar;
                     sf::VideoMode v;

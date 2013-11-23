@@ -15,54 +15,55 @@ elseif ( UNIX )
     set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -lpthread")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -lpthread")
 elseif ( WIN32 )
-    set(CMAKE_CXX_FLAGS "-D WIN32 ${CMAKE_CXX_FLAGS}")
+
 endif()
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${DEBUG_FLAGS} -std=c++0x")
 set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${DEBUG_FLAGS} -std=c++0x")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${DEBUG_FLAGS} -std=c++0x")
 
-file(GLOB_RECURSE source_file *.cpp *.h *.hpp *.hh)
-file(GLOB_RECURSE source_actions Actions/*.cpp Actions/*.h Actions/*.hpp Actions/*.hh)
-file(GLOB_RECURSE source_game game/*.cpp game/*.h game/*.hpp game/*.hh)
-
-set(rtype_client_SRCS
-    ${rtype_client_SRCS}
-    ${source_file}
-    ${source_actions}
-    ${source_game}
-)
+file(GLOB_RECURSE source_file ../../client/*.cpp ../../client/*.h ../../client/*.hpp ../../client/*.hh)
+file(GLOB_RECURSE source_actions ../../client/Actions/*.cpp ../../client/Actions/*.h ../../client/Actions/*.hpp ../../client/Actions/*.hh)
+file(GLOB_RECURSE source_game ../../client/game/*.cpp ../../client/game/*.h ../../client/game/*.hpp ../../client/game/*.hh)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
 
+file(GLOB_RECURSE source_monster_test *.cpp *.h *.hh *.hpp)
+set(monster_test_SRCS
+    ${monster_test_SRCS}
+    ${source_file}
+    ${source_actions}
+    ${source_game}
+    ${source_monster_test}
+)
+
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/Actions
-    ${CMAKE_CURRENT_SOURCE_DIR}/game
     ${CMAKE_SOURCE_DIR}/dep
     ${CMAKE_SOURCE_DIR}/dep/damncute
     ${CMAKE_SOURCE_DIR}/dep/shared
+    ${CMAKE_SOURCE_DIR}/src/client/
+    ${CMAKE_SOURCE_DIR}/src/client/Actions
+    ${CMAKE_SOURCE_DIR}/src/client/game
     ${SFML_INCLUDE_DIR}
 )
 
-set(CLIENT_NAME "rtype-client")
-set(CLIENT_EXECUTABLE_NAME "${CLIENT_NAME}-bin")
-
-add_executable(${CLIENT_EXECUTABLE_NAME}
-    ${rtype_client_SRCS}
+link_directories(
+    ${CMAKE_SOURCE_DIR}/lib
 )
-target_link_libraries(${CLIENT_EXECUTABLE_NAME}
+
+set(ALL_LIBS
     ${SFML_LIBRARY}
     damncute
     shared
+    -ldl
 )
-if ( WIN32 )
-	target_link_libraries(${CLIENT_EXECUTABLE_NAME} kernel32)
-elseif ( UNIX )
-	target_link_libraries(${CLIENT_EXECUTABLE_NAME} -ldl)
-endif()
 
-install_targets(/bin ${CLIENT_EXECUTABLE_NAME})
-install_programs(/bin ${CLIENT_NAME})
-install_files(/etc ${CLIENT_NAME}.conf.dist)
-install (DIRECTORY ${CMAKE_SOURCE_DIR}/resources DESTINATION "${CMAKE_INSTALL_PREFIX}")
+set(MONSTER_TEST_LIBRARY_NAME "boss1")
+add_library(${MONSTER_TEST_LIBRARY_NAME}
+    SHARED
+    ${monster_test_SRCS}
+)
+target_link_libraries(${MONSTER_TEST_LIBRARY_NAME} ${ALL_LIBS})
+
+install(TARGETS ${MONSTER_TEST_LIBRARY_NAME} DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")

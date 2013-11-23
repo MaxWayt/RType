@@ -5,10 +5,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Core/Core.hh"
 #include "APattern.hh"
-#include <iostream>
-#include <vector>
 #include "Bullet.hh"
 #include "SharedDefines.h"
+#include <iostream>
+#include <vector>
 
 #define TIME_SEPARATOR 6
 
@@ -18,7 +18,7 @@ class ShootPatternDefault : public DamnCute::APattern {
             initialize();
         }
 
-        virtual ~ShootPatternDefault() = default;
+        virtual ~ShootPatternDefault() {}
         virtual void initialize() {
 
             _m = glm::translate(glm::mat4(), glm::vec3(-15, 0, 0));
@@ -40,7 +40,7 @@ class ShootPatternLevel1 : public DamnCute::APattern {
             initialize();
         }
 
-        virtual ~ShootPatternLevel1() = default;
+        virtual ~ShootPatternLevel1() {}
         virtual void initialize() {
 
             _m = glm::translate(glm::mat4(), glm::vec3(-15, 2, 0));
@@ -68,7 +68,7 @@ class ShootPatternLevel2 : public DamnCute::APattern {
             initialize();
         }
 
-        virtual ~ShootPatternLevel2() = default;
+        virtual ~ShootPatternLevel2() {}
         virtual void initialize() {
 
             _m = glm::translate(glm::mat4(), glm::vec3(-15, 0, 0));

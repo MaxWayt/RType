@@ -6,13 +6,13 @@
 #  define __DHEIGHT 1200
 # endif
 
-# include <iostream>
 # include <SFML/Graphics.hpp>
-# include <Core/Core.hh>
+# include "Core/Core.hh"
 #include "Thread.hpp"
 #include "Mutex.hpp"
 #include "Player.hh"
 #include "Monster.h"
+# include <iostream>
 
 enum DisplayMode
 {
@@ -34,7 +34,7 @@ class DisplayManager
         void SwitchMode(DisplayMode mode);
         bool IsAlive() const { return _alive; }
         inline void flushAll() { _engine->flushScene(); _engine->flushEvent(); }
-        inline void UpdateAlive() { _alive = DamnCute::Core::getInstance()->getWindowStatus(); }
+        inline void UpdateAlive() { _alive = (bool)DamnCute::Core::getInstance()->getWindowStatus(); }
         void Init();
 
         void AddPlayer(Player* player);

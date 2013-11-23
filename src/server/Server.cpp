@@ -14,7 +14,9 @@
 #include "Utils.hpp"
 
 #include <iostream>
-#include <unistd.h>
+#ifdef UNIX
+# include <unistd.h>
+#endif
 
 Server::Server() : _gameMap()
 {
@@ -173,7 +175,8 @@ void Server::CommandGameCreate(std::string const& params)
     }
     catch (std::exception const& e) {
         std::cerr << e.what() << std::endl;
-        DeleteGame(game);
+        if (game)
+            DeleteGame(game);
     }
 }
 

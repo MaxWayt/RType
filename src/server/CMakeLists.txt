@@ -14,7 +14,7 @@ elseif ( UNIX )
     set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -lpthread")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -lpthread")
 elseif ( WIN32 )
-
+    set(CMAKE_CXX_FLAGS "-D WIN32 ${CMAKE_CXX_FLAGS}")
 endif()
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${DEBUG_FLAGS} -std=c++0x")
@@ -47,7 +47,7 @@ link_directories(
 )
 
 set(ALL_LIBS
-    -lshared
+    shared
 )
 
 set(SERVER_NAME "rtype-server")
@@ -58,6 +58,9 @@ add_executable(${SERVER_EXECUTABLE_NAME}
 )
 
 target_link_libraries(${SERVER_EXECUTABLE_NAME} ${ALL_LIBS})
+if ( WIN32 )
+	target_link_libraries(${SHARED_LIBRARY_NAME} ws2_32)
+endif()
 
 install_targets(/bin ${SERVER_EXECUTABLE_NAME})
 install_programs(/bin ${SERVER_NAME})

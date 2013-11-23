@@ -8,7 +8,6 @@
 ** Last update Thu Nov 21 17:44:33 2013 vincent leroy
 */
 
-#include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <stdio.h>
@@ -17,19 +16,23 @@
 
 int create_level(int ac, char **avi)
 {
+    FILE* fd;
+
     if (ac < 1)
         return -1;
 
-    int fd;
-    if ((fd = open(avi[0], O_WRONLY | O_CREAT | O_EXCL, 0644)) == -1)
+	if ((fd = fopen(avi[0], "r")) != NULL)
+	{
+		fprintf(stderr, "Level '%s' already created\n", avi[0]);
+		fclose(fd);
+		return 1;
+	}
+    if ((fd = fopen(avi[0], "w")) == NULL)
     {
-        if (errno == EEXIST)
-            fprintf(stderr, "Level '%s' already created\n", avi[0]);
-        else
-            fprintf(stderr, "Unable to create level '%s': %m\n", avi[0]);
+        fprintf(stderr, "Unable to create level '%s': %m\n", avi[0]);
         return 1;
     }
-    close(fd);
+    fclose(fd);
 
     return 0;
 }

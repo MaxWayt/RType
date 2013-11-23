@@ -43,7 +43,7 @@ class Level
 public:
     Level(Game *game);
     virtual ~Level();
-    void load(std::string const &file);
+    bool load(std::string const &file);
     void update(uint32 time);
     void sendMonster(Monster *monster);
     Monster *getMonster(uint32 id);

@@ -41,7 +41,7 @@ class ActFocus : public DamnCute::AAction<DamnCute::APlayer>
 
         virtual inline const std::string& getName() const { return _name; }
 
-        virtual ~ActFocus() = default;
+        virtual ~ActFocus() {}
 
     private:
         int _nbPlayer;
