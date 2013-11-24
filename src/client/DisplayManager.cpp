@@ -179,3 +179,7 @@ Monster const* DisplayManager::GetMonster(uint32 id) const
         return itr->second;
     return NULL;
 }
+
+void DisplayManager::showWinLoose(bool status) {
+    DamnCute::sCore->addObject(new EndGame(status));
+}

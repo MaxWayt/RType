@@ -22,6 +22,27 @@ enum DisplayMode
 
 class Client;
 
+class EndGame : public DamnCute::IRenderable {
+
+    private:
+        sf::Text _text;
+        sf::Font _font;
+
+    public:
+        EndGame(bool status) {
+            _font.loadFromFile("../resources/font.ttf");
+            _text.setFont(_font);
+            _text.setString((status == 1 ? "Win" : "Loose"));
+            _text.setCharacterSize(800);
+            _text.move(150, 0);
+        }
+        virtual void update(sf::RenderTarget *r) {
+            r->draw(_text);
+        } 
+        ~EndGame() {}
+
+};
+
 class DisplayManager
 {
     public:
@@ -48,6 +69,8 @@ class DisplayManager
         Monster const* GetMonster(uint32 id) const;
 
         static std::string const& GetFileForClientId(uint32 id);
+
+        void showWinLoose(bool);
 
         void UpdateFirePosition();
 
