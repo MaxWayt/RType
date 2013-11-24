@@ -7,7 +7,7 @@ void MonsterMgr::addMonterLoader(std::string const& name)
 #elif defined(LINUX)
     MonsterLoader* loader = new MonsterLoader(std::string("../lib/lib" + name + ".so"));
 #else
-    MonsterLoader* loader = new MonsterLoader(std::string("../lib/lib" + name + ".dll"));
+    MonsterLoader* loader = new MonsterLoader(std::string("../lib/" + name + ".dll"));
 #endif
 
     _monsterLoaders[_nextId++] = loader; 
