@@ -51,6 +51,7 @@ void Client::HandleAddPlayer(Packet* recvPkt)
     *recvPkt >> playerId;
     *recvPkt >> x >> y;
     *recvPkt >> fire;
+    *recvPkt >> health;
 
     Player* player = new Player(DisplayManager::GetFileForClientId(playerId), x, y, 5, false, (int)playerId);
     player->SetHealth(health);
