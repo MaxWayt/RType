@@ -210,10 +210,10 @@ uint32 Game::GetAlivePlayerCount() const
     return count;
 }
 
-void Game::HandleGameEnd()
+void Game::HandleGameEnd(bool win)
 {
     Packet pkt(SMSG_GAME_END);
-    pkt << uint8(GetAlivePlayerCount() > 0 ? 1 : 0);
+    pkt << uint8(win ? 1 : 0);
     BroadcastToAll(pkt);
 }
 
