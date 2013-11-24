@@ -43,6 +43,7 @@ public:
     bool IsValidePlayerKey(uint32 key) const;
     uint32 GetPlayerNumberByKey(uint32 key) const;
     uint32 GetPlayerCount() const { return uint32(_playerMap.size()); }
+    uint32 GetAlivePlayerCount() const;
     Level const &GetLevel() const { return _level; }
     Level &GetLevel() { return _level; }
 
@@ -66,6 +67,7 @@ private:
     Mutex _playerRemovedMutex;
     Level _level;
     uint32 _gamePlayerCount;
+    bool _ended;
 };
 }
 

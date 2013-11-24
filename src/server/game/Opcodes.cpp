@@ -13,6 +13,7 @@ Opcode::OpcodeHandler const* Opcode::GetHandler(Opcodes op)
         { CMSG_PLAYER_POSITION, &Player::HandlePosition      },
         { CMSG_SHOT, &Player::HandleShot                     },
         { CMSG_PLAYER_HIT_MONSTER, &Player::HandleHitMonster },
+        { CMSG_PLAYER_GET_HIT, &Player::HandleGetHit         },
         { OPCODE_COUNT, NULL                                 }
 
     };

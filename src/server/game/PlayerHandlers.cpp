@@ -8,6 +8,9 @@ namespace Game
 
 void Player::HandlePosition(Packet* pkt)
 {
+    if (!IsAlive() && _shooting)
+        return;
+
     *pkt >> _x;
     *pkt >> _y;
 
@@ -26,6 +29,9 @@ void Player::HandleShot(Packet* pkt)
 
     _shooting = (active != 0);
 
+    if (!IsAlive() && _shooting)
+        return;
+
     Packet data(SMSG_SHOT);
     data << uint32(GetId());
     data << uint8(active);
@@ -34,6 +40,9 @@ void Player::HandleShot(Packet* pkt)
 }
 void Player::HandleHitMonster(Packet* pkt)
 {
+    if (!IsAlive())
+        return;
+
     uint32 id;
     *pkt >> id;
 
@@ -57,6 +66,19 @@ void Player::HandleHitMonster(Packet* pkt)
 
         monster->health = monster->health - 1;
     }
+}
+
+void Player::HandleGetHit(Packet* pkt)
+{
+    if (!IsAlive())
+        return;
+
+    --_health;
+
+    Packet data(SMSG_PLAYER_GET_HIT);
+    data << uint32(GetId());
+    data << uint32(_health);
+    _game->BroadcastToAll(data);
 }
 
 }

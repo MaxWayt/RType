@@ -33,12 +33,15 @@ public:
     void BuildCreatePacket(Packet& pkt) const;
 
     bool IsShooting() const { return _shooting; }
+    uint32 GetHealth() const { return _health; }
+    bool IsAlive() const { return _health > 0; }
 
 
     // Handlers
     void HandlePosition(Packet* pkt);
     void HandleShot(Packet* pkt);
     void HandleHitMonster(Packet* pkt);
+    void HandleGetHit(Packet* pkt);
 
 private:
     Socket::SocketInfo _sockInfo;
@@ -55,6 +58,8 @@ private:
 
     bool _loginOut;
     bool _shooting;
+
+    uint32 _health;
 };
 
 }

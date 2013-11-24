@@ -45,7 +45,7 @@ void Client::HandlePlayerPosition(Packet* recvPkt)
 
 void Client::HandleAddPlayer(Packet* recvPkt)
 {
-    uint32 playerId;
+    uint32 playerId, health;
     float x, y;
     uint8 fire;
     *recvPkt >> playerId;
@@ -53,6 +53,7 @@ void Client::HandleAddPlayer(Packet* recvPkt)
     *recvPkt >> fire;
 
     Player* player = new Player(DisplayManager::GetFileForClientId(playerId), x, y, 5, false, (int)playerId);
+    player->SetHealth(health);
     _display->AddPlayer(player);
     player->SetFire(fire != 0);
 }
@@ -110,4 +111,28 @@ void Client::HandleRemoveMonster(Packet* recvPkt)
     Monster* monster = _display->GetMonster(id);
     if (monster)
         _display->RemoveMonster(monster);
+}
+
+
+void Client::HandlePlayerGetHit(Packet* recvPkt)
+{
+    uint32 playerId, health;
+    *recvPkt >> playerId >> health;
+
+    if (Player* player = _display->GetPlayer(playerId))
+    {
+        player->SetHealth(health);
+        if (player == _player)
+            _player->RemoveLife();
+
+        if (!player->IsAlive())
+        {
+            if (player == _player)
+                _player = NULL;
+            _display->RemovePlayer(player);
+
+        }
+    }
+
+
 }

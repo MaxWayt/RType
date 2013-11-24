@@ -7,7 +7,7 @@
 
 Player::Player(const std::string& texfile, float x, float y, int speed, bool active, int num) :
 APlayer(texfile, x, y, num, speed, active),
-_fire(false), _sp1(NULL), _sp2(NULL), _sp3(NULL), _level(0)
+_fire(false), _sp1(NULL), _sp2(NULL), _sp3(NULL), _level(0), _health(5)
 {
     if (_active)
     {
@@ -48,10 +48,10 @@ void Player::collisionHandler(DamnCute::APhysics* other) {
             _sound.setBuffer(_buffer);
             _sound.play();
         }
-        if (!_life.empty()) {
-            DamnCute::sCore->delObject(_life.top());
-            _life.pop();
-        }
+
+        Packet pkt (CMSG_PLAYER_GET_HIT);
+        sClient->UDPSend(pkt);
+
         b->setLife(0);
     }
     /*if (!other->isDestructible() && preciseDetection(getPlayer(), b->getSprite())) {
@@ -99,3 +99,11 @@ void Player::UpdateFirePosition()
     _sp3->moveOrigin(convertVec(getPlayer().getPosition()));
 }
 
+void Player::RemoveLife()
+{
+
+    if (!_life.empty()) {
+        DamnCute::sCore->delObject(_life.top());
+        _life.pop();
+    }
+}

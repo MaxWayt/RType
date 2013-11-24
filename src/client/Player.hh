@@ -29,7 +29,13 @@ class Player : public DamnCute::APlayer {
             return glm::vec2(float(v.x + 90), float(v.y + 11));
         }
 
+        uint32 GetHealth() const { return _health; }
+        void SetHealth(uint32 val) { _health = val; }
+        bool IsAlive() const { return _health > 0; }
+
         void UpdateFirePosition();
+
+        void RemoveLife();
 
     private:
         bool _fire;
@@ -43,6 +49,7 @@ class Player : public DamnCute::APlayer {
         sf::SoundBuffer _buffer;
 
         uint8 _level;
+        uint32 _health;
 
 };
 

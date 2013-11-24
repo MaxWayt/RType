@@ -42,6 +42,7 @@ public:
     void HandlePlayerShot(Packet* recvPkt);
     void HandleAddMonster(Packet* recvPkt);
     void HandleRemoveMonster(Packet* recvPkt);
+    void HandlePlayerGetHit(Packet* recvPkt);
  
 private:
     NetService _service;

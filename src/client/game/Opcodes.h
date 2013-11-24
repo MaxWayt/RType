@@ -17,6 +17,9 @@ enum Opcodes
     SMSG_ADD_MONSTER            = 11,
     CMSG_PLAYER_HIT_MONSTER     = 12,
     SMSG_REMOVE_MONSTER         = 13,
+    CMSG_PLAYER_GET_HIT         = 14,
+    SMSG_PLAYER_GET_HIT         = 15,
+    SMSG_GAME_END               = 16,
     OPCODE_COUNT
 
 };

@@ -13,6 +13,8 @@ Opcode::OpcodeHandler const* Opcode::GetHandler(Opcodes op)
         { SMSG_SHOT, &Client::HandlePlayerShot              },
         { SMSG_ADD_MONSTER, &Client::HandleAddMonster       },
         { SMSG_REMOVE_MONSTER, &Client::HandleRemoveMonster },
+        { SMSG_PLAYER_GET_HIT, &Client::HandlePlayerGetHit  },
+        { SMSG_GAME_END, &Client::HandleGameEnd             },
         { OPCODE_COUNT, NULL                                }
 
     };

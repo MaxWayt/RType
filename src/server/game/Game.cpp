@@ -13,7 +13,7 @@ namespace Game
 
 Game::Game(GameConfig const& conf) :
     _config(conf), _service(), _sock(this, _service), _playerMap(),
-    _playerAddedMap(), _playerRemovedMap(), _playerAddedMutex(), _playerRemovedMutex(), _level(this), _gamePlayerCount(0)
+    _playerAddedMap(), _playerRemovedMap(), _playerAddedMutex(), _playerRemovedMutex(), _level(this), _gamePlayerCount(0), _ended(false)
 {
     _gamePlayerCount = sConfig->GetIntDefault("Game.PlayerCount", MAX_PLAYERS);
 }
@@ -77,8 +77,16 @@ void Game::Update(uint32 const diff)
     for (auto itr = _playerMap.begin(); itr != _playerMap.end(); ++itr)
         if (!itr->second->IsLoginOut())
             itr->second->Update(diff);
-    if (GetPlayerCount() >= _gamePlayerCount)
-        _level.update(diff);
+    if (!_ended && GetPlayerCount() >= _gamePlayerCount)
+    {
+        if (GetAlivePlayerCount() == 0 && !_ended)
+        {
+            _ended = true;
+            HandleGameEnd();
+        }
+        else
+            _level.update(diff);
+    }
     _ProcessRemovedPlayer();
 }
 
@@ -150,9 +158,12 @@ void Game::_ProcessAddedPlayer()
         for (auto itr2 = _playerMap.begin(); itr2 != _playerMap.end(); ++itr2)
         {
             itr2->second->Send(currPkt);
-            Packet newPkt(SMSG_ADD_PLAYER);
-            itr2->second->BuildCreatePacket(newPkt);
-            itr->second->Send(newPkt);
+            if (itr2->second->IsAlive())
+            {
+                Packet newPkt(SMSG_ADD_PLAYER);
+                itr2->second->BuildCreatePacket(newPkt);
+                itr->second->Send(newPkt);
+            }
         }
         _playerMap[itr->first] = itr->second;
     }
@@ -183,6 +194,22 @@ void Game::BroadcastToAll(Packet const& pkt, Player const* except) const
 void Game::SendTo(Packet const& pkt, Socket::SocketInfo const& remote)
 {
     _sock.sendto(pkt.data(), pkt.size(), remote);
+}
+
+uint32 Game::GetAlivePlayerCount() const
+{
+    uint32 count = 0;
+    for (auto itr = _playerMap.begin(); itr != _playerMap.end(); ++itr)
+        if (itr->second->IsAlive())
+            ++count;
+    return count;
+}
+
+void Game::HandleGameEnd()
+{
+    Packet pkt(SMSG_GAME_END);
+    pkt << uint8(GetAlivePlayerCount() > 0 ? 1 : 0);
+    BroadcastToAll(pkt);
 }
 
 } // namespace Game
