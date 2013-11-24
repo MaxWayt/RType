@@ -29,7 +29,6 @@ _fire(false), _sp1(NULL), _sp2(NULL), _sp3(NULL), _level(0)
     engine->addObject(_sp1);
     engine->addObject(_sp2);
     engine->addObject(_sp3);
-    
 }
 
 Player::~Player()
