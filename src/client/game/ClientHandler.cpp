@@ -141,4 +141,5 @@ void Client::HandleGameEnd(Packet* recvPkt)
     *recvPkt >> win;
 
     std::cout << "Game is " << (win != 0 ? "win" : "loose") << std::endl;
+    _display->showWinLoose(win != 0);
 }

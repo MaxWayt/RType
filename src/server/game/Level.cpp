@@ -78,6 +78,11 @@ bool Level::hasMonster() {
         if (qm->nb > 0)
             return true;
     }
+    for (auto itr = _monsters.begin(); itr != _monsters.end(); ++itr)
+    {
+        if (itr->second->health > 0)
+            return true;
+    }
     return false;
 }
 
