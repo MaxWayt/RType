@@ -53,6 +53,8 @@ public:
     void BroadcastToAll(Packet const& pkt, Player const* except = NULL) const;
     void SendTo(Packet const& pkt, Socket::SocketInfo const& remote);
 
+	void HandleGameEnd();
+
 private:
     void _ProcessAddedPlayer();
     void _ProcessRemovedPlayer();
