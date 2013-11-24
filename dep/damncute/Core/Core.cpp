@@ -54,12 +54,15 @@ void DamnCute::Core::flushScene() {
         ss << " fps for ";
         ss << _numberOfBullets;
         ss << " bullets";
-        font.loadFromFile("../resources/font.ttf");
-        t = sf::Text(ss.str(), font);
-        t.setCharacterSize(24);
-        t.setColor(sf::Color::Green);
-        t.setPosition(900, 10);
-        _Rtex.draw(t);
+        if (ss.str().length() < 10)
+        {
+            font.loadFromFile("../resources/font.ttf");
+            t = sf::Text(ss.str(), font);
+            t.setCharacterSize(24);
+            t.setColor(sf::Color::Green);
+            t.setPosition(900, 10);
+            _Rtex.draw(t);
+        }
     }
     if (_gameClock.getElapsedTime().asSeconds() >= 1) {
         _gameClock.restart();

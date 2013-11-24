@@ -29,9 +29,13 @@ void Client::Launch(uint32 clientId, std::string const &addr, std::string const 
 
     while (_display->IsAlive())
     {
-        _display->Init(); // Init only if needed
-        _display->flushAll();
-        _display->UpdateAlive();
+        try {
+            _display->Init(); // Init only if needed
+            _display->flushAll();
+            _display->UpdateAlive();
+        } catch (std::exception const& e) {
+	        std::cerr << "Launch except: " << e.what() << std::endl;
+        }
 
         UpdateIncomingPackets();
 
