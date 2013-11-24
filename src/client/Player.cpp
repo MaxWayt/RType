@@ -42,12 +42,7 @@ Player::~Player()
 void Player::collisionHandler(DamnCute::APhysics* other) {
 
     DamnCute::Bullet* b = (DamnCute::Bullet*)other;
-<<<<<<< HEAD
     if (!other->isDestructible() && preciseDetection(getPlayer(), b->getSprite()) && (other->getType() == 4)) {
-        std::cout << "argh player is dead!" << std::endl;
-=======
-    if (other->getType() == 4) {
-
         if (_buffer.loadFromFile("../resources/sounds/explosion.wav")) {
             _sound.setBuffer(_buffer);
             _sound.play();
@@ -56,7 +51,6 @@ void Player::collisionHandler(DamnCute::APhysics* other) {
             DamnCute::sCore->delObject(_life.top());
             _life.pop();
         }
->>>>>>> f201fb6528e171135ba6f16a1dcdaa0971bb2f4d
         b->setLife(0);
     }
     /*if (!other->isDestructible() && preciseDetection(getPlayer(), b->getSprite())) {
