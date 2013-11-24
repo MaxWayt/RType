@@ -47,8 +47,4 @@ unsigned int DamnCute::Bullet::decreaseLifeTime() {
 }
 
 void DamnCute::Bullet::collisionHandler(APhysics* other) {
-    if (other->getType() == 1) {
-        /*if (((DamnCute::APlayer*)(other))->isEmpty())
-            sCore->delObject((DamnCute::APlayer*)other);*/
-    }
 }
