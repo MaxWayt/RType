@@ -2,7 +2,7 @@
 #include "Client.h"
 #include "Opcodes.h"
 
-Monster::Monster(uint32 id, int x, int y) : DamnCute::APhysics(x, y, true, false),
+Monster::Monster(uint32 id, int x, int y) : DamnCute::APhysics(x, y, true),
     _id(id), _fire(false), _shootPattern(NULL), _health(5), _sprite()
 {
     _sprite.setPosition(x, y);

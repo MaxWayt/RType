@@ -2,7 +2,7 @@
 #include "APlayer.hh"
 
 DamnCute::APlayer::APlayer(const std::string& texfile, float x, float y, int nb, int speed, bool active) :
-    APhysics((int)x, (int)y, true, false, 1), _tex(), _speed(speed), _nbPlayer(nb), _active(active), _health(5)
+    APhysics((int)x, (int)y, true, 1), _tex(), _speed(speed), _nbPlayer(nb), _active(active)
 {
     _tex.loadFromFile(texfile);
     _entity.setTexture(_tex);
@@ -23,9 +23,7 @@ void DamnCute::APlayer::update(sf::RenderTarget* w_ptr)
     //if (_active)
         action();
     w_ptr->draw(_entity);
-
-    const sf::Rect<float>& r = _entity.getGlobalBounds();
-    updateQuadTreePos(r.left, r.top, r.width, r.height);
+    updateQuadTreePos((int)_entity.getPosition().x, (int)_entity.getPosition().y);
 }
 
 void DamnCute::APlayer::action()

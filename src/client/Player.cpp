@@ -41,7 +41,7 @@ Player::~Player()
 void Player::collisionHandler(DamnCute::APhysics* other) {
 
     DamnCute::Bullet* b = (DamnCute::Bullet*)other;
-    if (!other->isDestructible() && preciseDetection(getPlayer(), b->getSprite()) && (other->getType() == 4)) {
+    if (other->getType() == 4) {
         if (_buffer.loadFromFile("../resources/sounds/explosion.wav")) {
             _sound.setBuffer(_buffer);
             _sound.play();
