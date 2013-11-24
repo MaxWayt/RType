@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <type_traits>
+#include <stack>
 #include "AAction.hh"
 #include "IRenderable.hh"
 #include "Core/Core.hh"
@@ -15,6 +16,27 @@ namespace DamnCute
 #undef __PLAYER_PHYSIC_ID__
 #endif
 #define __PLAYER_PHYSIC_ID__ 1
+
+    class Life : public DamnCute::IRenderable {
+
+        private:
+            sf::Sprite _sprite;
+            sf::Texture _tex;
+
+        public:
+            Life(std::string sprite, int offset) {
+                _tex.loadFromFile(sprite);
+                _sprite.setTexture(_tex);
+                _sprite.setPosition(offset, 10);
+                _sprite.setScale(0.15, 0.15);
+            }
+            ~Life() {}
+
+            void update(sf::RenderTarget* a) {
+                a->draw(_sprite);
+            }
+    };
+
     class APlayer : public IRenderable, public APhysics
     {
 
@@ -32,6 +54,8 @@ namespace DamnCute
             inline int& getSpeed() { return _speed; }
             inline AAction<APlayer>* getAction(std::string);
             inline int getNumPlayer() const { return _nbPlayer; }
+
+            bool isEmpty() { return _life.empty(); }
 
             template <int inputNumber, typename T>
                 void setAction(const std::string& name, T t) {
@@ -53,8 +77,11 @@ namespace DamnCute
             sf::Texture _tex;
             int _speed;
             int _nbPlayer;
+            /*uint8*/int _health;
+
         protected:
             bool _active;
+            std::stack<Life*> _life;
     };
 
 }
