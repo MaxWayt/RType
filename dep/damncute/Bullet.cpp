@@ -6,7 +6,7 @@
 DamnCute::Bullet::Bullet(const glm::vec2& origin, const float rot, unsigned int lifeTime, unsigned int owner) : APhysics(origin.x, origin.y, false, 0), _origin(origin), _rot(rot), _selfTransform(glm::translate(glm::rotate(glm::mat4(), rot, glm::vec3(0.0f, 0.0f, 1.0f)), glm::vec3(-origin.x, -origin.y, 0))), _tex(NULL), _lifeTime(lifeTime), _id(owner) {
 }
 
-DamnCute::Bullet::Bullet(DamnCute::Bullet&& b) : APhysics(b._origin.x, b._origin.y, false, b.getType()), _origin(b._origin), _rot(b._rot), _selfTransform(glm::translate(glm::rotate(glm::mat4(), b._rot, glm::vec3(0.0f, 0.0f, 1.0f)), glm::vec3(-b._origin.x, -b._origin.y, 0))), _tex(b._tex), _lifeTime(b._lifeTime), _id(b._id) {
+DamnCute::Bullet::Bullet(DamnCute::Bullet&& b) : APhysics(b._origin.x, b._origin.y, false, true, b.getType()), _origin(b._origin), _rot(b._rot), _selfTransform(glm::translate(glm::rotate(glm::mat4(), b._rot, glm::vec3(0.0f, 0.0f, 1.0f)), glm::vec3(-b._origin.x, -b._origin.y, 0))), _tex(b._tex), _lifeTime(b._lifeTime), _id(b._id) {
     if (b._tex) {
         _s.setTexture(*_tex);
         const sf::Vector2f& s = _s.getScale();
@@ -28,7 +28,8 @@ void DamnCute::Bullet::update(const glm::mat4& transform, sf::RenderTarget* w_pt
     glm::vec3 retVec = -d * rotMat;
 
     _s.setPosition(retVec.x, retVec.y);
-    updateQuadTreePos(retVec.x, retVec.y);
+    const sf::Rect<float>& r = _s.getGlobalBounds();
+    updateQuadTreePos(r.left, r.top, r.width, r.height);
     w_ptr->draw(_s);
     DamnCute::Core::getInstance()->addBulletsCounter();
 }

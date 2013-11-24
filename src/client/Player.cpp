@@ -41,7 +41,7 @@ Player::~Player()
 void Player::collisionHandler(DamnCute::APhysics* other) {
 
     DamnCute::Bullet* b = (DamnCute::Bullet*)other;
-    if (other->getType() == 4) {
+    if (!other->isDestructible() && preciseDetection(getPlayer(), b->getSprite()) && (other->getType() == 4)) {
         std::cout << "argh player is dead!" << std::endl;
         b->setLife(0);
     }
