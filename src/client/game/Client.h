@@ -43,6 +43,7 @@ public:
     void HandleAddMonster(Packet* recvPkt);
     void HandleRemoveMonster(Packet* recvPkt);
     void HandlePlayerGetHit(Packet* recvPkt);
+    void HandleGameEnd(Packet* recvPkt);
  
 private:
     NetService _service;

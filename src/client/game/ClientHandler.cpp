@@ -130,9 +130,14 @@ void Client::HandlePlayerGetHit(Packet* recvPkt)
             if (player == _player)
                 _player = NULL;
             _display->RemovePlayer(player);
-
         }
     }
+}
 
+void Client::HandleGameEnd(Packet* recvPkt)
+{
+    uint8 win;
+    *recvPkt >> win;
 
+    std::cout << "Game is " << (win != 0 ? "win" : "loose") << std::endl;
 }
