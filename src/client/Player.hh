@@ -30,6 +30,7 @@ class Player : public DamnCute::APlayer {
         }
 
         void UpdateFirePosition();
+
     private:
         bool _fire;
 
@@ -37,9 +38,12 @@ class Player : public DamnCute::APlayer {
         ShootPatternLevel1 *_sp2;
         ShootPatternLevel2 *_sp3;
 
+
+        sf::Sound _sound;
+        sf::SoundBuffer _buffer;
+
         uint8 _level;
 
-        uint8 _health;
 };
 
 

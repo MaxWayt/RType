@@ -2,13 +2,24 @@
 #include "APlayer.hh"
 
 DamnCute::APlayer::APlayer(const std::string& texfile, float x, float y, int nb, int speed, bool active) :
+<<<<<<< HEAD
     APhysics((int)x, (int)y, true, false, 1), _tex(), _speed(speed), _nbPlayer(nb), _active(active)
+=======
+    APhysics((int)x, (int)y, true, 1), _tex(), _speed(speed), _nbPlayer(nb), _active(active), _health(5)
+>>>>>>> f201fb6528e171135ba6f16a1dcdaa0971bb2f4d
 {
     _tex.loadFromFile(texfile);
     _entity.setTexture(_tex);
     const sf::Vector2f& s = _entity.getScale();
     _entity.setOrigin(s.x / 2, s.y / 2);
     _entity.setPosition(x, y);
+
+    int lifeSpriteOffset = 20;
+    for (int i = 0; i < _health; ++i) {
+        _life.push(new Life("../resources/life.png", lifeSpriteOffset));
+        DamnCute::sCore->addObject(_life.top());
+        lifeSpriteOffset += 70;
+    }
 }
 
 void DamnCute::APlayer::update(sf::RenderTarget* w_ptr)

@@ -1,5 +1,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
+#include <APlayer.hh>
 #include "Bullet.hh"
 #include "Core/Core.hh"
 
@@ -47,5 +48,8 @@ unsigned int DamnCute::Bullet::decreaseLifeTime() {
 }
 
 void DamnCute::Bullet::collisionHandler(APhysics* other) {
-    (void) other;
+    if (other->getType() == 1) {
+        if (((DamnCute::APlayer*)(other))->isEmpty())
+            sCore->delObject((DamnCute::APlayer*)other);
+    }
 }
