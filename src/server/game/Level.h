@@ -44,12 +44,14 @@ public:
     Level(Game *game);
     virtual ~Level();
     bool load(std::string const &file);
-    void update(uint32 time);
+    bool update(uint32 time);
     void sendMonster(Monster *monster);
+    bool hasMonster();
     Monster *getMonster(uint32 id);
     void removeMonster(uint32 id);
 private:
     float _getRandomBetween(int min, int max);
+    uint32 _endTimer;
     Game *_game;
     LevelConfig *_config;
     std::unordered_map<uint32, Monster *> _monsters;

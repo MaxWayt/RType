@@ -77,15 +77,20 @@ void Game::Update(uint32 const diff)
     for (auto itr = _playerMap.begin(); itr != _playerMap.end(); ++itr)
         if (!itr->second->IsLoginOut())
             itr->second->Update(diff);
+
     if (!_ended && GetPlayerCount() >= _gamePlayerCount)
     {
         if (GetAlivePlayerCount() == 0 && !_ended)
         {
             _ended = true;
-            HandleGameEnd();
+            HandleGameEnd(false);
         }
         else
-            _level.update(diff);
+            if (_level.update(diff))
+            {
+                _ended = true;
+                HandleGameEnd(true);
+            }
     }
     _ProcessRemovedPlayer();
 }

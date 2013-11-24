@@ -5,8 +5,8 @@
 
 namespace Game
 {
-Level::Level(Game *game)
-    : _game(game), _config(NULL), _monsters(), _id(0) {
+    Level::Level(Game *game)
+    : _endTimer(55000), _game(game), _config(NULL), _monsters(), _id(0) {
 
     // Do stuff
     _config = new LevelConfig();
@@ -70,7 +70,18 @@ void Level::removeMonster(uint32 id) {
     _monsters.erase(id);
 }
 
-void Level::update(uint32 diff) {
+bool Level::hasMonster() {
+
+    for (uint32 i = 0; i < _config->nb; ++i) {
+
+        QueenMonster *qm = &(_config->collection[i]);
+        if (qm->nb > 0)
+            return true;
+    }
+    return false;
+}
+
+bool Level::update(uint32 diff) {
 
     for (uint32 i = 0; i < _config->nb; ++i) {
 
@@ -90,5 +101,10 @@ void Level::update(uint32 diff) {
             qm->timer -= diff;
         }
     }
+    if (!hasMonster())
+        _endTimer = _endTimer - diff;
+    if (diff >= _endTimer)
+        return true;
+    return false;
 }
 }
