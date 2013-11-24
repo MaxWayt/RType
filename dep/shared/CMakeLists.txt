@@ -40,12 +40,19 @@ set(ALL_LIBS
 #set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
 
 set(SHARED_LIBRARY_NAME "shared")
-
-add_library(
-	${SHARED_LIBRARY_NAME}
-	SHARED
-	${shared_SRCS}
-)
+if ( WIN32 )
+	add_library(
+		${SHARED_LIBRARY_NAME}
+		#SHARED
+		${shared_SRCS}
+	)
+else()
+	add_library(
+		${SHARED_LIBRARY_NAME}
+		SHARED
+		${shared_SRCS}
+	)
+endif()
 
 target_link_libraries(${SHARED_LIBRARY_NAME} ${ALL_LIBS})
 if ( WIN32 )

@@ -41,11 +41,16 @@ include_directories(
 set(DAMNCUTE_LIBRARY_NAME "damncute")
 
 #set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
-
-add_library(${DAMNCUTE_LIBRARY_NAME}
-	SHARED
-	${damncute_SRCS}
-)
+if ( WIN32 )
+	add_library(${DAMNCUTE_LIBRARY_NAME}
+		${damncute_SRCS}
+	)
+else()
+	add_library(${DAMNCUTE_LIBRARY_NAME}
+		SHARED
+		${damncute_SRCS}
+	)
+endif()
 	
 target_link_libraries(${DAMNCUTE_LIBRARY_NAME} ${SFML_LIBRARY})
 
