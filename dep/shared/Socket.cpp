@@ -98,14 +98,31 @@ Socket::~Socket()
 
 bool Socket::listen(Protocoles proto, const char *port)
 {
+#ifdef WIN32
+	WORD Version;
+	WSADATA wsaData;
+	int err;
+
+	Version = MAKEWORD(2, 2);
+	err = WSAStartup(Version, &wsaData);
+	if (err != 0)
+	{
+		std::cerr << "WSAStartup fail with code: " << err << std::endl;
+		return false;
+	}
+#endif
+
     _sockfd = ::socket(AF_INET, protoDatas[proto].type, protoDatas[proto].p_proto);
 #if defined(LINUX) || defined(OSX)
     if (_sockfd == -1)
+	{
+        std::cerr << "Socket::listen 1, Error: " << strerror(errno) << std::endl;
 #else
     if (_sockfd == INVALID_SOCKET)
+	{
+		std::cerr << "Socket::listen 1, Error: " << WSAGetLastError() << std::endl;
+		WSACleanup();
 #endif // LINUX
-    {
-        std::cerr << "Socket::listen 1, Error: " << strerror(errno) << std::endl;
         return false;
     }
 

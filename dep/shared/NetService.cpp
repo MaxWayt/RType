@@ -29,6 +29,20 @@ void NetService::operator()()
     FD_ZERO(&readfds);
     struct timeval tv = {0, 1000};
 
+#ifdef WIN32
+    WORD Version;
+    WSADATA wsaData;
+    int err;
+
+    Version = MAKEWORD(2, 2);
+    err = WSAStartup(Version, &wsaData);
+    if (err != 0)
+    {
+        std::cerr << "WSAStartup fail with code: " << err << std::endl;
+        return;
+    }
+#endif
+
     while (!_isStopped())
     {
         int nready = 0;
@@ -36,7 +50,11 @@ void NetService::operator()()
 
         if(-1 == (nready = select(_maxfd + 1, &readfds, NULL, NULL, &tv)))
         {
-            std::cerr << "select fail, return -1" << std::endl;
+#ifdef WIN32
+            std::cerr << "select fail: " << WSAGetLastError() << std::endl;
+#else
+            std::cerr << "select fail: " << strerror(errno) << std::endl;
+#endif
             continue;
         }
 
