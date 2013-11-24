@@ -7,7 +7,7 @@
 
 Player::Player(const std::string& texfile, float x, float y, int speed, bool active, int num) :
 APlayer(texfile, x, y, num, speed, active),
-_fire(false), _sp1(NULL), _sp2(NULL), _sp3(NULL), _level(0), _health(5)
+_fire(false), _sp1(NULL), _sp2(NULL), _sp3(NULL), _level(0)
 {
     if (_active)
     {
@@ -29,6 +29,7 @@ _fire(false), _sp1(NULL), _sp2(NULL), _sp3(NULL), _level(0), _health(5)
     engine->addObject(_sp1);
     engine->addObject(_sp2);
     engine->addObject(_sp3);
+    
 }
 
 Player::~Player()
@@ -42,7 +43,15 @@ void Player::collisionHandler(DamnCute::APhysics* other) {
 
     DamnCute::Bullet* b = (DamnCute::Bullet*)other;
     if (other->getType() == 4) {
-        std::cout << "argh player is dead!" << std::endl;
+
+        if (_buffer.loadFromFile("../resources/sounds/explosion.wav")) {
+            _sound.setBuffer(_buffer);
+            _sound.play();
+        }
+        if (!_life.empty()) {
+            DamnCute::sCore->delObject(_life.top());
+            _life.pop();
+        }
         b->setLife(0);
     }
     /*if (!other->isDestructible() && preciseDetection(getPlayer(), b->getSprite())) {
