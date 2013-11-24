@@ -76,7 +76,7 @@ namespace DamnCute {
         }
 
 	public:
-	    APhysics(unsigned int x, unsigned int y, bool destructibility, bool destructor, unsigned int type = 0) : _physicallyActive(true), _destructible(destructibility), _destructor(destructor), _type(type), _quadTree(sCore->getQuadTree()) {
+	    APhysics(unsigned int x, unsigned int y, bool destructibility, bool destructor, unsigned int type = 0) : _physicallyActive(true), _destructible(destructibility), _destructor(destructor), _type(type), _quadTree(sCore->getQuadTree()), _where() {
 		_generateQuadTreePos<1920, 1080, __DQUADTREE_COMPLEXITY__>(x, y);
 	    }
 

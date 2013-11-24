@@ -102,7 +102,7 @@ int  DamnCute::Core::getWindowSizeY() {
     return _win->getSize().y;
 }
 
-DamnCute::Core::Core() : _physicTree(), _gameStatus(false), _displayFPS(false) {
+DamnCute::Core::Core() : _physicTree(), _gameStatus(false), _displayFPS(false), _tmpFrammes(0) {
 }
 
 DamnCute::Core::~Core() {
