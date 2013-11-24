@@ -10,10 +10,11 @@
 
 int main(int ac, char** av)
 {
-    sConfig->SetConfigFile(DEFAULT_CONFIG_FILE);
+	const char* file = (ac > 1 ? av[1] : DEFAULT_CONFIG_FILE);
+    sConfig->SetConfigFile(file);
     if (!sConfig->LoadConfig())
     {
-        std::cerr << "Fail to load config `" << DEFAULT_CONFIG_FILE << "`" << std::endl;
+        std::cerr << "Fail to load config `" << file << "`" << std::endl;
         return 1;
     }
     sConfig->DumpConfig();
